@@ -4,3 +4,11 @@ export const getWindowWidth = () => {
 
   return { windowWidth }
 }
+
+export const formatPrice = (num: number) =>
+  num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
+
+export const createSelectOption = (value: string | number) => ({
+  value,
+  label: value,
+})

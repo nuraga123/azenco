@@ -7,10 +7,11 @@ $black: #181818;
 $purple: #4b70e2;
 $transition: 1.25s;
 
+/**/
 .main {
   position: relative;
   width: 100%;
-  height: calc(100vh - 50px);
+  height: 100vh;
   padding: 25px;
   background-color: $neu-1;
   box-shadow:
@@ -85,7 +86,7 @@ $transition: 1.25s;
   }
 
   &__label:not(:last-child) {
-    margin-bottom: 15px;
+    margin-bottom: 25px;
   }
 
   &__input {
@@ -111,15 +112,11 @@ $transition: 1.25s;
     }
 
     @media (max-width: 530px) {
-      width: 260px;
+      width: 270px;
     }
 
     @media (max-width: 400px) {
       width: 210px;
-    }
-
-    @media (max-width: 375px) {
-      width: 180px;
     }
   }
 
@@ -151,7 +148,6 @@ $transition: 1.25s;
   font-weight: 700;
   margin-bottom: 20px;
   color: $black;
-  text-align: center;
 
   &.dark_mode {
     color: #f2f2f2;
@@ -452,11 +448,18 @@ $transition: 1.25s;
 }
 
 .error_alert {
-  font-size: 12px;
+  font-size: 16px;
   color: red;
   position: absolute;
-  left: 10px;
-  bottom: -15px;
+  left: 25px;
+  bottom: -22px;
+  margin: 5px 0;
+  height: 16px;
+  letter-spacing: 1px;
+
+  &.dark_mode {
+    color: orange;
+  }
 }
 
 .mode_toggle {
