@@ -46,26 +46,26 @@ const ProfileDropDown = forwardRef<HTMLDivElement, IWrappedComponentProps>(
                 <span
                   className={`${styles.profile__dropdown__username} ${darkModeClass}`}
                 >
-                  {user.username}
+                  Login: {user.username}
                 </span>
                 <span
                   className={`${styles.profile__dropdown__email} ${darkModeClass}`}
                 >
-                  {user.email}
+                  Email: {user.email}
                 </span>
               </li>
               <li className={styles.profile__dropdown__item}>
                 <button className={styles.profile__dropdown__item__btn}>
                   <span
-                    className={`${styles.profile__dropdown__text} ${darkModeClass}`}
-                    onClick={handleLogout}
-                  >
-                    Выйти
-                  </span>
-                  <span
                     className={`${styles.profile__dropdown__svg} ${darkModeClass}`}
                   >
                     <LogoutSvg />
+                  </span>
+                  <span
+                    className={`${styles.profile__dropdown__item__text} ${darkModeClass}`}
+                    onClick={handleLogout}
+                  >
+                    {'Ç I X I Ş'}
                   </span>
                 </button>
               </li>

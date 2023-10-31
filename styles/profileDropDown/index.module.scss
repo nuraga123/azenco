@@ -28,31 +28,33 @@
 
     & svg {
       fill: #fff;
-      transition: fill .2s ease-in-out;
+      transition: fill 0.2s ease-in-out;
     }
   }
 
-  &:hover &__span>svg {
-    fill: #FFC540;
-    transition: fill .2s ease-in-out;
+  &:hover &__span > svg {
+    fill: #ffc540;
+    transition: fill 0.2s ease-in-out;
   }
 
   &__dropdown {
+    width: max-content;
     position: absolute;
-    top: 24px;
-    right: 34px;
+    top: 35px;
+    right: 25px;
     margin: 0;
-    padding: 15px;
     list-style-type: none;
-    border-radius: 4px;
+    border-radius: 5px;
+    border: 1px solid silver;
     background-color: #f2f2f2;
     box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
 
     &__user {
-      margin-bottom: 10px;
       display: flex;
       flex-direction: column;
-      padding-bottom: 12px;
+      justify-content: space-between;
+      height: 60px;
+      padding: 6px 15px;
       border-bottom: 1px solid #e9e9e9;
     }
 
@@ -76,6 +78,8 @@
     }
 
     &__item {
+      padding: 10px 0 5px 15px;
+
       &:not(:last-child) {
         margin-bottom: 10px;
       }
@@ -95,8 +99,8 @@
         height: 18px;
 
         & svg {
-          fill: #2D2D2D;
-          transition: fill .2s ease-in-out;
+          fill: #2d2d2d;
+          transition: fill 0.2s ease-in-out;
         }
 
         &.dark_mode svg {
@@ -104,15 +108,18 @@
         }
       }
 
-      &:hover &__svg>svg {
-        fill: #FFC540;
-        transition: fill .2s ease-in-out;
+      &:hover &__svg > svg {
+        fill: #ffc540;
+        transition: fill 0.2s ease-in-out;
       }
 
       &__text {
-        margin-right: 5px;
+        margin: 0 15px 5px;
+        font-size: 16px;
+        font-weight: 600;
+        font-family: 'Raleway';
         color: #2d2d2d;
-        transition: color .2s ease-in-out;
+        transition: color 0.2s ease-in-out;
 
         &.dark_mode {
           color: #f2f2f2;
@@ -120,8 +127,8 @@
       }
 
       &:hover &__text {
-        color: #FFC540;
-        transition: color .2s ease-in-out;
+        color: #ffc540;
+        transition: color 0.2s ease-in-out;
       }
     }
   }

@@ -1,17 +1,19 @@
+import { useState } from 'react'
+import { useStore } from 'effector-react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { $mode } from '@/context/mode'
-import { useStore } from 'effector-react'
 import { IBoilerPart } from '@/types/boilerparts'
-import { useState } from 'react'
-import { formatPrice } from '@/utils/common'
+import { $mode } from '@/context/mode'
 import { $shoppingCart } from '@/context/shopping-cart'
+
 import CartHoverCheckedSvg from '@/components/elements/CartHoverCheckedSvg/CartHoverCheckedSvg'
 import CartHoverSvg from '@/components/elements/CartHoverSvg/CartHoverSvg'
 
-import styles from '@/styles/catalog/index.module.scss'
-import skeletonStyles from '@/styles/skeleton/index.module.scss'
+import { formatPrice } from '@/utils/common'
 import { formatDateTime } from '@/utils/formatDateTime'
+
+import styles from '@/styles/catalog/index.module.scss'
+import spinnerStyles from '@/styles/spinner/index.module.scss'
 
 const CatologItem = ({ item }: { item: IBoilerPart }) => {
   const [spinner, setSpinner] = useState(false)
@@ -39,13 +41,7 @@ const CatologItem = ({ item }: { item: IBoilerPart }) => {
           Code: {item.vendor_code}
         </span>
         <span className={styles.catalog__list__item__code}>
-          Code: {item.in_stock}
-        </span>
-        <span className={styles.catalog__list__item__code}>
-          Code: {item.in_stock}
-        </span>
-        <span className={styles.catalog__list__item__code}>
-          Code: {item.in_stock}
+          stock: {item.in_stock}
         </span>
         <span className={styles.catalog__list__item__code}>
           son tarix: {formatDateTime(item.updatedAt)}
@@ -72,8 +68,8 @@ const CatologItem = ({ item }: { item: IBoilerPart }) => {
         >
           {spinner ? (
             <div
-              className={skeletonStyles.spinner}
-              style={{ top: 5, left: 5 }}
+              className={spinnerStyles.spinner}
+              style={{ top: 70, left: 80, width: 70, height: 70 }}
             />
           ) : (
             <span>{IsInCart ? <CartHoverCheckedSvg /> : <CartHoverSvg />}</span>

@@ -33,7 +33,7 @@
       z-index: 2;
       width: 24px;
       height: 24px;
-      background: #222;
+      background: #9500ff;
       left: 4px;
       top: 4px;
       border-radius: 50%;
@@ -47,12 +47,12 @@
 
     &:checked {
       background-color: black;
-      border-color: #222;
+      border-color: black;
 
       &:checked::before {
         left: 32px;
         content: url('../../public/sun.svg');
-        background: #fff;
+        background: #ffe600;
       }
     }
   }
