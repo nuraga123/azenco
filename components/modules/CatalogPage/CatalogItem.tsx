@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { useStore } from 'effector-react'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -14,14 +13,20 @@ import { formatDateTime } from '@/utils/formatDateTime'
 
 import styles from '@/styles/catalog/index.module.scss'
 import spinnerStyles from '@/styles/spinner/index.module.scss'
+import { $user } from '@/context/user'
+import { toggleCartItem } from '@/utils/shopping-cart'
+import { removeFromCartFx } from '@/app/api/shopping-cart'
 
 const CatologItem = ({ item }: { item: IBoilerPart }) => {
-  const [spinner, setSpinner] = useState(false)
+  const spinner = useStore(removeFromCartFx.pending)
   const mode = useStore($mode)
   const darkModeClass = mode === 'dark' ? `${styles.dark_mode}` : ''
 
   const shoppingCart = useStore($shoppingCart)
-  const IsInCart = shoppingCart.some((cart) => cart.partId === item.id)
+  const user = useStore($user)
+  const isInCart = shoppingCart.some((cart) => cart?.partId === item?.id)
+
+  const toggleToCart = () => toggleCartItem(user.username, item.id, isInCart)
 
   return (
     <li className={`${styles.catalog__list__item} ${darkModeClass}`}>
@@ -31,7 +36,6 @@ const CatologItem = ({ item }: { item: IBoilerPart }) => {
         width={225}
         height={184}
         priority
-        style={{ width: 'auto', height: 'auto' }}
       />
       <div className={styles.catalog__list__item__inner}>
         <Link href={`/catalog/${item.id}`} passHref legacyBehavior>
@@ -39,6 +43,12 @@ const CatologItem = ({ item }: { item: IBoilerPart }) => {
         </Link>
         <span className={styles.catalog__list__item__code}>
           Code: {item.vendor_code}
+        </span>
+        <span className={styles.catalog__list__item__code}>
+          Производитель: {item.boiler_manufacturer}
+        </span>
+        <span className={styles.catalog__list__item__code}>
+          Запчасть: {item.parts_manufacturer}
         </span>
         <span className={styles.catalog__list__item__code}>
           stock: {item.in_stock}
@@ -61,10 +71,11 @@ const CatologItem = ({ item }: { item: IBoilerPart }) => {
         }}
       >
         <button
-          onClick={() => setSpinner(true)}
+          onClick={toggleToCart}
           className={`${styles.catalog__list__item__cart} ${
-            IsInCart ? styles.added : ''
+            isInCart ? styles.added : ''
           }`}
+          disabled={spinner}
         >
           {spinner ? (
             <div
@@ -72,7 +83,7 @@ const CatologItem = ({ item }: { item: IBoilerPart }) => {
               style={{ top: 70, left: 80, width: 70, height: 70 }}
             />
           ) : (
-            <span>{IsInCart ? <CartHoverCheckedSvg /> : <CartHoverSvg />}</span>
+            <span>{isInCart ? <CartHoverCheckedSvg /> : <CartHoverSvg />}</span>
           )}
         </button>
       </div>

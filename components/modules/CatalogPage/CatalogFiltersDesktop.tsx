@@ -16,13 +16,13 @@ import spinnerStyles from '@/styles/spinner/index.module.scss'
 import styles from '@/styles/catalog/index.module.scss'
 
 const CatalogFiltersDesktop = ({
+  spinner,
   priceRange,
+  resetFilterBtnDisabled,
+  applyFilters,
   setPriceRange,
   setIsPriceRangeChanged,
-  resetFilterBtnDisabled,
-  spinner,
   resetFilters,
-  applyFilters,
 }: ICatalogFilterDesktopProps) => {
   const mode = useStore($mode)
   const boilerManufacturers = useStore($boilerManufacturers)
@@ -34,19 +34,19 @@ const CatalogFiltersDesktop = ({
       <h3
         className={`${styles.catalog__bottom__filters__title} ${darkModeClass}`}
       >
-        Фильтры
+        Filtrlər
       </h3>
       <div className={styles.filters__boiler_manufacturers}>
         <FilterManufacturerAccordion
           manufacturersList={boilerManufacturers}
-          title="Производитель котлов"
+          title="İstehsalçı"
           updateManufacturer={updateBoilerManufacturer}
           setManufacturer={setBoilerManufacturers}
         />
       </div>
       <div className={styles.filters__price}>
         <Accordion
-          title="Цена"
+          title="Qiymət"
           titleClass={`${styles.filters__manufacturer__btn} ${darkModeClass}`}
           arrowOpenClass={styles.open}
         >
@@ -55,6 +55,8 @@ const CatalogFiltersDesktop = ({
               priceRange={priceRange}
               setPriceRange={setPriceRange}
               setIsPriceRangeChanged={setIsPriceRangeChanged}
+              resetFilterBtnDisabled={resetFilterBtnDisabled}
+              resetFilters={resetFilters}
             />
             <div style={{ height: 24 }} />
           </div>
@@ -63,7 +65,7 @@ const CatalogFiltersDesktop = ({
       <div className={styles.filters__boiler_manufacturers}>
         <FilterManufacturerAccordion
           manufacturersList={partsManufacturers}
-          title="Производитель запчастей"
+          title="Ehtiyat hissələri"
           updateManufacturer={updatePartsManufacturer}
           setManufacturer={setPartsManufacturers}
         />
@@ -80,7 +82,7 @@ const CatalogFiltersDesktop = ({
               style={{ top: 6, left: '47%' }}
             />
           ) : (
-            'Показать'
+            'Göstər'
           )}
         </button>
         <button
@@ -88,7 +90,7 @@ const CatalogFiltersDesktop = ({
           disabled={resetFilterBtnDisabled}
           onClick={resetFilters}
         >
-          Сбросить
+          Sıfırlayın
         </button>
       </div>
     </div>

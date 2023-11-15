@@ -18,7 +18,7 @@ const HeaderBottom = () => {
   return (
     <div className={`container ${styles.header__bottom}`}>
       <div className={`container ${styles.header__bottom__container}`}>
-        <h1 className={styles.header__logo}>
+        <h1 className={styles.header__logo} id="header__logo">
           <Link href="/dashboard" passHref legacyBehavior>
             <a className={styles.header__logo__link}>
               <img src="/img/logo.svg" alt="logo" />

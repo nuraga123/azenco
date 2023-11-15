@@ -1,22 +1,46 @@
-import { $mode } from '@/context/mode'
-import { IWrappedComponentProps } from '@/types/common'
-import { useStore } from 'effector-react'
-import { forwardRef } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
-
-import styles from '@/styles/cartPopup/index.module.scss'
-import { withClickOutside } from '@/utils/withClickOutside'
-import ShoppingCartSvg from '@/components/elements/ShoppingCartSvg/ShoppingCartSvg'
-import { $shoppingCart } from '@/context/shopping-cart'
 import Link from 'next/link'
+import { forwardRef, useEffect } from 'react'
+import { useStore } from 'effector-react'
+import { AnimatePresence, motion } from 'framer-motion'
+import { toast } from 'react-toastify'
+
+import { $mode } from '@/context/mode'
+import { $shoppingCart, setShoppingCart } from '@/context/shopping-cart'
+import { $user } from '@/context/user'
+import { getCartItemsFx } from '@/app/api/shopping-cart'
+import { withClickOutside } from '@/utils/withClickOutside'
+import { IWrappedComponentProps } from '@/types/common'
+import { IShoppingCartItem } from '@/types/shopping-cart'
+
+import CartPopupItem from './CartPopupItem'
+import ShoppingCartSvg from '@/components/elements/ShoppingCartSvg/ShoppingCartSvg'
+import styles from '@/styles/cartPopup/index.module.scss'
 
 const CartPopup = forwardRef<HTMLDivElement, IWrappedComponentProps>(
   ({ open, setOpen }, ref) => {
-    const mode = useStore($mode)
+    const user = useStore($user)
     const shoppingCart = useStore($shoppingCart)
+
+    const mode = useStore($mode)
     const darkModeClass = mode === 'dark' ? `${styles.dark_mode}` : ''
 
     const toggleCartDropDown = () => setOpen(!open)
+
+    useEffect(() => {
+      loadCartItems()
+    }, [])
+
+    const loadCartItems = async () => {
+      try {
+        const cartItems: IShoppingCartItem[] = await getCartItemsFx(
+          `/shopping-cart/${user.userId}`
+        )
+
+        setShoppingCart(cartItems)
+      } catch (error) {
+        toast.error((error as Error).message)
+      }
+    }
 
     return (
       <div className={styles.cart} ref={ref}>
@@ -48,10 +72,8 @@ const CartPopup = forwardRef<HTMLDivElement, IWrappedComponentProps>(
               </h3>
               <ul className={styles.cart__popup__list}>
                 {shoppingCart.length ? (
-                  shoppingCart.map((el) => (
-                    <li className={styles.cart__popup_empty} key={el.id}>
-                      {el.name}
-                    </li>
+                  shoppingCart.map((item) => (
+                    <CartPopupItem key={item?.id} item={item} />
                   ))
                 ) : (
                   <li className={styles.cart__popup__empty}>

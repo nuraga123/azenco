@@ -34,7 +34,7 @@ const FilterManufacturerAccordion = ({
           className={styles.filters__manufacturer__select_all}
           onClick={chooseAllManufacturers}
         >
-          Выбрать все
+          Hamısını seçin
         </button>
         <ul className={styles.filters__manufacturer__list}>
           {manufacturersList?.map((item) => (

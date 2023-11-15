@@ -20,7 +20,11 @@ import {
 } from '@/context/boilerParts'
 import { useRouter } from 'next/router'
 
-const FilterSelect = () => {
+const FilterSelect = ({
+  setSpinner,
+}: {
+  setSpinner: (arg0: boolean) => void
+}) => {
   const mode = useStore($mode)
   const boilerParts = useStore($boilerParts)
   const [categoryOption, setCategoryOption] = useState<SelectOpytionType>(null)
@@ -68,6 +72,7 @@ const FilterSelect = () => {
   }
 
   const handleSortOptionChange = (selectedOption: SelectOpytionType) => {
+    setSpinner(true)
     setCategoryOption(selectedOption)
 
     switch ((selectedOption as IOption).value) {
@@ -84,6 +89,8 @@ const FilterSelect = () => {
         updateRoteParams('popularity')
         break
     }
+
+    setTimeout(() => setSpinner(false), 1000)
   }
 
   return (

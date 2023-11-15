@@ -13,6 +13,7 @@ export const setBoilerPartsExpensiveFirst = boilerParts.createEvent()
 
 export const setBoilerPartsByPopularity = boilerParts.createEvent()
 
+// update
 const updateManufacturer = (
   manufacturers: IFilterCheckboxItem[],
   id: string,
@@ -23,6 +24,22 @@ const updateManufacturer = (
       return {
         ...item,
         ...payload,
+      }
+    }
+
+    return item
+  })
+
+// update query
+const updateManufacturerFromQuery = (
+  manufacturers: IFilterCheckboxItem[],
+  manufacturersFromQuery: string[]
+) =>
+  manufacturers.map((item) => {
+    if (manufacturersFromQuery.find((title) => title === item.title)) {
+      return {
+        ...item,
+        checked: true,
       }
     }
 
@@ -53,6 +70,10 @@ export const setBoilerManufacturers =
 export const updateBoilerManufacturer =
   boilerParts.createEvent<IFilterCheckboxItem>()
 
+// boiler filter query
+export const setBoilerManufacturersFromQuery =
+  boilerParts.createEvent<string[]>()
+
 export const $boilerManufacturers = boilerParts
   .createStore<IFilterCheckboxItem[]>(
     boilerManufacturers as IFilterCheckboxItem[]
@@ -63,6 +84,9 @@ export const $boilerManufacturers = boilerParts
       checked: payload.checked,
     }),
   ])
+  .on(setBoilerManufacturersFromQuery, (state, manufacturersFromQuery) => [
+    ...updateManufacturerFromQuery(state, manufacturersFromQuery),
+  ])
 
 // Parts Manufacturers
 export const setPartsManufacturers =
@@ -70,6 +94,10 @@ export const setPartsManufacturers =
 
 export const updatePartsManufacturer =
   boilerParts.createEvent<IFilterCheckboxItem>()
+
+// parts filter query
+export const setPartsManufacturersFromQuery =
+  boilerParts.createEvent<string[]>()
 
 export const $partsManufacturers = boilerParts
   .createStore<IFilterCheckboxItem[]>(
@@ -80,6 +108,9 @@ export const $partsManufacturers = boilerParts
     ...updateManufacturer(state, payload.id as string, {
       checked: payload.checked,
     }),
+  ])
+  .on(setPartsManufacturersFromQuery, (state, manufacturersFromQuery) => [
+    ...updateManufacturerFromQuery(state, manufacturersFromQuery),
   ])
 
 // filter

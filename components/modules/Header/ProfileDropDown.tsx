@@ -43,16 +43,30 @@ const ProfileDropDown = forwardRef<HTMLDivElement, IWrappedComponentProps>(
               style={{ transformOrigin: 'right top' }}
             >
               <li className={styles.profile__dropdown__user}>
-                <span
-                  className={`${styles.profile__dropdown__username} ${darkModeClass}`}
-                >
-                  Login: {user.username}
-                </span>
-                <span
-                  className={`${styles.profile__dropdown__email} ${darkModeClass}`}
-                >
-                  Email: {user.email}
-                </span>
+                <div>
+                  {'User ID: '}
+                  <span
+                    className={`${styles.profile__dropdown__username} ${darkModeClass}`}
+                  >
+                    {user.userId}
+                  </span>
+                </div>
+                <div>
+                  {'Login: '}
+                  <span
+                    className={`${styles.profile__dropdown__username} ${darkModeClass}`}
+                  >
+                    {user.username}
+                  </span>
+                </div>
+                <div>
+                  {'Email: '}
+                  <span
+                    className={`${styles.profile__dropdown__email} ${darkModeClass}`}
+                  >
+                    {user.email}
+                  </span>
+                </div>
               </li>
               <li className={styles.profile__dropdown__item}>
                 <button className={styles.profile__dropdown__item__btn}>

@@ -5,15 +5,39 @@
     padding-bottom: 45px;
   }
 
-  &__title {
-    margin: 0;
-    padding: 0;
+  &__no_products {
+    margin: 10px auto;
+    padding: 40px;
     margin-bottom: 48px;
     font-family: 'Raleway';
     font-weight: 500;
     font-size: 55px;
     color: #2d2d2d;
     letter-spacing: 2px;
+    border: 1px solid grey;
+    border-radius: 10px;
+
+    &.dark_mode {
+      color: #f2f2f2;
+      border: 1px solid white;
+    }
+
+    @media (max-width: 820px) {
+      font-size: 22px;
+      margin-bottom: 24px;
+    }
+  }
+
+  &__title {
+    margin: 0;
+    padding: 0;
+    margin-bottom: 10px;
+    font-family: 'Raleway';
+    font-weight: 500;
+    font-size: 55px;
+    color: #2d2d2d;
+    letter-spacing: 2px;
+    text-align: center;
 
     &.dark_mode {
       color: #f2f2f2;
@@ -27,7 +51,7 @@
 
   &__top {
     margin-bottom: 24px;
-    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.5);
     border-radius: 4px;
     padding: 24px 16px;
 
@@ -85,6 +109,7 @@
       border: none;
       background-color: #1c629e;
       border-radius: 4px;
+      cursor: pointer;
 
       @media (max-width: 820px) {
         display: block;
@@ -166,7 +191,7 @@
             font-size: 14px;
             cursor: default;
             letter-spacing: 1px;
-            
+
             &.dark_mode {
               color: #f2f2f2;
             }
@@ -223,7 +248,7 @@
 
     &__filters {
       align-self: flex-start;
-      box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+      box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.5);
       border-radius: 4px;
       padding: 24px 16px;
 
@@ -236,7 +261,7 @@
         width: 320px;
         left: -100vw;
         position: absolute;
-        top: -13px;
+        top: 50px;
         transition: left 0.3s ease-in-out;
         background-color: #ffffff;
         bottom: 0;
@@ -269,6 +294,7 @@
         font-size: 24px;
         color: #2d2d2d;
         border-bottom: 1px solid #e1e1e1;
+        cursor: pointer;
 
         @media (max-width: 820px) {
           background-color: transparent;
@@ -296,6 +322,7 @@
         border-radius: 40px;
         border: none;
         padding: 6px 8px;
+        cursor: pointer;
 
         &:disabled {
           opacity: 0.5;
@@ -385,7 +412,7 @@
           list-style-type: none;
           margin: 0;
           padding: 0;
-          height: 302px;
+          max-height: 400px;
           overflow-y: auto;
 
           &::-webkit-scrollbar {

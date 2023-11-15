@@ -85,7 +85,7 @@ a {
 }
 
 .overlay {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.7);
   height: 100%;
   left: 0;
   opacity: 0;

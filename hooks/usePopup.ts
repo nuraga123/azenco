@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 const usePopup = () => {
   const [open, setOpen] = useState(false)
-
+  const header__logo = document.getElementById('header__logo')
   const toggleOpen = () => {
     window.scrollTo(0, 0)
     document.querySelector('.overlay')?.classList.toggle('open')
@@ -18,12 +18,21 @@ const usePopup = () => {
   }
 
   useEffect(() => {
+    if (!open && header__logo) {
+      header__logo.style.zIndex = '40'
+      header__logo.style.display = 'block'
+    }
+
+    if (open && header__logo) {
+      header__logo.style.display = 'none'
+    }
+
     const overlay = document.querySelector('.overlay')
 
     overlay?.addEventListener('click', closePopup)
 
     return () => overlay?.removeEventListener('click', closePopup)
-  }, [open])
+  }, [header__logo, open])
 
   return { toggleOpen, open, closePopup }
 }

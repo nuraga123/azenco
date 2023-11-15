@@ -5,6 +5,9 @@
     padding-top: 13px;
     padding-bottom: 14px;
     background-color: #2d2d2d;
+    position: fixed;
+    z-index: 50;
+    width: 100%;
 
     @media (max-width: 580px) {
       padding-top: 20px;
@@ -113,7 +116,7 @@
           font-size: 16px;
           color: #fafbfc;
           transition: color 0.2s ease-in-out;
-          
+
           &:hover {
             color: #ffc540;
             transition: color 0.2s ease-in-out;
@@ -141,11 +144,18 @@
     padding-top: 17px;
     padding-bottom: 14px;
     box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+    top: 50px;
+    margin-bottom: 50px;
 
     &__container {
       display: grid;
       grid-template-columns: repeat(12, 1fr);
       align-items: center;
+
+      @media (max-width: 950px) {
+        grid-template-columns: repeat(9, 0px) 80%;
+      }
     }
   }
 
@@ -157,12 +167,22 @@
       grid-column: 1 / 5;
     }
 
-    @media (max-width: 580px) {
+    @media (max-width: 950px) {
       grid-column: auto;
-      position: absolute;
-      top: 7px;
+      position: fixed;
+      top: 20px;
       left: 50%;
       transform: translateX(-50%);
+      width: 200px;
+      z-index: 100 !important;
+    }
+
+    @media (max-width: 580px) {
+      grid-column: auto;
+      position: fixed;
+      top: 5px;
+      left: 50%;
+      transform: translateX(-40%);
     }
 
     &__link {
@@ -213,7 +233,7 @@
     }
 
     @media (max-width: 580px) {
-      grid-column: 1 / 10;
+      grid-column: 10 / 10;
       padding-left: 0;
     }
 

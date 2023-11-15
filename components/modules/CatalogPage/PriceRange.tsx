@@ -15,7 +15,6 @@ const PriceRange = ({
 }: IPriceRangeProps) => {
   const mode = useStore($mode)
   const darkModeClass = mode === 'dark' ? `${styles.dark_mode}` : ''
-  console.log(darkModeClass)
 
   const handlePriceRangeChange = (values: number[]) => {
     setIsPriceRangeChanged(true)
