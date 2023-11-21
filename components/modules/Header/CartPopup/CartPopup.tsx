@@ -5,7 +5,12 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { toast } from 'react-toastify'
 
 import { $mode } from '@/context/mode'
-import { $shoppingCart, setShoppingCart } from '@/context/shopping-cart'
+import {
+  $shoppingCart,
+  $totalPrice,
+  setShoppingCart,
+  setTotalPrice,
+} from '@/context/shopping-cart'
 import { $user } from '@/context/user'
 import { getCartItemsFx } from '@/app/api/shopping-cart'
 import { withClickOutside } from '@/utils/withClickOutside'
@@ -15,11 +20,13 @@ import { IShoppingCartItem } from '@/types/shopping-cart'
 import CartPopupItem from './CartPopupItem'
 import ShoppingCartSvg from '@/components/elements/ShoppingCartSvg/ShoppingCartSvg'
 import styles from '@/styles/cartPopup/index.module.scss'
+import { formatFromPriceToString } from '@/utils/shopping-cart'
 
 const CartPopup = forwardRef<HTMLDivElement, IWrappedComponentProps>(
   ({ open, setOpen }, ref) => {
     const user = useStore($user)
     const shoppingCart = useStore($shoppingCart)
+    const totalPrice = useStore($totalPrice)
 
     const mode = useStore($mode)
     const darkModeClass = mode === 'dark' ? `${styles.dark_mode}` : ''
@@ -29,6 +36,18 @@ const CartPopup = forwardRef<HTMLDivElement, IWrappedComponentProps>(
     useEffect(() => {
       loadCartItems()
     }, [])
+
+    useEffect(() => {
+      setTotalPrice(
+        shoppingCart
+          .filter((el) => el.in_stock !== 0)
+          .reduce(
+            (defaultCount: number, item: IShoppingCartItem) =>
+              Number(defaultCount) + Number(item.total_price),
+            0
+          )
+      )
+    }, [shoppingCart])
 
     const loadCartItems = async () => {
       try {
@@ -92,7 +111,9 @@ const CartPopup = forwardRef<HTMLDivElement, IWrappedComponentProps>(
                   >
                     Общая сумма заказа
                   </span>
-                  <span className={styles.cart__popup__footer__price}>0</span>
+                  <span className={styles.cart__popup__footer__price}>
+                    {formatFromPriceToString(totalPrice)}
+                  </span>
                 </div>
                 <Link href="/order" passHref legacyBehavior>
                   <button

@@ -1,6 +1,15 @@
 import { toast } from 'react-toastify'
-import { addToCartFx, removeFromCartFx } from '@/app/api/shopping-cart'
-import { removeShoppingCart, updateShoppingCart } from '@/context/shopping-cart'
+import {
+  addToCartFx,
+  removeFromCartFx,
+  updateCartItemFx,
+} from '@/app/api/shopping-cart'
+
+import {
+  removeShoppingCart,
+  updateCartItemTotalPrice,
+  updateShoppingCart,
+} from '@/context/shopping-cart'
 
 export const toggleCartItem = async (
   username: string,
@@ -38,5 +47,25 @@ export const removeItemFromCart = async (
     toast.error((error as Error).message)
   } finally {
     setSpinner(false)
+  }
+}
+
+export const updateTotalPrice = async (total_price: number, partId: number) => {
+  const data = await updateCartItemFx({
+    url: `/shopping-cart/total-price/${partId}`,
+    payload: { total_price },
+  })
+
+  updateCartItemTotalPrice({ partId, total_price: data.total_price })
+}
+
+export const formatFromPriceToString = (value: number): string => {
+  if (value) {
+    if (value.toString().includes('.')) {
+      return Number(value.toString()).toFixed(2)
+    }
+    return value.toString()
+  } else {
+    return '0'
   }
 }

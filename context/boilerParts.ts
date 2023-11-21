@@ -1,7 +1,7 @@
 import { createDomain } from 'effector-next'
 import { IBoilerParts } from '@/types/boilerparts'
 import { IFilterCheckboxItem } from '@/types/catalog'
-import { boilerManufacturers, partsManufacturers } from '@/utils/catalog'
+import { partsManufacturers, boilerManufacturers } from '@/utils/catalog'
 
 const boilerParts = createDomain()
 

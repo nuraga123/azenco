@@ -18,6 +18,8 @@ import { toggleCartItem } from '@/utils/shopping-cart'
 import { removeFromCartFx } from '@/app/api/shopping-cart'
 
 const CatologItem = ({ item }: { item: IBoilerPart }) => {
+  const imageUrl = JSON.parse(item.images)[0]
+
   const spinner = useStore(removeFromCartFx.pending)
   const mode = useStore($mode)
   const darkModeClass = mode === 'dark' ? `${styles.dark_mode}` : ''
@@ -27,15 +29,14 @@ const CatologItem = ({ item }: { item: IBoilerPart }) => {
   const isInCart = shoppingCart.some((cart) => cart?.partId === item?.id)
 
   const toggleToCart = () => toggleCartItem(user.username, item.id, isInCart)
-
   return (
     <li className={`${styles.catalog__list__item} ${darkModeClass}`}>
       <Image
-        src={JSON.parse(item.images)[0]}
+        src={imageUrl}
         alt={item.name}
-        width={225}
-        height={184}
-        priority
+        width={200}
+        height={200}
+        priority={true}
       />
       <div className={styles.catalog__list__item__inner}>
         <Link href={`/catalog/${item.id}`} passHref legacyBehavior>

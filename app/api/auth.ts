@@ -17,9 +17,7 @@ export const signUpFx = createEffect(
       toast.warning(data.warningMessage)
       return
     }
-
     toast.success('Регистрация прошла успешно!')
-
     return data
   }
 )
@@ -35,9 +33,7 @@ export const signInFx = createEffect(
       toast.warning(data.warningMessage)
       return
     }
-
     toast.success('Вход выполнен!')
-
     return data
   }
 )
@@ -51,10 +47,10 @@ export const checkUserAuthFx = createEffect(async (url: string) => {
 
     if (axiosError.response) {
       if (axiosError.response.status === HTTPStatus.FORBIDDEN) {
+        toast.error('yenidən proqrama keçin')
         return false
       }
     }
-
     toast.error((error as Error).message)
   }
 })

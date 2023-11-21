@@ -36,14 +36,6 @@ const CatalogFiltersDesktop = ({
       >
         Filtrlər
       </h3>
-      <div className={styles.filters__boiler_manufacturers}>
-        <FilterManufacturerAccordion
-          manufacturersList={boilerManufacturers}
-          title="İstehsalçı"
-          updateManufacturer={updateBoilerManufacturer}
-          setManufacturer={setBoilerManufacturers}
-        />
-      </div>
       <div className={styles.filters__price}>
         <Accordion
           title="Qiymət"
@@ -62,6 +54,16 @@ const CatalogFiltersDesktop = ({
           </div>
         </Accordion>
       </div>
+
+      <div className={styles.filters__boiler_manufacturers}>
+        <FilterManufacturerAccordion
+          manufacturersList={boilerManufacturers}
+          title="İstehsalçı"
+          updateManufacturer={updateBoilerManufacturer}
+          setManufacturer={setBoilerManufacturers}
+        />
+      </div>
+
       <div className={styles.filters__boiler_manufacturers}>
         <FilterManufacturerAccordion
           manufacturersList={partsManufacturers}

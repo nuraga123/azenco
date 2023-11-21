@@ -1,12 +1,31 @@
 import { NextRouter } from 'next/router'
-import { getQueryParamOnFirstRender, idGeneration } from './common'
+import { getQueryParamOnFirstRender } from './common'
 import { getBoilerPartsFx } from '@/app/api/boilerParts'
 import { setFilterBoilerParts } from '@/context/boilerParts'
 
-const createManufacturerCheckBoxObj = (title: string) => ({
+export const idGenerator = () => {
+  const S4 = () =>
+    (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1)
+  return (
+    S4() +
+    S4() +
+    '-' +
+    S4() +
+    '-' +
+    S4() +
+    '-' +
+    S4() +
+    '-' +
+    S4() +
+    S4() +
+    S4()
+  )
+}
+
+const createManufacturerCheckboxObj = (title: string) => ({
   title,
   checked: false,
-  id: idGeneration(title),
+  id: idGenerator(),
 })
 
 export const boilerManufacturers = [
@@ -19,7 +38,7 @@ export const boilerManufacturers = [
   'Strategist',
   'Henry',
   'Northwest',
-].map(createManufacturerCheckBoxObj)
+].map((item) => createManufacturerCheckboxObj(item))
 
 export const partsManufacturers = [
   'Azure',
@@ -32,7 +51,7 @@ export const partsManufacturers = [
   'Radian',
   'Gasoline',
   'Croatia',
-].map(createManufacturerCheckBoxObj)
+].map((item) => createManufacturerCheckboxObj(item))
 
 const checkPriceQuery = (price: number) =>
   price && !isNaN(price) && price >= 0 && price <= 100000

@@ -12,8 +12,24 @@ export interface IShoppingCartItem {
   partId: number
 }
 
-export interface IAddToCart {
+export interface IAddToCartFx {
   url: string
   username: string
   partId: number
+}
+
+export interface IUpdateCartItemFx {
+  url: string
+  payload: {
+    total_price?: number
+    count?: number
+  }
+}
+
+export interface ICartItemCounterProps {
+  initialCount: number
+  totalCount: number
+  partId: number
+  increasePrice: VoidFunction
+  decreasePrice: VoidFunction
 }

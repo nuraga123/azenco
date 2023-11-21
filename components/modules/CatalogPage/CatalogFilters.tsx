@@ -64,7 +64,6 @@ const CatalogFilters = ({
 
       const priceQuery = `&priceFrom=${priceFromQueryValue}&priceTo=${priceToQueryValue}`
 
-      // все 3 фильтра
       if (isValidBoilerQuery && isValidPartsQuery && isValidPriceQuery) {
         console.log('все 3 фильтра')
         updateParamsAndFiltersFromQuery(() => {
@@ -76,7 +75,6 @@ const CatalogFilters = ({
         return
       }
 
-      // только фильтр цены
       if (
         isValidPriceQuery &&
         boilerQueryValue?.length === 0 &&
@@ -90,7 +88,6 @@ const CatalogFilters = ({
         return
       }
 
-      // только фильтр boilers и parts
       if (isValidBoilerQuery && isValidPartsQuery) {
         console.log('только фильтр boilers и parts')
         updateParamsAndFiltersFromQuery(() => {
@@ -102,7 +99,6 @@ const CatalogFilters = ({
         return
       }
 
-      // 'только boilers и цена'
       if (isValidBoilerQuery && isValidPriceQuery) {
         console.log('только boilers и цена')
 
@@ -114,7 +110,6 @@ const CatalogFilters = ({
         return
       }
 
-      // 'только boilers'
       if (isValidBoilerQuery) {
         console.log('только boilers')
 
@@ -126,7 +121,6 @@ const CatalogFilters = ({
         return
       }
 
-      // только parts и цена
       if (isValidPartsQuery && isValidPriceQuery) {
         console.log('только parts и цена')
 
@@ -138,7 +132,6 @@ const CatalogFilters = ({
         return
       }
 
-      // только parts
       if (isValidPartsQuery) {
         console.log('только parts')
 
@@ -149,7 +142,7 @@ const CatalogFilters = ({
         return
       }
     } catch (error) {
-      const err: string = (error as Error).message
+      const err = (error as Error).message
 
       if (err === 'URI malformed') {
         toast.warning('FILTRI SIFIRLAYIN')
@@ -193,7 +186,6 @@ const CatalogFilters = ({
 
       const initialPage = currentPage > 0 ? 0 : currentPage
 
-      // все 3 фильтра
       if (boilers.length && parts.length && isPriceRangeChanged) {
         console.log('все 3 фильтра')
         updateParamsAndFilters(
@@ -210,7 +202,6 @@ const CatalogFilters = ({
         return
       }
 
-      // только фильтр цены
       if (isPriceRangeChanged && parts.length === 0 && boilers.length === 0) {
         console.log('только фильтр цены')
         updateParamsAndFilters(
@@ -225,7 +216,6 @@ const CatalogFilters = ({
         return
       }
 
-      // только фильтр boilers и parts
       if (boilers.length && parts.length) {
         console.log('только фильтр boilers и parts')
         updateParamsAndFilters(
@@ -240,7 +230,6 @@ const CatalogFilters = ({
         return
       }
 
-      // только boilers и цена
       if (boilers.length && isPriceRangeChanged) {
         console.log('только boilers и цена')
 
@@ -257,7 +246,6 @@ const CatalogFilters = ({
         return
       }
 
-      // только boilers
       if (boilers.length) {
         console.log('только boilers')
         updateParamsAndFilters(
@@ -271,7 +259,6 @@ const CatalogFilters = ({
         return
       }
 
-      // только parts и цена
       if (parts.length && isPriceRangeChanged) {
         console.log('только parts и цена')
         updateParamsAndFilters(
@@ -287,7 +274,6 @@ const CatalogFilters = ({
         return
       }
 
-      // только parts
       if (parts.length) {
         console.log('только parts ')
 

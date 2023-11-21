@@ -80,9 +80,6 @@ const CatalogPage = ({ query }: { query: IQueryParams }) => {
 
   useEffect(() => {
     loadBoilerParts()
-    console.log(
-      isFilterInQuery ? 'фильтрация включина' : 'фильтрация выключина'
-    )
   }, [filteredBoilerParts, isFilterInQuery])
 
   const loadBoilerParts = async () => {

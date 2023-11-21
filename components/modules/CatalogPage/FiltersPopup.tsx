@@ -19,18 +19,6 @@ const FiltersPopup = ({
   const mode = useStore($mode)
   const darkModeToggle = mode === 'dark' ? `${styles.dark_mode}` : ''
 
-  console.log(
-    resetFilterBtnDisabled,
-    resetAllManufacturers,
-    handleClosePopup,
-    updateManufacturer,
-    setManufacturer,
-    applyFilters,
-    openPopup,
-    title,
-    manufacturersList
-  )
-
   return (
     <div
       className={`${styles.filters__popup} ${darkModeToggle} ${

@@ -64,7 +64,6 @@
     position: absolute;
     top: 45px;
     left: -300px;
-    width: 300px;
     padding: 15px;
     background-color: #f2f2f2;
     border-radius: 4px;
@@ -115,7 +114,7 @@
       overflow-y: auto;
       padding-top: 10px;
       list-style-type: none;
-      border-top: 1px solid #e1e1e1;
+      border-top: 1px solid #1c629e;
 
       &::-webkit-scrollbar {
         width: 8px;
@@ -133,19 +132,21 @@
       }
 
       &__item {
-        padding-bottom: 16px;
-
-        &:not(:last-child) {
-          margin-bottom: 16px;
-          padding-bottom: 16px;
-          border-bottom: 1px solid #e1e1e1;
-        }
+        margin-bottom: 16px;
+        padding: 0;
+        border: 2px solid #9e9e9e;
+        border-radius: 5px;
 
         &__top {
           position: relative;
           display: flex;
-          align-items: center;
           margin-bottom: 16px;
+          border-bottom: 2px solid #9e9e9e;
+
+          a {
+            border-left: 2px solid #9e9e9e;
+            padding: 5px 15px 5px 5px;
+          }
 
           button {
             position: absolute;
@@ -171,14 +172,13 @@
           display: flex;
           align-items: center;
           justify-content: space-between;
+          padding: 0 5px 5px;
         }
 
         &__img {
-          width: 79px;
-          height: 79px;
-          border-radius: 4px;
+          max-width: 80px;
+          border-top-left-radius: 4px;
           overflow: hidden;
-          margin-right: 24px;
 
           img {
             width: 100%;

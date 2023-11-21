@@ -9,8 +9,6 @@ const BrandsSlider = ({ count, closeAlert }: ICartAlertProps) => {
   const mode = useStore($mode)
   const darkModeClass = mode === 'dark' ? `${styles.dark_mode}` : ''
 
-  console.log(darkModeClass, count, closeAlert)
-
   return (
     <>
       <div className={`${styles.dashboard__alert__left} ${darkModeClass}`}>
