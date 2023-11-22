@@ -112,7 +112,7 @@ const CartPopup = forwardRef<HTMLDivElement, IWrappedComponentProps>(
                     Общая сумма заказа
                   </span>
                   <span className={styles.cart__popup__footer__price}>
-                    {formatFromPriceToString(totalPrice)}
+                    {formatFromPriceToString(totalPrice)} m.
                   </span>
                 </div>
                 <Link href="/order" passHref legacyBehavior>

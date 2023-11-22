@@ -14,10 +14,10 @@ const Custom404 = () => (
           4
         </span>
       </h1>
-      <h3 className="fadeIn">PAGE NOT FOUND</h3>
+      <h3 className="fadeIn">SƏHİFƏ TAPILMADI</h3>
       <Link href="/dashboard" passHref legacyBehavior>
         <button type="button" name="button">
-          Return To Home
+          xəta baş verdi lütfən əsas səhifəyə qayıdın
         </button>
       </Link>
     </div>

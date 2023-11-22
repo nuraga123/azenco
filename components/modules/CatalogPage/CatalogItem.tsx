@@ -29,6 +29,7 @@ const CatologItem = ({ item }: { item: IBoilerPart }) => {
   const isInCart = shoppingCart.some((cart) => cart?.partId === item?.id)
 
   const toggleToCart = () => toggleCartItem(user.username, item.id, isInCart)
+
   return (
     <li className={`${styles.catalog__list__item} ${darkModeClass}`}>
       <Image
@@ -40,7 +41,9 @@ const CatologItem = ({ item }: { item: IBoilerPart }) => {
       />
       <div className={styles.catalog__list__item__inner}>
         <Link href={`/catalog/${item.id}`} passHref legacyBehavior>
-          <h3 className={styles.catalog__list__item__title}>{item.name}</h3>
+          <a target="_blank">
+            <h3 className={styles.catalog__list__item__title}>{item.name}</h3>
+          </a>
         </Link>
         <span className={styles.catalog__list__item__code}>
           Code: {item.vendor_code}
@@ -52,7 +55,7 @@ const CatologItem = ({ item }: { item: IBoilerPart }) => {
           Запчасть: {item.parts_manufacturer}
         </span>
         <span className={styles.catalog__list__item__code}>
-          stock: {item.in_stock}
+          stock: {item.in_stock === 0 ? 'yoxdur' : item.in_stock}
         </span>
         <span className={styles.catalog__list__item__code}>
           son tarix: {formatDateTime(item.updatedAt)}
@@ -71,22 +74,28 @@ const CatologItem = ({ item }: { item: IBoilerPart }) => {
           margin: '10px 6px 0px',
         }}
       >
-        <button
-          onClick={toggleToCart}
-          className={`${styles.catalog__list__item__cart} ${
-            isInCart ? styles.added : ''
-          }`}
-          disabled={spinner}
-        >
-          {spinner ? (
-            <div
-              className={spinnerStyles.spinner}
-              style={{ top: 70, left: 80, width: 70, height: 70 }}
-            />
-          ) : (
-            <span>{isInCart ? <CartHoverCheckedSvg /> : <CartHoverSvg />}</span>
-          )}
-        </button>
+        {item.in_stock === 0 ? (
+          <div style={{ height: 40 }} />
+        ) : (
+          <button
+            onClick={toggleToCart}
+            className={`${styles.catalog__list__item__cart} ${
+              isInCart ? styles.added : ''
+            }`}
+            disabled={spinner}
+          >
+            {spinner ? (
+              <div
+                className={spinnerStyles.spinner}
+                style={{ top: 70, left: 80, width: 70, height: 70 }}
+              />
+            ) : (
+              <span>
+                {isInCart ? <CartHoverCheckedSvg /> : <CartHoverSvg />}
+              </span>
+            )}
+          </button>
+        )}
       </div>
     </li>
   )
