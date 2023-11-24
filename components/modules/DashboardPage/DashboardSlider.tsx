@@ -78,7 +78,7 @@ const DashboardSlider = ({
                 passHref
                 legacyBehavior
               >
-                <a href="">
+                <a>
                   <h3 className={styles.dashboard__slide__title}>
                     {item.name}
                   </h3>

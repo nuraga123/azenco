@@ -18,7 +18,7 @@ function App({ Component, pageProps }: AppProps) {
   return (
     mounted && (
       <>
-        <NextNProgress />
+        <NextNProgress options={{ showSpinner: false }} height={5} />
         <Component {...pageProps} />
         <ToastContainer
           position="top-right"

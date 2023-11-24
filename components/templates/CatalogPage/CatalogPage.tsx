@@ -30,6 +30,7 @@ import skeletonStyles from '@/styles/skeleton/index.module.scss'
 import usePopup from '@/hooks/usePopup'
 import { checkQueryParams } from '@/utils/catalog'
 import FilterSvg from '@/components/elements/FilterSvg/FilterSvg'
+import { $selectsBoilerParts } from '@/context/selectsBoilerParts'
 
 const CatalogPage = ({ query }: { query: IQueryParams }) => {
   const [spinner, setSpinner] = useState<boolean>(false)
@@ -77,15 +78,20 @@ const CatalogPage = ({ query }: { query: IQueryParams }) => {
   )
 
   const { toggleOpen, open, closePopup } = usePopup()
+  const selectsBoilerParts = useStore($selectsBoilerParts)
+  console.log(selectsBoilerParts)
 
   useEffect(() => {
     loadBoilerParts()
-  }, [filteredBoilerParts, isFilterInQuery])
+  }, [filteredBoilerParts, isFilterInQuery, selectsBoilerParts])
 
   const loadBoilerParts = async () => {
     try {
       setSpinner(true)
-      const urlData: string = `/boiler-parts?limit=${pagesLimit}&offset=0`
+      const urlData: string = `/boiler-parts?limit=${pagesLimit}&offset=0&sortBy=${
+        selectsBoilerParts.value ? 'asc' : 'desc'
+      }`
+
       const data = await getBoilerPartsFx(urlData)
 
       if (!isValidOffset) {
@@ -118,7 +124,10 @@ const CatalogPage = ({ query }: { query: IQueryParams }) => {
         }
 
         const offset = +query.offset - 1
-        const urlResult: string = `/boiler-parts?limit=${pagesLimit}&offset=${offset}`
+        const urlResult: string = `/boiler-parts?limit=${pagesLimit}&offset=${offset}&sortBy=${
+          selectsBoilerParts.value ? 'asc' : 'desc'
+        }`
+
         const result = await getBoilerPartsFx(urlResult)
 
         setCurrentPage(offset)
@@ -197,7 +206,7 @@ const CatalogPage = ({ query }: { query: IQueryParams }) => {
 
   const resetFilters = async () => {
     try {
-      const urlData: string = `/boiler-parts?limit=${pagesLimit}&offset=0`
+      const urlData: string = `/boiler-parts?limit=${pagesLimit}&offset=0&sortBy=desc`
       const data: IBoilerParts = await getBoilerPartsFx(urlData)
       const params = router.query
 
@@ -206,7 +215,7 @@ const CatalogPage = ({ query }: { query: IQueryParams }) => {
       delete params.priceFrom
       delete params.priceTo
 
-      params.first = 'cheap'
+      params.sortBy = 'desc'
 
       router.push({ query: { ...params } }, undefined, { shallow: true })
 
@@ -270,7 +279,7 @@ const CatalogPage = ({ query }: { query: IQueryParams }) => {
                 Filter
               </span>
             </button>
-            <FilterSelect setSpinner={setSpinner} />
+            <FilterSelect />
           </div>
         </div>
         <div className={styles.catalog__bottom}>

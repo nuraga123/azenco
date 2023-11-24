@@ -47,10 +47,12 @@ export const checkUserAuthFx = createEffect(async (url: string) => {
 
     if (axiosError.response) {
       if (axiosError.response.status === HTTPStatus.FORBIDDEN) {
-        toast.error('yenidən proqrama keçin')
+        console.log(axiosError.response.status)
         return false
       }
     }
+
+    console.log((error as Error).message)
     toast.error((error as Error).message)
   }
 })

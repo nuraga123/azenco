@@ -24,23 +24,23 @@ const HeaderTop = () => {
   const navsArr: INavElement[] = [
     {
       href: '/shopping-payment',
-      title: 'Доставка и оплата',
-    },
-    {
-      href: '/about',
-      title: 'О компании',
+      title: 'Çatdırılma və ödəniş',
     },
     {
       href: '/catalog',
-      title: 'Каталог',
-    },
-    {
-      href: '/contacts',
-      title: 'Контакты',
+      title: 'Kataloq',
     },
     {
       href: '/wholesale-byers',
       title: 'Оптовым покупателям',
+    },
+    {
+      href: '/contacts',
+      title: 'kontaktlar',
+    },
+    {
+      href: '/about',
+      title: 'Şirkət haqqında',
     },
   ]
 
@@ -78,16 +78,8 @@ const HeaderTop = () => {
                 </Link>
               </li>
             ))}
-            {isMedia950 && (
-              <li className={`${styles.header__nav__list__item}`}>
-                <CityButton />
-              </li>
-            )}
-            {isMedia950 && (
-              <li className={`${styles.header__nav__list__item}`}>
-                <ModeToggler />
-              </li>
-            )}
+            {isMedia950 && <CityButton />}
+            {isMedia950 && <ModeToggler />}
           </ul>
         </nav>
         <ProfileDropDown />

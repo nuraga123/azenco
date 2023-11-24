@@ -12,7 +12,7 @@ export interface IBoilerPart {
   new: boolean
   popularity: number
   compatibility: string
-  createdAt: string
+  createdAt: { data: number[]; type: string }
   updatedAt: string
 }
 

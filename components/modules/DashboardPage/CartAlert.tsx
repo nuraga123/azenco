@@ -6,7 +6,7 @@ import styles from '@/styles/dashboard/index.module.scss'
 import { formatFromPriceToString } from '@/utils/shopping-cart'
 import { $totalPrice } from '@/context/shopping-cart'
 
-const BrandsSlider = ({ count, closeAlert }: ICartAlertProps) => {
+const CartAlert = ({ count, closeAlert }: ICartAlertProps) => {
   const mode = useStore($mode)
   const darkModeClass = mode === 'dark' ? `${styles.dark_mode}` : ''
 
@@ -15,12 +15,23 @@ const BrandsSlider = ({ count, closeAlert }: ICartAlertProps) => {
   return (
     <>
       <div className={`${styles.dashboard__alert__left} ${darkModeClass}`}>
-        <span>Səbətdə {count} məhsul</span>
-        <span>На сумму {formatFromPriceToString(totalPrice)} manat</span>
+        <span style={{ letterSpacing: 2 }}>
+          Səbət: <b>{count}</b>
+          {' məhsul'}
+        </span>
+        <span style={{ letterSpacing: 2 }}>
+          Məbləğ: <b>{formatFromPriceToString(totalPrice)}</b>
+          {' manat'}
+        </span>
       </div>
       <div className={styles.dashboard__alert__right}>
         <Link href="/order" passHref legacyBehavior>
-          <a className={styles.dashboard__alert__btn_cart}>перейти в Корзину</a>
+          <a
+            className={styles.dashboard__alert__btn_order}
+            style={{ letterSpacing: 2 }}
+          >
+            Sifariş Forması
+          </a>
         </Link>
       </div>
       <button
@@ -31,4 +42,4 @@ const BrandsSlider = ({ count, closeAlert }: ICartAlertProps) => {
   )
 }
 
-export default BrandsSlider
+export default CartAlert

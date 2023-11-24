@@ -21,6 +21,7 @@ import CartPopupItem from './CartPopupItem'
 import ShoppingCartSvg from '@/components/elements/ShoppingCartSvg/ShoppingCartSvg'
 import styles from '@/styles/cartPopup/index.module.scss'
 import { formatFromPriceToString } from '@/utils/shopping-cart'
+import { formatPrice } from '@/utils/common'
 
 const CartPopup = forwardRef<HTMLDivElement, IWrappedComponentProps>(
   ({ open, setOpen }, ref) => {
@@ -109,10 +110,10 @@ const CartPopup = forwardRef<HTMLDivElement, IWrappedComponentProps>(
                   <span
                     className={`${styles.cart__popup__footer__text} ${darkModeClass}`}
                   >
-                    Общая сумма заказа
+                    Sifarişin Ümumi Məbləği
                   </span>
                   <span className={styles.cart__popup__footer__price}>
-                    {formatFromPriceToString(totalPrice)} m.
+                    {formatPrice(+formatFromPriceToString(totalPrice))} m.
                   </span>
                 </div>
                 <Link href="/order" passHref legacyBehavior>

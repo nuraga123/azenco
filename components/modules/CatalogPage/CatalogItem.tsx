@@ -30,6 +30,20 @@ const CatologItem = ({ item }: { item: IBoilerPart }) => {
 
   const toggleToCart = () => toggleCartItem(user.username, item.id, isInCart)
 
+  const itemsq = {
+    // ... ваш объект данных, включая createdAt
+    createdAt: {
+      type: 'Buffer',
+      data: item.createdAt.data,
+    },
+  }
+
+  // Преобразовываем массив байтов в строку
+  const createdAtString = Buffer.from(itemsq.createdAt.data).toString()
+
+  // Создаем объект Date
+  const createdAtDate = new Date(createdAtString)
+
   return (
     <li className={`${styles.catalog__list__item} ${darkModeClass}`}>
       <Image
@@ -40,6 +54,7 @@ const CatologItem = ({ item }: { item: IBoilerPart }) => {
         priority={true}
       />
       <div className={styles.catalog__list__item__inner}>
+        id: {item.id}
         <Link href={`/catalog/${item.id}`} passHref legacyBehavior>
           <a target="_blank">
             <h3 className={styles.catalog__list__item__title}>{item.name}</h3>
@@ -58,7 +73,16 @@ const CatologItem = ({ item }: { item: IBoilerPart }) => {
           stock: {item.in_stock === 0 ? 'yoxdur' : item.in_stock}
         </span>
         <span className={styles.catalog__list__item__code}>
-          son tarix: {formatDateTime(item.updatedAt)}
+          yaranma tarixi:
+          <br />
+          <br />
+          {formatDateTime(`${createdAtDate}`)}
+        </span>
+        <span className={styles.catalog__list__item__code}>
+          son yenilənmə tarixi:
+          <br />
+          <br />
+          {formatDateTime(item.updatedAt)}
         </span>
         <span className={styles.catalog__list__item__price}>Qiymət:</span>
         <br />

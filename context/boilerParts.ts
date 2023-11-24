@@ -46,22 +46,22 @@ const updateManufacturerFromQuery = (
     return item
   })
 
-// Boiler Parts
+// Boiler Parts Price and popularity
 export const $boilerParts = boilerParts
   .createStore<IBoilerParts>({} as IBoilerParts)
   .on(setBoilerParts, (_, parts) => parts)
-  .on(setBoilerPartsCheapFirst, (state) => ({
-    ...state,
-    rows: state.rows.sort((a, b) => a.price - b.price),
-  }))
-  .on(setBoilerPartsExpensiveFirst, (state) => ({
-    ...state,
-    rows: state.rows.sort((a, b) => b.price - a.price),
-  }))
-  .on(setBoilerPartsByPopularity, (state) => ({
-    ...state,
-    rows: state.rows.sort((a, b) => b.popularity - a.popularity),
-  }))
+// .on(setBoilerPartsCheapFirst, (state) => ({
+//   ...state,
+//   rows: state.rows.sort((a, b) => a.price - b.price),
+// }))
+// .on(setBoilerPartsExpensiveFirst, (state) => ({
+//   ...state,
+//   rows: state.rows.sort((a, b) => b.price - a.price),
+// }))
+// .on(setBoilerPartsByPopularity, (state) => ({
+//   ...state,
+//   rows: state.rows.sort((a, b) => b.popularity - a.popularity),
+// }))
 
 // Boiler Manufacturers
 export const setBoilerManufacturers =
