@@ -20,6 +20,7 @@ import {
   updateBoilerManufacturer,
   updatePartsManufacturer,
 } from '@/context/boilerParts'
+import { $selectsBoilerParts } from '@/context/selectsBoilerParts'
 import CatalogItem from '@/components/modules/CatalogPage/CatalogItem'
 import FilterSelect from '@/components/modules/CatalogPage/FilterSelect'
 import CatalogFilters from '@/components/modules/CatalogPage/CatalogFilters'
@@ -30,18 +31,18 @@ import skeletonStyles from '@/styles/skeleton/index.module.scss'
 import usePopup from '@/hooks/usePopup'
 import { checkQueryParams } from '@/utils/catalog'
 import FilterSvg from '@/components/elements/FilterSvg/FilterSvg'
-import { $selectsBoilerParts } from '@/context/selectsBoilerParts'
 
 const CatalogPage = ({ query }: { query: IQueryParams }) => {
-  const [spinner, setSpinner] = useState<boolean>(false)
-
   const router = useRouter()
-
   const mode = useStore($mode)
   const darkModeClass = mode === 'dark' ? `${styles.dark_mode}` : ''
 
-  const boilerParts = useStore($boilerParts)
+  const [spinner, setSpinner] = useState<boolean>(false)
 
+  const selectsBoilerParts = useStore($selectsBoilerParts)
+  const selectQuery: string = `&sortBy=${selectsBoilerParts.value || 'asc'}`
+
+  const boilerParts = useStore($boilerParts)
   const boilerManufacturers = useStore($boilerManufacturers)
   const partsManufacturers = useStore($partsManufacturers)
 
@@ -78,8 +79,6 @@ const CatalogPage = ({ query }: { query: IQueryParams }) => {
   )
 
   const { toggleOpen, open, closePopup } = usePopup()
-  const selectsBoilerParts = useStore($selectsBoilerParts)
-  console.log(selectsBoilerParts)
 
   useEffect(() => {
     loadBoilerParts()
@@ -88,9 +87,7 @@ const CatalogPage = ({ query }: { query: IQueryParams }) => {
   const loadBoilerParts = async () => {
     try {
       setSpinner(true)
-      const urlData: string = `/boiler-parts?limit=${pagesLimit}&offset=0&sortBy=${
-        selectsBoilerParts.value ? 'asc' : 'desc'
-      }`
+      const urlData: string = `/boiler-parts?limit=${pagesLimit}&offset=${currentPage}${selectQuery}`
 
       const data = await getBoilerPartsFx(urlData)
 
@@ -112,6 +109,7 @@ const CatalogPage = ({ query }: { query: IQueryParams }) => {
               query: {
                 ...query,
                 offset: 1,
+                sortBy: selectsBoilerParts.value,
               },
             },
             undefined,
@@ -124,9 +122,7 @@ const CatalogPage = ({ query }: { query: IQueryParams }) => {
         }
 
         const offset = +query.offset - 1
-        const urlResult: string = `/boiler-parts?limit=${pagesLimit}&offset=${offset}&sortBy=${
-          selectsBoilerParts.value ? 'asc' : 'desc'
-        }`
+        const urlResult: string = `/boiler-parts?limit=${pagesLimit}&offset=0${selectQuery}`
 
         const result = await getBoilerPartsFx(urlResult)
 
@@ -152,7 +148,7 @@ const CatalogPage = ({ query }: { query: IQueryParams }) => {
   const handlePageChange = async ({ selected }: { selected: number }) => {
     try {
       setSpinner(true)
-      const urlData: string = `/boiler-parts?limit=${pagesLimit}&offset=0`
+      const urlData: string = `/boiler-parts?limit=${pagesLimit}&offset=${selected}${selectQuery}`
       const data: IBoilerParts = await getBoilerPartsFx(urlData)
 
       if (selected > pagesCount) {
@@ -168,7 +164,7 @@ const CatalogPage = ({ query }: { query: IQueryParams }) => {
       const { isValidBoilerQuery, isValidPartsQuery, isValidPriceQuery } =
         checkQueryParams(router)
 
-      const urlResult: string = `/boiler-parts?limit=${pagesLimit}&offset=${selected}${
+      const urlResult: string = `/boiler-parts?limit=${pagesLimit}&offset=${selected}${selectQuery}${
         isFilterInQuery && isValidBoilerQuery
           ? `&boiler=${router.query.boiler}`
           : ''
@@ -189,6 +185,7 @@ const CatalogPage = ({ query }: { query: IQueryParams }) => {
           query: {
             ...router.query,
             offset: selected + 1,
+            sortBy: selectsBoilerParts.value,
           },
         },
         undefined,
@@ -206,7 +203,7 @@ const CatalogPage = ({ query }: { query: IQueryParams }) => {
 
   const resetFilters = async () => {
     try {
-      const urlData: string = `/boiler-parts?limit=${pagesLimit}&offset=0&sortBy=desc`
+      const urlData: string = `/boiler-parts?limit=${pagesLimit}&offset=0`
       const data: IBoilerParts = await getBoilerPartsFx(urlData)
       const params = router.query
 
@@ -215,7 +212,7 @@ const CatalogPage = ({ query }: { query: IQueryParams }) => {
       delete params.priceFrom
       delete params.priceTo
 
-      params.sortBy = 'desc'
+      params.sortBy = 'asc'
 
       router.push({ query: { ...params } }, undefined, { shallow: true })
 
@@ -236,6 +233,8 @@ const CatalogPage = ({ query }: { query: IQueryParams }) => {
       setTimeout(() => setSpinner(false), 1000)
     }
   }
+
+  console.log(router)
 
   return (
     <section className={styles.catalog}>

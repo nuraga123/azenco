@@ -19,6 +19,7 @@ export interface IQueryParams {
   priceForm: string
   priceTo: string
   partId: string
+  sortBy: string
 }
 
 export interface IFilterCheckboxItem {
