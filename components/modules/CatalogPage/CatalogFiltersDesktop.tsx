@@ -36,6 +36,7 @@ const CatalogFiltersDesktop = ({
       >
         Filtrlər
       </h3>
+
       <div className={styles.filters__price}>
         <Accordion
           title="Qiymət"
@@ -72,6 +73,7 @@ const CatalogFiltersDesktop = ({
           setManufacturer={setPartsManufacturers}
         />
       </div>
+
       <div className={styles.filters__actions}>
         <button
           className={styles.filters__actions__show}

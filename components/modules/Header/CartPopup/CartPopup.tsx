@@ -13,15 +13,14 @@ import {
 } from '@/context/shopping-cart'
 import { $user } from '@/context/user'
 import { getCartItemsFx } from '@/app/api/shopping-cart'
-import { withClickOutside } from '@/utils/withClickOutside'
 import { IWrappedComponentProps } from '@/types/common'
 import { IShoppingCartItem } from '@/types/shopping-cart'
-
-import CartPopupItem from './CartPopupItem'
-import ShoppingCartSvg from '@/components/elements/ShoppingCartSvg/ShoppingCartSvg'
-import styles from '@/styles/cartPopup/index.module.scss'
+import { withClickOutside } from '@/utils/withClickOutside'
 import { formatFromPriceToString } from '@/utils/shopping-cart'
 import { formatPrice } from '@/utils/common'
+import ShoppingCartSvg from '@/components/elements/ShoppingCartSvg/ShoppingCartSvg'
+import CartPopupItem from './CartPopupItem'
+import styles from '@/styles/cartPopup/index.module.scss'
 
 const CartPopup = forwardRef<HTMLDivElement, IWrappedComponentProps>(
   ({ open, setOpen }, ref) => {
@@ -76,7 +75,7 @@ const CartPopup = forwardRef<HTMLDivElement, IWrappedComponentProps>(
           <span className={styles.cart__svg}>
             <ShoppingCartSvg />
           </span>
-          <span className={styles.cart__text}>Корзина</span>
+          <span className={styles.cart__text}>Səbət</span>
         </button>
         <AnimatePresence>
           {open && (
@@ -88,7 +87,7 @@ const CartPopup = forwardRef<HTMLDivElement, IWrappedComponentProps>(
               style={{ transformOrigin: 'right top' }}
             >
               <h3 className={`${styles.cart__popup__title} ${darkModeClass}`}>
-                Корзина
+                Səbət
               </h3>
               <ul className={styles.cart__popup__list}>
                 {shoppingCart.length ? (
@@ -100,7 +99,7 @@ const CartPopup = forwardRef<HTMLDivElement, IWrappedComponentProps>(
                     <span
                       className={`${styles.cart__popup__empty__text} ${darkModeClass}`}
                     >
-                      Корзина Пуста
+                      Səbət boşdur
                     </span>
                   </li>
                 )}
@@ -121,7 +120,7 @@ const CartPopup = forwardRef<HTMLDivElement, IWrappedComponentProps>(
                     className={styles.cart__popup__footer__btn}
                     disabled={!shoppingCart.length}
                   >
-                    Оформить заказ
+                    Sifariş vermək
                   </button>
                 </Link>
               </div>

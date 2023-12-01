@@ -53,36 +53,31 @@ export const partsManufacturers = [
   'Croatia',
 ].map((item) => createManufacturerCheckboxObj(item))
 
-const checkPriceQuery = (price: number) =>
-  price && !isNaN(price) && price >= 0 && price <= 100000
+const checkPriceFromQuery = (price: number) =>
+  !isNaN(price) && price >= 0 && price <= 900000
 
 export const checkQueryParams = (router: NextRouter) => {
   const priceFromQueryValue = getQueryParamOnFirstRender(
     'priceFrom',
     router
   ) as string
-
   const priceToQueryValue = getQueryParamOnFirstRender(
     'priceTo',
     router
   ) as string
-
   const boilerQueryValue = JSON.parse(
     decodeURIComponent(getQueryParamOnFirstRender('boiler', router) as string)
   )
-
   const partsQueryValue = JSON.parse(
     decodeURIComponent(getQueryParamOnFirstRender('parts', router) as string)
   )
-
   const isValidBoilerQuery =
     Array.isArray(boilerQueryValue) && !!boilerQueryValue?.length
-
   const isValidPartsQuery =
     Array.isArray(partsQueryValue) && !!partsQueryValue?.length
-
   const isValidPriceQuery =
-    checkPriceQuery(+priceFromQueryValue) && checkPriceQuery(+priceToQueryValue)
+    checkPriceFromQuery(+priceFromQueryValue) &&
+    checkPriceFromQuery(+priceToQueryValue)
 
   return {
     isValidBoilerQuery,
@@ -97,17 +92,23 @@ export const checkQueryParams = (router: NextRouter) => {
 
 export const updateParamsAndFiltersFromQuery = async (
   callback: VoidFunction,
-  path: string
+  path: string,
+  sortBy: string
 ) => {
   callback()
-  const data = await getBoilerPartsFx(`/boiler-parts?limit=20&offset=${path}`)
+
+  const data = await getBoilerPartsFx(
+    `/boiler-parts?limit=20&offset=${path}&sortBy=${sortBy ? sortBy : 'asc'}`
+  )
+
   setFilterBoilerParts(data)
 }
 
 export async function updateParamsAndFilters<T>(
   updatedParams: T,
   path: string,
-  router: NextRouter
+  router: NextRouter,
+  sortBy: string
 ) {
   const params = router.query
 
@@ -115,6 +116,7 @@ export async function updateParamsAndFilters<T>(
   delete params.parts
   delete params.priceFrom
   delete params.priceTo
+  delete params.sortBy
 
   router.push(
     {
@@ -127,6 +129,9 @@ export async function updateParamsAndFilters<T>(
     { shallow: true }
   )
 
-  const data = await getBoilerPartsFx(`/boiler-parts?limit=20&offset=${path}`)
+  const data = await getBoilerPartsFx(
+    `/boiler-parts?limit=20&offset=${path}&sortBy=${sortBy ? sortBy : 'asc'}`
+  )
+
   setFilterBoilerParts(data)
 }

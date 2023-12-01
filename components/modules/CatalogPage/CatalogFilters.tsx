@@ -19,6 +19,7 @@ import {
 
 import CatalogFiltersDesktop from './CatalogFiltersDesktop'
 import CatalogFiltersMobile from './CatalogFiltersMobile'
+import { $selectsBoilerParts } from '@/context/selectsBoilerParts'
 
 const CatalogFilters = ({
   priceRange,
@@ -38,6 +39,10 @@ const CatalogFilters = ({
 
   const boilerManufacturers = useStore($boilerManufacturers)
   const partsManufacturers = useStore($partsManufacturers)
+  const selectsBoilerParts = useStore($selectsBoilerParts)
+
+  const sortBy =
+    (router.query.sortBy as string) || selectsBoilerParts.value || 'desc'
 
   useEffect(() => {
     applyFiltersFromQuery()
@@ -66,11 +71,15 @@ const CatalogFilters = ({
 
       if (isValidBoilerQuery && isValidPartsQuery && isValidPriceQuery) {
         console.log('все 3 фильтра')
-        updateParamsAndFiltersFromQuery(() => {
-          updatePriceFromQuery(+priceFromQueryValue, +priceToQueryValue)
-          setBoilerManufacturersFromQuery(boilerQueryValue)
-          setPartsManufacturersFromQuery(partsQueryValue)
-        }, `${currentPage}${priceQuery}${boilerQuery}${partsQuery}`)
+        updateParamsAndFiltersFromQuery(
+          () => {
+            updatePriceFromQuery(+priceFromQueryValue, +priceToQueryValue)
+            setBoilerManufacturersFromQuery(boilerQueryValue)
+            setPartsManufacturersFromQuery(partsQueryValue)
+          },
+          `${currentPage}${priceQuery}${boilerQuery}${partsQuery}`,
+          sortBy
+        )
 
         return
       }
@@ -81,20 +90,28 @@ const CatalogFilters = ({
         partsQueryValue?.length === 0
       ) {
         console.log('только фильтр цены')
-        updateParamsAndFiltersFromQuery(() => {
-          updatePriceFromQuery(+priceFromQueryValue, +priceToQueryValue)
-        }, `${currentPage}${priceQuery}`)
+        updateParamsAndFiltersFromQuery(
+          () => {
+            updatePriceFromQuery(+priceFromQueryValue, +priceToQueryValue)
+          },
+          `${currentPage}${priceQuery}`,
+          sortBy
+        )
 
         return
       }
 
       if (isValidBoilerQuery && isValidPartsQuery) {
         console.log('только фильтр boilers и parts')
-        updateParamsAndFiltersFromQuery(() => {
-          setIsFilterInQuery(true)
-          setBoilerManufacturersFromQuery(boilerQueryValue)
-          setPartsManufacturersFromQuery(partsQueryValue)
-        }, `${currentPage}${boilerQuery}${partsQuery}`)
+        updateParamsAndFiltersFromQuery(
+          () => {
+            setIsFilterInQuery(true)
+            setBoilerManufacturersFromQuery(boilerQueryValue)
+            setPartsManufacturersFromQuery(partsQueryValue)
+          },
+          `${currentPage}${boilerQuery}${partsQuery}`,
+          sortBy
+        )
 
         return
       }
@@ -102,10 +119,14 @@ const CatalogFilters = ({
       if (isValidBoilerQuery && isValidPriceQuery) {
         console.log('только boilers и цена')
 
-        updateParamsAndFiltersFromQuery(() => {
-          updatePriceFromQuery(+priceFromQueryValue, +priceToQueryValue)
-          setBoilerManufacturersFromQuery(boilerQueryValue)
-        }, `${currentPage}${boilerQuery}${priceQuery}`)
+        updateParamsAndFiltersFromQuery(
+          () => {
+            updatePriceFromQuery(+priceFromQueryValue, +priceToQueryValue)
+            setBoilerManufacturersFromQuery(boilerQueryValue)
+          },
+          `${currentPage}${boilerQuery}${priceQuery}`,
+          sortBy
+        )
 
         return
       }
@@ -113,10 +134,14 @@ const CatalogFilters = ({
       if (isValidBoilerQuery) {
         console.log('только boilers')
 
-        updateParamsAndFiltersFromQuery(() => {
-          setIsFilterInQuery(true)
-          setBoilerManufacturersFromQuery(boilerQueryValue)
-        }, `${currentPage}${boilerQuery}`)
+        updateParamsAndFiltersFromQuery(
+          () => {
+            setIsFilterInQuery(true)
+            setBoilerManufacturersFromQuery(boilerQueryValue)
+          },
+          `${currentPage}${boilerQuery}`,
+          sortBy
+        )
 
         return
       }
@@ -124,10 +149,14 @@ const CatalogFilters = ({
       if (isValidPartsQuery && isValidPriceQuery) {
         console.log('только parts и цена')
 
-        updateParamsAndFiltersFromQuery(() => {
-          updatePriceFromQuery(+priceFromQueryValue, +priceToQueryValue)
-          setPartsManufacturersFromQuery(partsQueryValue)
-        }, `${currentPage}${partsQuery}${priceQuery}`)
+        updateParamsAndFiltersFromQuery(
+          () => {
+            updatePriceFromQuery(+priceFromQueryValue, +priceToQueryValue)
+            setPartsManufacturersFromQuery(partsQueryValue)
+          },
+          `${currentPage}${partsQuery}${priceQuery}`,
+          sortBy
+        )
 
         return
       }
@@ -135,9 +164,13 @@ const CatalogFilters = ({
       if (isValidPartsQuery) {
         console.log('только parts')
 
-        updateParamsAndFiltersFromQuery(() => {
-          setIsFilterInQuery(true)
-        }, `${currentPage}${partsQuery}`)
+        updateParamsAndFiltersFromQuery(
+          () => {
+            setIsFilterInQuery(true)
+          },
+          `${currentPage}${partsQuery}`,
+          sortBy
+        )
 
         return
       }
@@ -195,9 +228,11 @@ const CatalogFilters = ({
             priceFrom,
             priceTo,
             offset: initialPage + 1,
+            sortBy: sortBy,
           },
           `${initialPage}${priceQuery}${boilersQuery}${partsQuery}`,
-          router
+          router,
+          sortBy
         )
         return
       }
@@ -209,9 +244,11 @@ const CatalogFilters = ({
             priceFrom,
             priceTo,
             offset: initialPage + 1,
+            sortBy: sortBy,
           },
           `${initialPage}${priceQuery}`,
-          router
+          router,
+          sortBy
         )
         return
       }
@@ -223,9 +260,11 @@ const CatalogFilters = ({
             boiler: encodeBoilersQuery,
             parts: encodePartsQuery,
             offset: initialPage + 1,
+            sortBy: sortBy,
           },
           `${initialPage}${boilersQuery}${partsQuery}`,
-          router
+          router,
+          sortBy
         )
         return
       }
@@ -239,9 +278,11 @@ const CatalogFilters = ({
             priceFrom,
             priceTo,
             offset: initialPage + 1,
+            sortBy: sortBy,
           },
           `${initialPage}${boilersQuery}${priceQuery}`,
-          router
+          router,
+          sortBy
         )
         return
       }
@@ -252,9 +293,11 @@ const CatalogFilters = ({
           {
             boiler: encodeBoilersQuery,
             offset: initialPage + 1,
+            sortBy: sortBy,
           },
           `${initialPage}${boilersQuery}`,
-          router
+          router,
+          sortBy
         )
         return
       }
@@ -267,9 +310,11 @@ const CatalogFilters = ({
             priceFrom,
             priceTo,
             offset: initialPage + 1,
+            sortBy: sortBy,
           },
           `${initialPage}${priceQuery}${partsQuery}`,
-          router
+          router,
+          sortBy
         )
         return
       }
@@ -281,9 +326,11 @@ const CatalogFilters = ({
           {
             parts: encodePartsQuery,
             offset: initialPage + 1,
+            sortBy: sortBy,
           },
           `${initialPage}${partsQuery}`,
-          router
+          router,
+          sortBy
         )
         return
       }

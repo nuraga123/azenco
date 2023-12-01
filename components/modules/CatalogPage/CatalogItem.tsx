@@ -44,53 +44,83 @@ const CatologItem = ({ item }: { item: IBoilerPart }) => {
   // Создаем объект Date
   const createdAtDate = new Date(createdAtString)
 
+  const showUpdatedAt: boolean =
+    formatDateTime(`${createdAtDate}`) !== formatDateTime(`${item.updatedAt}`)
+
+  const TextComponent = ({
+    keyText,
+    item,
+    flex,
+  }: {
+    keyText: string
+    item: string | number | boolean
+    flex: boolean
+  }) => (
+    <span className={styles.catalog__list__item__code}>
+      {flex ? (
+        <div style={{ marginBottom: '5px' }}>{keyText}:</div>
+      ) : (
+        keyText + ': '
+      )}
+      <b style={{ letterSpacing: '1px', color: 'black' }}>{item}</b>
+    </span>
+  )
+
   return (
     <li className={`${styles.catalog__list__item} ${darkModeClass}`}>
-      <Image
-        src={imageUrl}
-        alt={item.name}
-        width={200}
-        height={200}
-        priority={true}
-      />
+      <Link href={`/catalog/${item.id}`} passHref legacyBehavior>
+        <a target="_blank" rel="noopener noreferrer">
+          <Image
+            src={imageUrl}
+            alt={item.name}
+            width={200}
+            height={200}
+            priority={true}
+          />
+        </a>
+      </Link>
       <div className={styles.catalog__list__item__inner}>
-        id: {item.id}
+        <TextComponent keyText={'ID'} item={item.id} flex={false} />
         <Link href={`/catalog/${item.id}`} passHref legacyBehavior>
           <a target="_blank">
-            <h3 className={styles.catalog__list__item__title}>{item.name}</h3>
+            <TextComponent keyText={'AD'} item={item.name} flex={true} />
           </a>
         </Link>
-        <span className={styles.catalog__list__item__code}>
-          Code: {item.vendor_code}
-        </span>
-        <span className={styles.catalog__list__item__code}>
-          Производитель: {item.boiler_manufacturer}
-        </span>
-        <span className={styles.catalog__list__item__code}>
-          Запчасть: {item.parts_manufacturer}
-        </span>
-        <span className={styles.catalog__list__item__code}>
-          stock: {item.in_stock === 0 ? 'yoxdur' : item.in_stock}
-        </span>
-        <span className={styles.catalog__list__item__code}>
-          yaranma tarixi:
-          <br />
-          <br />
-          {formatDateTime(`${createdAtDate}`)}
-        </span>
-        <span className={styles.catalog__list__item__code}>
-          son yenilənmə tarixi:
-          <br />
-          <br />
-          {formatDateTime(item.updatedAt)}
-        </span>
-        <span className={styles.catalog__list__item__price}>Qiymət:</span>
-        <br />
-        <br />
-        <span className={styles.catalog__list__item__price}>
-          {formatPrice(item.price)} manat
-        </span>
+        <TextComponent keyText={'Code'} item={item.vendor_code} flex={false} />
+
+        <TextComponent
+          keyText={'Migdar'}
+          item={item.in_stock === 0 ? 'yoxdur' : item.in_stock}
+          flex={false}
+        />
+
+        <TextComponent
+          keyText={'Ölçü vahidləri'}
+          item={item.bestseller === false ? 'Ədəd ' : 'Metr'}
+          flex={false}
+        />
+
+        <TextComponent
+          keyText={'Yaranma tarixi'}
+          item={formatDateTime(`${createdAtDate}`)}
+          flex={true}
+        />
+
+        {showUpdatedAt && (
+          <TextComponent
+            keyText={'Son yenilənmə tarixi'}
+            item={formatDateTime(`${item.updatedAt}`)}
+            flex={true}
+          />
+        )}
+
+        <TextComponent
+          keyText={'Qiymət'}
+          item={`${formatPrice(item.price)} manat`}
+          flex={true}
+        />
       </div>
+
       <div
         style={{
           display: 'flex',

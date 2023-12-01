@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react'
 import { useStore } from 'effector-react'
 import { $mode } from '@/context/mode'
 import { IShoppingCartItem } from '@/types/shopping-cart'
@@ -9,9 +8,9 @@ import DeleteSvg from '@/components/elements/DeleteSvg/DeleteSvg'
 import styles from '@/styles/cartPopup/index.module.scss'
 import spinnerStyles from '@/styles/spinner/index.module.scss'
 // import { formatPrice } from '@/utils/common'
-import { removeItemFromCart, updateTotalPrice } from '@/utils/shopping-cart'
 import CartItemCounter from '@/components/elements/CartItemCounter/CartItemCounter'
 import { formatFromPriceToString } from '@/utils/shopping-cart'
+import { usePrice } from '@/hooks/usePrice'
 
 const CartPopupItem = ({ item }: { item: IShoppingCartItem }) => {
   const mode = useStore($mode)
@@ -19,28 +18,8 @@ const CartPopupItem = ({ item }: { item: IShoppingCartItem }) => {
   const spinnerDarkModeClass =
     mode === 'dark' ? `${spinnerStyles.dark_mode}` : ''
 
-  const [spinner, setSpinner] = useState(false)
-  const [price, setPrice] = useState<number>(item.price)
-
-  useEffect(() => {
-    setPrice(Number(price) * Number(item.count))
-  }, [])
-
-  useEffect(() => {
-    updateTotalPrice(Number(price), item.partId)
-  }, [price])
-
-  function increasePrice() {
-    const result = Number(price) + Number(item?.price)
-    setPrice(+(+result.toFixed(2)))
-  }
-
-  const decreasePrice = () => {
-    const result = Number(price) - Number(item?.price)
-    setPrice(+(+result.toFixed(2)))
-  }
-
-  const deleteCartItem = () => removeItemFromCart(item.partId, setSpinner)
+  const { price, spinner, decreasePrice, deleteCartItem, increasePrice } =
+    usePrice(item.count, item.partId, item.price)
 
   return (
     <li className={styles.cart__popup__list__item}>

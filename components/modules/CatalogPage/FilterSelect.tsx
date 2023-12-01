@@ -18,6 +18,8 @@ const FilterSelect: React.FC = () => {
   const [selectedOption, setSelectedOption] = useState<OptionFilterSelect>(
     options[0]
   )
+  const selectedOptionQuery: OptionFilterSelect =
+    router.query.sortBy === options[0].value ? options[0] : options[1]
 
   const handleChange = (selectedOption: OptionFilterSelect | null) => {
     if (selectedOption) {
@@ -27,13 +29,20 @@ const FilterSelect: React.FC = () => {
       // Изменяем URL с учетом выбранной опции
       router.push({
         pathname: '/catalog',
-        query: { ...router.query, sortBy: selectedOption.value },
+        query: {
+          ...router.query,
+          sortBy: selectedOption.value,
+        },
       })
     }
   }
 
   return (
-    <Select value={selectedOption} onChange={handleChange} options={options} />
+    <Select
+      value={selectedOptionQuery || selectedOption}
+      onChange={handleChange}
+      options={options}
+    />
   )
 }
 
