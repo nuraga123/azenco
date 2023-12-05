@@ -9,7 +9,7 @@ const Order = () => {
   return (
     <>
       {shouldLoadContent && (
-        <Layout title={'order'}>
+        <Layout title={'Sifariş'}>
           <OrderPage />
         </Layout>
       )}

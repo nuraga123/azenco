@@ -16,6 +16,7 @@ import spinnerStyles from '@/styles/spinner/index.module.scss'
 import { $user } from '@/context/user'
 import { toggleCartItem } from '@/utils/shopping-cart'
 import { removeFromCartFx } from '@/app/api/shopping-cart'
+import { ReactNode } from 'react'
 
 const CatologItem = ({ item }: { item: IBoilerPart }) => {
   const imageUrl = JSON.parse(item.images)[0]
@@ -53,8 +54,8 @@ const CatologItem = ({ item }: { item: IBoilerPart }) => {
     flex,
   }: {
     keyText: string
-    item: string | number | boolean
     flex: boolean
+    item: string | number | boolean | ReactNode
   }) => (
     <span className={styles.catalog__list__item__code}>
       {flex ? (
@@ -90,7 +91,13 @@ const CatologItem = ({ item }: { item: IBoilerPart }) => {
 
         <TextComponent
           keyText={'Migdar'}
-          item={item.in_stock === 0 ? 'yoxdur' : item.in_stock}
+          item={
+            item.in_stock === 0 ? (
+              <span style={{ color: 'red' }}>yoxdur</span>
+            ) : (
+              item.in_stock
+            )
+          }
           flex={false}
         />
 

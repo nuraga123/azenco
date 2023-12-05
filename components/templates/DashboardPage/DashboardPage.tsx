@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useStore } from 'effector-react'
 import { AnimatePresence, motion } from 'framer-motion'
 
@@ -24,18 +24,19 @@ const DashboardPage = () => {
   const [count, setCount] = useState<number>()
   const [spinner, setSpiner] = useState<boolean>(false)
 
-  const simulateProductCountChange = () => {
+  const simulateProductCountChange = useCallback(() => {
     setSpiner(true)
 
+    // Задержка в 2 секунды
     setTimeout(() => {
-      setCount(countShoppingCart)
+      setCount(countShoppingCart as number)
       setSpiner(false)
-    }, 2000) // Задержка в 2 секунды
-  }
+    }, 2000)
+  }, [countShoppingCart])
 
   useEffect(() => {
     simulateProductCountChange()
-  }, [])
+  }, [simulateProductCountChange])
 
   // const [newParts, setNewParts] = useState<IBoilerParts>({} as IBoilerParts)
   // const [bestsellers, setBestsellers] = useState<IBoilerParts>(
@@ -111,6 +112,9 @@ const DashboardPage = () => {
             hello world
           </p>
         </div> */}
+        <p className={`${styles.dashboard__about__text} ${darkModeClass}`}>
+          hello world
+        </p>
       </div>
     </section>
   )

@@ -24,8 +24,9 @@ const HeaderBottom = () => {
               <img src="/img/logo.svg" alt="logo" />
               <span
                 className={`${styles.header__logo__link__text} ${darkModeClass}`}
+                style={{ letterSpacing: '2px' }}
               >
-                Azenco Anbar
+                AZENCO ASC
               </span>
             </a>
           </Link>

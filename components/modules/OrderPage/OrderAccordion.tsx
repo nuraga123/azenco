@@ -1,15 +1,18 @@
+import { useState } from 'react'
 import { useStore } from 'effector-react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { useState } from 'react'
+
+import { IOrderAccordionProps } from '@/types/order'
+import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { $mode } from '@/context/mode'
 import { $shoppingCart, $totalPrice } from '@/context/shopping-cart'
-import { IOrderAccordionProps } from '@/types/order'
+import CartPopupItem from '@/components/modules/Header/CartPopup/CartPopupItem'
 import DoneSvg from '@/components/elements/DoneSvg/DoneSvg'
-import { useMediaQuery } from '@/hooks/useMediaQuery'
 import EditSvg from '@/components/elements/EditSvg/EditSvg'
-import CartPopupItem from '../Header/CartPopup/CartPopupItem'
-// import OrderItem from './OrderItem'
+import OrderItem from './OrderItem'
 import { formatPrice } from '@/utils/common'
+import { formatFromPriceToString } from '@/utils/shopping-cart'
+
 import styles from '@/styles/order/index.module.scss'
 
 const OrderAccordion = ({
@@ -25,6 +28,7 @@ const OrderAccordion = ({
   const isMedia550 = useMediaQuery(550)
 
   const [expanded, setExpanded] = useState(true)
+
   const openAccordion = () => {
     setOrderIsReady(false)
     setExpanded(true)
@@ -76,14 +80,11 @@ const OrderAccordion = ({
             <div className={`${styles.order__cart__content} ${darkModeClass}`}>
               <ul className={styles.order__cart__list}>
                 {shoppingCart.length ? (
-                  shoppingCart.map((item) =>
+                  shoppingCart.map((item, index) =>
                     isMedia550 ? (
-                      <CartPopupItem key={item.id} item={item} />
+                      <CartPopupItem key={item.id} item={item} index={index} />
                     ) : (
-                      <li key={item.id}>
-                        {item.name}
-                        {item.price}
-                      </li>
+                      <OrderItem index={index + 1} item={item} key={item.id} />
                     )
                   )
                 ) : (
@@ -91,7 +92,7 @@ const OrderAccordion = ({
                     <span
                       className={`${styles.order__cart__empty__text} ${darkModeClass}`}
                     >
-                      Səbət boşdur
+                      Səbət Boşdur
                     </span>
                   </li>
                 )}
@@ -101,10 +102,10 @@ const OrderAccordion = ({
                   <span
                     className={`${styles.order__cart__footer__text} ${darkModeClass}`}
                   >
-                    Sifarişin ümumi məbləği:
+                    Sifarişin Ümumi Məbləği:
                   </span>
                   <span className={styles.order__cart__footer__price}>
-                    {formatPrice(totalPrice)} manat
+                    {formatPrice(+formatFromPriceToString(totalPrice))} manat
                   </span>
                 </div>
                 <button
@@ -112,7 +113,7 @@ const OrderAccordion = ({
                   onClick={closeAccordion}
                   disabled={!shoppingCart.length}
                 >
-                  Davam et
+                  Davam Et
                 </button>
               </div>
             </div>

@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { forwardRef, useEffect } from 'react'
+import { forwardRef, useCallback, useEffect, useState } from 'react'
 import { useStore } from 'effector-react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { toast } from 'react-toastify'
@@ -21,6 +21,7 @@ import { formatPrice } from '@/utils/common'
 import ShoppingCartSvg from '@/components/elements/ShoppingCartSvg/ShoppingCartSvg'
 import CartPopupItem from './CartPopupItem'
 import styles from '@/styles/cartPopup/index.module.scss'
+import spinnerStyles from '@/styles/spinner/index.module.scss'
 
 const CartPopup = forwardRef<HTMLDivElement, IWrappedComponentProps>(
   ({ open, setOpen }, ref) => {
@@ -32,24 +33,36 @@ const CartPopup = forwardRef<HTMLDivElement, IWrappedComponentProps>(
     const darkModeClass = mode === 'dark' ? `${styles.dark_mode}` : ''
 
     const toggleCartDropDown = () => setOpen(!open)
+    const [spinner, setSpinner] = useState(false)
 
     useEffect(() => {
-      loadCartItems()
-    }, [])
+      setSpinner(true)
+    }, [shoppingCart])
 
     useEffect(() => {
-      setTotalPrice(
-        shoppingCart
+      setSpinner(true)
+      // Задержка перед выполнением подсчета
+      const timeout = setTimeout(() => {
+        // Подсчет totalPrice
+        const calculatedTotalPrice = shoppingCart
           .filter((el) => el.in_stock !== 0)
           .reduce(
             (defaultCount: number, item: IShoppingCartItem) =>
-              Number(defaultCount) + Number(item.total_price),
+              defaultCount + Number(item.total_price),
             0
           )
-      )
+        // Обновление состояния и завершение спиннера
+        setTotalPrice(calculatedTotalPrice)
+        setSpinner(false)
+      }, 500)
+
+      // Очистка таймера при размонтировании компонента или изменении зависимостей
+      return () => clearTimeout(timeout)
     }, [shoppingCart])
 
-    const loadCartItems = async () => {
+    console.log(totalPrice)
+
+    const loadCartItems = useCallback(async () => {
       try {
         const cartItems: IShoppingCartItem[] = await getCartItemsFx(
           `/shopping-cart/${user.userId}`
@@ -59,7 +72,11 @@ const CartPopup = forwardRef<HTMLDivElement, IWrappedComponentProps>(
       } catch (error) {
         toast.error((error as Error).message)
       }
-    }
+    }, [user.userId])
+
+    useEffect(() => {
+      loadCartItems()
+    }, [loadCartItems])
 
     return (
       <div className={styles.cart} ref={ref}>
@@ -72,9 +89,11 @@ const CartPopup = forwardRef<HTMLDivElement, IWrappedComponentProps>(
               {shoppingCart.length}
             </span>
           )}
+
           <span className={styles.cart__svg}>
             <ShoppingCartSvg />
           </span>
+
           <span className={styles.cart__text}>Səbət</span>
         </button>
         <AnimatePresence>
@@ -89,10 +108,11 @@ const CartPopup = forwardRef<HTMLDivElement, IWrappedComponentProps>(
               <h3 className={`${styles.cart__popup__title} ${darkModeClass}`}>
                 Səbət
               </h3>
+
               <ul className={styles.cart__popup__list}>
                 {shoppingCart.length ? (
-                  shoppingCart.map((item) => (
-                    <CartPopupItem key={item?.id} item={item} />
+                  shoppingCart.map((item, index) => (
+                    <CartPopupItem key={index} item={item} index={index + 1} />
                   ))
                 ) : (
                   <li className={styles.cart__popup__empty}>
@@ -111,10 +131,19 @@ const CartPopup = forwardRef<HTMLDivElement, IWrappedComponentProps>(
                   >
                     Sifarişin Ümumi Məbləği
                   </span>
-                  <span className={styles.cart__popup__footer__price}>
-                    {formatPrice(+formatFromPriceToString(totalPrice))} m.
-                  </span>
+
+                  {spinner ? (
+                    <span
+                      className={spinnerStyles.spinner}
+                      style={{ top: 360, left: '50%' }}
+                    />
+                  ) : (
+                    <span className={styles.cart__popup__footer__price}>
+                      {formatPrice(+formatFromPriceToString(totalPrice))} m.
+                    </span>
+                  )}
                 </div>
+
                 <Link href="/order" passHref legacyBehavior>
                   <button
                     className={styles.cart__popup__footer__btn}

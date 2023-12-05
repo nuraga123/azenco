@@ -5,6 +5,7 @@ import { $mode } from '@/context/mode'
 import styles from '@/styles/dashboard/index.module.scss'
 import { formatFromPriceToString } from '@/utils/shopping-cart'
 import { $totalPrice } from '@/context/shopping-cart'
+import { formatPrice } from '@/utils/common'
 
 const CartAlert = ({ count, closeAlert }: ICartAlertProps) => {
   const mode = useStore($mode)
@@ -20,7 +21,7 @@ const CartAlert = ({ count, closeAlert }: ICartAlertProps) => {
           {' məhsul'}
         </span>
         <span style={{ letterSpacing: 2 }}>
-          Məbləğ: <b>{formatFromPriceToString(totalPrice)}</b>
+          Məbləğ: <b>{formatPrice(+formatFromPriceToString(totalPrice))}</b>
           {' manat'}
         </span>
       </div>

@@ -11,8 +11,15 @@ import spinnerStyles from '@/styles/spinner/index.module.scss'
 import CartItemCounter from '@/components/elements/CartItemCounter/CartItemCounter'
 import { formatFromPriceToString } from '@/utils/shopping-cart'
 import { usePrice } from '@/hooks/usePrice'
+import { formatPrice } from '@/utils/common'
 
-const CartPopupItem = ({ item }: { item: IShoppingCartItem }) => {
+const CartPopupItem = ({
+  item,
+  index,
+}: {
+  item: IShoppingCartItem
+  index: number
+}) => {
   const mode = useStore($mode)
   const darkModeClass = mode === 'dark' ? `${styles.dark_mode}` : ''
   const spinnerDarkModeClass =
@@ -20,6 +27,8 @@ const CartPopupItem = ({ item }: { item: IShoppingCartItem }) => {
 
   const { price, spinner, decreasePrice, deleteCartItem, increasePrice } =
     usePrice(item.count, item.partId, item.price)
+
+  console.log(item.image)
 
   return (
     <li className={styles.cart__popup__list__item}>
@@ -32,7 +41,7 @@ const CartPopupItem = ({ item }: { item: IShoppingCartItem }) => {
             <span
               className={`${styles.cart__popup__list__item__text} ${darkModeClass}`}
             >
-              {item?.name}
+              {`${index}) ${item?.name}`}
             </span>
           </a>
         </Link>
@@ -64,7 +73,7 @@ const CartPopupItem = ({ item }: { item: IShoppingCartItem }) => {
           />
         )}
         <span className={`${styles.cart__popup__list__price} ${darkModeClass}`}>
-          {formatFromPriceToString(price)}
+          {formatPrice(+formatFromPriceToString(price))}
         </span>
       </div>
     </li>

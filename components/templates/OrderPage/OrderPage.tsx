@@ -1,9 +1,13 @@
-import OrderAccordion from '@/components/modules/OrderPage/OrderAccordion'
+import { useStore } from 'effector-react'
+
 import { $mode } from '@/context/mode'
 import { $shoppingCart, $totalPrice } from '@/context/shopping-cart'
-import styles from '@/styles/order/index.module.scss'
 import { formatPrice } from '@/utils/common'
-import { useStore } from 'effector-react'
+import { formatFromPriceToString } from '@/utils/shopping-cart'
+import OrderAccordion from '@/components/modules/OrderPage/OrderAccordion'
+
+import styles from '@/styles/order/index.module.scss'
+import spinnerStyles from '@/styles/spinner/index.module.scss'
 
 const OrderPage = () => {
   const mode = useStore($mode)
@@ -26,26 +30,57 @@ const OrderPage = () => {
         </h2>
         <div className={styles.order__inner}>
           <div className={styles.order__cart}>
-            <OrderAccordion
-              setOrderIsReady={function (arg0: boolean): void {
-                throw new Error('Function not implemented.')
-              }}
-              showDoneIcon={false}
-            />
+            <OrderAccordion setOrderIsReady={() => {}} showDoneIcon={true} />
           </div>
           <div className={styles.order__pay}>
             <h3 className={`${styles.order__pay__title} ${darkModeClass}`}>
               Nəticə
             </h3>
             <div className={`${styles.order__pay__inner} ${darkModeClass}`}>
-              <div className={styles.order__pay__goods}>
-                <span>Malların sayı: ({quantityShoppingCart})</span>
-                <span>{formatPrice(totalPrice)} manat</span>
+              <div
+                className={styles.order__pay__total}
+                style={{ borderBottom: '1px solid' }}
+              >
+                <span>Malların sayı: </span>
+                <span
+                  className={`${styles.order__pay__total__title} ${darkModeClass}`}
+                >
+                  {quantityShoppingCart} ədəd
+                </span>
               </div>
-              <div className={styles.order__pay__total}>
-                <span>На сумму ({quantityShoppingCart})</span>
-                <span>{formatPrice(totalPrice)} manat</span>
+              <div
+                className={styles.order__pay__total}
+                style={{ borderBottom: '1px solid' }}
+              >
+                <span>Ümumi məbləği: </span>
+                <span
+                  className={`${styles.order__pay__total__title} ${darkModeClass}`}
+                >
+                  {formatPrice(+formatFromPriceToString(totalPrice))} manat
+                </span>
               </div>
+              <button className={styles.order__pay__btn}>
+                {false ? (
+                  <span
+                    className={spinnerStyles.spinner}
+                    style={{ top: '6px', left: '47%' }}
+                  />
+                ) : (
+                  'Sifarişi təsdiqləyin'
+                )}
+              </button>
+              <label
+                className={`${styles.order__pay__rights} ${darkModeClass}`}
+              >
+                <input
+                  className={styles.order__pay__rights__input}
+                  type="checkbox"
+                />
+                <span className={styles.order__pay__rights__text}>
+                  <strong>Согласен с условиями</strong> Правил пользования
+                  торговой площадкой и правилами возврата
+                </span>
+              </label>
             </div>
           </div>
         </div>

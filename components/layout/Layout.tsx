@@ -5,7 +5,7 @@ import Head from 'next/head'
 const Layout = ({ children, title }: ILayoutProps) => (
   <>
     <Head>
-      <title>AZENCO ANBAR | {title}</title>
+      <title>AZENCO | {title}</title>
       <meta charSet="UTF-8" />
       <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
