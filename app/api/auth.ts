@@ -17,7 +17,7 @@ export const signUpFx = createEffect(
       toast.warning(data.warningMessage)
       return
     }
-    toast.success('Регистрация прошла успешно!')
+    toast.success('Qeydiyyat uğurla başa çatdı !'.toLocaleUpperCase())
     return data
   }
 )
@@ -33,7 +33,7 @@ export const signInFx = createEffect(
       toast.warning(data.warningMessage)
       return
     }
-    toast.success('Вход выполнен!')
+    toast.success('Proqrama daxil oldunuz !'.toLocaleUpperCase())
     return data
   }
 )
@@ -60,6 +60,7 @@ export const checkUserAuthFx = createEffect(async (url: string) => {
 export const logoutFx = createEffect(async (url: string) => {
   try {
     await api.get(url)
+    toast.success('proqramdan çıxdınız !'.toLocaleUpperCase())
   } catch (error) {
     toast.error((error as Error).message)
   }

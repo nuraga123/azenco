@@ -1,6 +1,13 @@
 .catalog {
   padding-bottom: 124px;
 
+  &__pages {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0;
+  }
+
   @media (max-width: 560px) {
     padding-bottom: 45px;
   }

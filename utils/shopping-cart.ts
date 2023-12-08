@@ -45,12 +45,17 @@ export const removeItemFromCart = async (partId: number) => {
 }
 
 export const updateTotalPrice = async (total_price: number, partId: number) => {
-  const data = await updateCartItemFx({
-    url: `/shopping-cart/total-price/${partId}`,
-    payload: { total_price },
-  })
+  try {
+    const data = await updateCartItemFx({
+      url: `/shopping-cart/total-price/${partId}`,
+      payload: { total_price },
+    })
 
-  updateCartItemTotalPrice({ partId, total_price: data.total_price })
+    updateCartItemTotalPrice({ partId, total_price: data.total_price })
+  } catch (error) {
+    console.log(error)
+    toast.error('')
+  }
 }
 
 export const formatFromPriceToString = (value: number): string => {

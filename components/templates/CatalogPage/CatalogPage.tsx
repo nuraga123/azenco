@@ -62,7 +62,7 @@ const CatalogPage = ({ query }: { query: IQueryParams }) => {
   const pagesCount = () => {
     if (isNaN(boilerParts?.count)) {
       console.log(boilerParts?.count)
-      return 2
+      return 1
     } else {
       return Math.ceil((boilerParts?.count as number) / pagesLimit)
     }
@@ -164,6 +164,7 @@ const CatalogPage = ({ query }: { query: IQueryParams }) => {
   const handlePageChange = async ({ selected }: { selected: number }) => {
     try {
       setSpinner(true)
+
       const data: IBoilerParts = await getBoilerPartsFx(
         '/boiler-parts?limit=20&offset=0'
       )
@@ -249,20 +250,21 @@ const CatalogPage = ({ query }: { query: IQueryParams }) => {
       setPriceRange([0, 900000])
       setIsPriceRangeChanged(false)
       setBoilerParts(data as IBoilerParts)
+
+      filteredBoilerParts.count = 0
+      filteredBoilerParts.rows = []
+
+      console.log(filteredBoilerParts as IBoilerParts)
     } catch (error) {
       toast.error((error as Error).message)
+      console.log(error as Error)
     } finally {
       setTimeout(() => setSpinner(false), 1000)
     }
   }
 
-  console.log(
-    `pagesCount: ${pagesCount()}`,
-    `currentPage ${currentPage}`,
-    `filteredBoilerParts: ${filteredBoilerParts.count}`,
-    `isFilterInQuery: ${isFilterInQuery}`,
-    `selectQuery: ${selectQuery}`
-  )
+  console.log(`filteredBoilerParts`)
+  console.log(filteredBoilerParts)
 
   return (
     <section className={styles.catalog}>
@@ -270,6 +272,22 @@ const CatalogPage = ({ query }: { query: IQueryParams }) => {
         <br />
         <br />
         <h2 className={`${styles.catalog__title} ${darkModeClass}`}>Kataloq</h2>
+        <div className={styles.catalog__pages}>
+          <ReactPaginate
+            containerClassName={styles.catalog__bottom__list}
+            pageClassName={styles.catalog__bottom__list__item}
+            pageLinkClassName={styles.catalog__bottom__list__item__link}
+            previousClassName={styles.catalog__bottom__list__prev}
+            nextClassName={styles.catalog__bottom__list__next}
+            breakClassName={styles.catalog__bottom__list__break}
+            breakLinkClassName={`${styles.catalog__bottom__list__break__link} ${darkModeClass}`}
+            breakLabel="..."
+            pageCount={pagesCount()}
+            forcePage={currentPage}
+            onPageChange={handlePageChange}
+          />
+        </div>
+
         <div className={`${styles.catalog__top} ${darkModeClass}`}>
           {isAnyBoilerManufacturerChecked && (
             <AnimatePresence>
