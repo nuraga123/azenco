@@ -1,23 +1,23 @@
-import { useState, useRef, useEffect } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/router'
 import { checkUserAuthFx } from '@/app/api/auth'
 import { setUser } from '@/context/user'
 
 const useRedirectByUserCheck = (isAuthPage = false) => {
   const [shouldLoadContent, setShouldLoadContent] = useState<boolean>(false)
-
   const router = useRouter()
-  const shouldCheck = useRef(true)
+  const shouldCheckAuth = useRef(true)
 
   useEffect(() => {
-    if (shouldCheck.current) {
-      shouldCheck.current = false
+    if (shouldCheckAuth.current) {
+      shouldCheckAuth.current = false
       checkUser()
     }
   }, [])
 
   const checkUser = async () => {
-    const user = await checkUserAuthFx('users/login-check')
+    const user = await checkUserAuthFx('/users/login-check')
+    console.log(user)
 
     if (isAuthPage) {
       if (!user) {

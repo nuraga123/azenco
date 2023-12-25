@@ -41,18 +41,20 @@ export const signInFx = createEffect(
 export const checkUserAuthFx = createEffect(async (url: string) => {
   try {
     const { data } = await api.get(url)
+    console.log(data)
     return data
   } catch (error) {
     const axiosError = error as AxiosError
 
     if (axiosError.response) {
+      console.log(error)
       if (axiosError.response.status === HTTPStatus.FORBIDDEN) {
         console.log(axiosError.response.status)
         return false
       }
     }
 
-    console.log((error as Error).message)
+    console.log(error)
     toast.error((error as Error).message)
   }
 })
