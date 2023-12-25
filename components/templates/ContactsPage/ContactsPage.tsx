@@ -1,6 +1,5 @@
 import { useStore } from 'effector-react'
 import { $mode } from '@/context/mode'
-import { useMediaQuery } from '@/hooks/useMediaQuery'
 import Footer from '@/components/modules/Footer/Footer'
 import FeedbackForm from '@/components/modules/FeedbackForm/FeedbackForm'
 import styles from '@/styles/contacts/index.module.scss'
