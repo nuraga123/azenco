@@ -21,6 +21,8 @@ const FilterSelect: React.FC = () => {
   const selectedOptionQuery: OptionFilterSelect =
     router.query.sortBy === options[0].value ? options[0] : options[1]
 
+  console.log(selectedOptionQuery.label)
+
   const handleChange = (selectedOption: OptionFilterSelect | null) => {
     if (selectedOption) {
       setSelectedOption(selectedOption)

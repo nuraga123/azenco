@@ -8,7 +8,7 @@ function Dashboard() {
   return (
     <>
       {shouldLoadContent && (
-        <Layout title={'Главная'}>
+        <Layout title={'Baş Səhifə'}>
           <DashboardPage />
         </Layout>
       )}

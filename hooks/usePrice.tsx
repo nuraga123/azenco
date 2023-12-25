@@ -1,13 +1,16 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from 'react'
 import { updateTotalPrice, removeItemFromCart } from '@/utils/shopping-cart'
 import { useStore } from 'effector-react'
 import { removeFromCartFx } from '@/app/api/shopping-cart'
 
-export const usePrice = (
-  count: number,
-  partId: number,
+interface IUsePrice {
+  count: number
+  partId: number
   initialPrice: number
-) => {
+}
+
+export const usePrice = ({ count, partId, initialPrice }: IUsePrice) => {
   const spinner = useStore(removeFromCartFx.pending)
   const [price, setPrice] = useState<number>(initialPrice)
 
@@ -16,17 +19,18 @@ export const usePrice = (
   }, [])
 
   useEffect(() => {
+    console.log(price)
     updateTotalPrice(Number(price), partId)
   }, [price])
 
   function increasePrice() {
     const result = Number(price) + Number(initialPrice)
-    setPrice(+(+result.toFixed(2)))
+    setPrice(+result.toFixed(2))
   }
 
   const decreasePrice = () => {
     const result = Number(price) - Number(initialPrice)
-    setPrice(+(+result.toFixed(2)))
+    setPrice(+result.toFixed(2))
   }
 
   const deleteCartItem = () => removeItemFromCart(partId)

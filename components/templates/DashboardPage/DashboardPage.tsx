@@ -75,18 +75,20 @@ const DashboardPage = () => {
             style={{ width: 20, height: 20 }}
           />
         ) : (
-          <AnimatePresence>
-            {showAlert && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className={`${styles.dashboard__alert} ${darkModeClass}`}
-              >
-                <CartAlert count={count || 0} closeAlert={closeAlert} />
-              </motion.div>
-            )}
-          </AnimatePresence>
+          countShoppingCart !== 0 && (
+            <AnimatePresence>
+              {showAlert && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className={`${styles.dashboard__alert} ${darkModeClass}`}
+                >
+                  <CartAlert count={count || 0} closeAlert={closeAlert} />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          )
         )}
         {/*
         <h2 className={`${styles.dashboard__title} ${darkModeClass}`}>

@@ -12,7 +12,6 @@ import EditSvg from '@/components/elements/EditSvg/EditSvg'
 import OrderItem from './OrderItem'
 import { formatPrice } from '@/utils/common'
 import { formatFromPriceToString } from '@/utils/shopping-cart'
-
 import styles from '@/styles/order/index.module.scss'
 
 const OrderAccordion = ({
@@ -113,7 +112,7 @@ const OrderAccordion = ({
                   onClick={closeAccordion}
                   disabled={!shoppingCart.length}
                 >
-                  Davam Et
+                  Mən tamamilə razıyam
                 </button>
               </div>
             </div>

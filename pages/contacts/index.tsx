@@ -1,11 +1,11 @@
 import Layout from '@/components/layout/Layout'
-import Footer from '@/components/modules/Footer/Footer'
+import ContactsPage from '@/components/templates/ContactsPage/ContactsPage'
 import '@/styles/globals.css'
 
 function Contacts() {
   return (
-    <Layout title={'Контакты'}>
-      <Footer />
+    <Layout title={'Kontaktlar'}>
+      <ContactsPage />
     </Layout>
   )
 }
