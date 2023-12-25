@@ -1,19 +1,21 @@
 import { useEffect, useState } from 'react'
+import {
+  removeClassNamesForOverlayAndBody,
+  toggleClassNamesForOverlayAndBody,
+} from '@/utils/common'
 
 const usePopup = () => {
   const [open, setOpen] = useState(false)
   const header__logo = document.getElementById('header__logo')
   const toggleOpen = () => {
     window.scrollTo(0, 0)
-    document.querySelector('.overlay')?.classList.toggle('open')
-    document.querySelector('.body')?.classList.toggle('overflow-hidden')
+    toggleClassNamesForOverlayAndBody()
     setOpen(!open)
   }
 
   const closePopup = () => {
     window.scrollTo(0, 0)
-    document.querySelector('.overlay')?.classList.remove('open')
-    document.querySelector('.body')?.classList.remove('overflow-hidden')
+    removeClassNamesForOverlayAndBody()
     setOpen(false)
   }
 

@@ -1,24 +1,18 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useStore } from 'effector-react'
-import { IShoppingCartItem } from '@/types/shopping-cart'
+import { $mode } from '@/context/mode'
 import { usePrice } from '@/hooks/usePrice'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
-import { $mode } from '@/context/mode'
 import CartItemCounter from '@/components/elements/CartItemCounter/CartItemCounter'
-import { formatPrice } from '@/utils/common'
-import spinnerStyles from '@/styles/spinner/index.module.scss'
-import styles from '@/styles/order/index.module.scss'
-import { formatFromPriceToString } from '@/utils/shopping-cart'
 import DeleteSvg from '@/components/elements/DeleteSvg/DeleteSvg'
+import { formatPrice } from '@/utils/common'
+import { formatFromPriceToString } from '@/utils/shopping-cart'
+import { IOrderItem } from '@/types/order'
+import styles from '@/styles/order/index.module.scss'
+import spinnerStyles from '@/styles/spinner/index.module.scss'
 
-const OrderItem = ({
-  item,
-  index,
-}: {
-  item: IShoppingCartItem
-  index: number
-}) => {
+const OrderItem = ({ item, index }: IOrderItem) => {
   const isMedia1160 = useMediaQuery(1160)
 
   const mode = useStore($mode)
@@ -27,7 +21,11 @@ const OrderItem = ({
     mode === 'dark' ? '' : `${spinnerStyles.dark_mode}`
 
   const { price, spinner, decreasePrice, deleteCartItem, increasePrice } =
-    usePrice(item.count, item.partId, item.price)
+    usePrice({
+      count: item.count,
+      partId: item.partId,
+      initialPrice: item.price,
+    })
 
   return (
     <li className={styles.order__cart__list__item}>
@@ -54,11 +52,19 @@ const OrderItem = ({
             </a>
           </Link>
         </div>
+        <span
+          style={{ marginTop: 5 }}
+          className={`${styles.order__cart__list__item__price} ${darkModeClass}`}
+        >
+          Qiymət: <b>{`${item.price}`}</b>
+        </span>
         {isMedia1160 &&
           (item.in_stock === 0 ? (
-            <span className={styles.order__cart__list__item__empty}>
-              Нет на складе
-            </span>
+            <div>
+              <span className={styles.order__cart__list__item__empty}>
+                Нет на складе
+              </span>
+            </div>
           ) : (
             <CartItemCounter
               totalCount={item.in_stock}
@@ -79,6 +85,7 @@ const OrderItem = ({
             decreasePrice={decreasePrice}
           />
         )}
+
         <span
           className={`${styles.order__cart__list__item__price} ${darkModeClass}`}
         >

@@ -10,10 +10,7 @@ export interface IOption {
   label: string | number
 }
 
-export type SelectOpytionType =
-  | MultiValue<IOption>
-  | SingleValue<IOption>
-  | null
+export type SelectOptionType = MultiValue<IOption> | SingleValue<IOption> | null
 
 export interface IAccordion {
   children: React.ReactNode
@@ -29,4 +26,9 @@ export interface IAccordion {
 export interface ILayoutProps {
   children: React.ReactNode
   title: string
+}
+
+export interface IGeolocation {
+  latitude: number
+  longitude: number
 }

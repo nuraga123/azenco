@@ -60,8 +60,6 @@ const CartPopup = forwardRef<HTMLDivElement, IWrappedComponentProps>(
       return () => clearTimeout(timeout)
     }, [shoppingCart])
 
-    console.log(totalPrice)
-
     const loadCartItems = useCallback(async () => {
       try {
         const cartItems: IShoppingCartItem[] = await getCartItemsFx(

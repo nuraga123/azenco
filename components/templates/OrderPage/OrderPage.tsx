@@ -1,18 +1,19 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { useStore } from 'effector-react'
 import { toast } from 'react-toastify'
+import { useStore } from 'effector-react'
 
 import { $mode } from '@/context/mode'
 import {
   $shoppingCart,
-  $totalPrice,
   setShoppingCart,
+  setTotalPrice,
 } from '@/context/shopping-cart'
+import { IShoppingCartItem } from '@/types/shopping-cart'
 import { formatPrice } from '@/utils/common'
 import { formatFromPriceToString } from '@/utils/shopping-cart'
 import OrderAccordion from '@/components/modules/OrderPage/OrderAccordion'
-
 import { checkPaymentFx, makePaymentFx } from '@/app/api/payment'
 import { removeFromCartFx } from '@/app/api/shopping-cart'
 import { $user } from '@/context/user'
@@ -22,39 +23,17 @@ import spinnerStyles from '@/styles/spinner/index.module.scss'
 
 const OrderPage = () => {
   const mode = useStore($mode)
+  const darkModeClass = mode === 'dark' ? `${styles.dark_mode}` : ''
+
   const user = useStore($user)
   const shoppingCart = useStore($shoppingCart)
-  const totalPrice = useStore($totalPrice)
-  const darkModeClass = mode === 'dark' ? `${styles.dark_mode}` : ''
+
   const [orderIsReady, setOrderIsReady] = useState(false)
   const [agreement, setAgreement] = useState(false)
   const spinner = useStore(makePaymentFx.pending)
   const router = useRouter()
 
   const handleAgreementChange = () => setAgreement(!agreement)
-
-  useEffect(() => {
-    const paymentId = sessionStorage.getItem('paymentId')
-
-    if (paymentId) {
-      checkPayment(paymentId)
-    }
-  }, [])
-
-  const makePay = async () => {
-    try {
-      const data = await makePaymentFx({
-        url: '/payment',
-        amount: totalPrice,
-        description: `Заказ №1`,
-      })
-
-      sessionStorage.setItem('paymentId', data.id)
-      router.push(data.confirmation.confirmation_url)
-    } catch (error) {
-      toast.error((error as Error).message)
-    }
-  }
 
   const checkPayment = async (paymentId: string) => {
     try {
@@ -64,14 +43,57 @@ const OrderPage = () => {
       })
 
       if (data.status === 'succeeded') {
+        toast.success('Ödəniş edildi')
         resetCart()
+        console.log(data)
         return
+      }
+
+      if (data.status === 'pending') {
+        toast.warning('Ödəniş edilməmişdir')
       }
 
       sessionStorage.removeItem('paymentId')
     } catch (error) {
       console.log((error as Error).message)
       resetCart()
+    }
+  }
+
+  useEffect(() => {
+    const paymentId = sessionStorage.getItem('paymentId')
+
+    if (paymentId) {
+      checkPayment(paymentId)
+    }
+  }, [])
+
+  useEffect(() => {
+    const calculatedTotalPrice = shoppingCart
+      .filter((el) => el.in_stock !== 0)
+      .reduce(
+        (defaultCount: number, item: IShoppingCartItem) =>
+          defaultCount + Number(item.total_price),
+        0
+      )
+
+    console.log()
+    setTotalPrice(calculatedTotalPrice)
+  }, [shoppingCart])
+
+  const makePay = async () => {
+    try {
+      const data = await makePaymentFx({
+        url: '/payment',
+        amount: Number(formatFromPriceToString(shoppingCartTotalPrice)),
+        description: `Заказ №1`,
+      })
+
+      sessionStorage.setItem('paymentId', data.id)
+      console.log(data)
+      router.push(data.confirmation.confirmation_url)
+    } catch (error) {
+      console.log((error as Error).message)
     }
   }
 
@@ -83,6 +105,12 @@ const OrderPage = () => {
 
   const quantityShoppingCart = shoppingCart.reduce(
     (defaultCount, item) => defaultCount + item.count,
+    0
+  )
+
+  const shoppingCartTotalPrice = shoppingCart.reduce(
+    (defaultCount: number, item: IShoppingCartItem) =>
+      defaultCount + +item.total_price,
     0
   )
 
@@ -125,7 +153,10 @@ const OrderPage = () => {
                 <span
                   className={`${styles.order__pay__total__title} ${darkModeClass}`}
                 >
-                  {formatPrice(+formatFromPriceToString(totalPrice))} manat
+                  {formatPrice(
+                    +formatFromPriceToString(shoppingCartTotalPrice)
+                  )}{' '}
+                  manat
                 </span>
               </div>
               <button

@@ -23,20 +23,20 @@ const HeaderTop = () => {
 
   const navsArr: INavElement[] = [
     {
-      href: '/shopping-payment',
+      href: '/shipping-payment',
       title: 'Çatdırılma və ödəniş',
     },
     {
-      href: '/catalog',
+      href: '/catalog?offset=1&sortBy=asc',
       title: 'Kataloq',
     },
     {
-      href: '/wholesale-byers',
-      title: 'Оптовым покупателям',
+      href: '/wholesale-buyers',
+      title: 'Topdan alıcılar üçün',
     },
     {
       href: '/contacts',
-      title: 'kontaktlar',
+      title: 'Kontaktlar',
     },
     {
       href: '/about',

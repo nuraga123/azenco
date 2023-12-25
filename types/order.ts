@@ -1,3 +1,5 @@
+import { IShoppingCartItem } from './shopping-cart'
+
 export interface IOrderAccordionProps {
   setOrderIsReady: (arg0: boolean) => void
   showDoneIcon: boolean
@@ -12,4 +14,9 @@ export interface IMakePayFx {
 export interface ICheckPayFx {
   url: string
   paymentId: string
+}
+
+export interface IOrderItem {
+  item: IShoppingCartItem
+  index: number
 }

@@ -1,22 +1,23 @@
 import { useStore } from 'effector-react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { removeFromCartFx } from '@/app/api/shopping-cart'
 import { IBoilerPart } from '@/types/boilerparts'
 import { $mode } from '@/context/mode'
 import { $shoppingCart } from '@/context/shopping-cart'
-
+import { $user } from '@/context/user'
 import CartHoverCheckedSvg from '@/components/elements/CartHoverCheckedSvg/CartHoverCheckedSvg'
 import CartHoverSvg from '@/components/elements/CartHoverSvg/CartHoverSvg'
-
+import {
+  CatalogCodeComponent,
+  CatalogNameComponent,
+  CatalogTextComponent,
+} from '@/components/elements/CatalogTextComponent'
 import { formatPrice } from '@/utils/common'
 import { formatDateTime } from '@/utils/formatDateTime'
-
+import { toggleCartItem } from '@/utils/shopping-cart'
 import styles from '@/styles/catalog/index.module.scss'
 import spinnerStyles from '@/styles/spinner/index.module.scss'
-import { $user } from '@/context/user'
-import { toggleCartItem } from '@/utils/shopping-cart'
-import { removeFromCartFx } from '@/app/api/shopping-cart'
-import { ReactNode } from 'react'
 
 const CatologItem = ({ item }: { item: IBoilerPart }) => {
   const imageUrl = JSON.parse(item.images)[0]
@@ -31,41 +32,13 @@ const CatologItem = ({ item }: { item: IBoilerPart }) => {
 
   const toggleToCart = () => toggleCartItem(user.username, item.id, isInCart)
 
-  const itemsq = {
-    // ... ваш объект данных, включая createdAt
-    createdAt: {
-      type: 'Buffer',
-      data: item.createdAt.data,
-    },
-  }
-
   // Преобразовываем массив байтов в строку
-  const createdAtString = Buffer.from(itemsq.createdAt.data).toString()
-
-  // Создаем объект Date
-  const createdAtDate = new Date(createdAtString)
+  const createdAtString = item.createdAt
 
   const showUpdatedAt: boolean =
-    formatDateTime(`${createdAtDate}`) !== formatDateTime(`${item.updatedAt}`)
+    formatDateTime(`${createdAtString}`) !== formatDateTime(`${item.updatedAt}`)
 
-  const TextComponent = ({
-    keyText,
-    item,
-    flex,
-  }: {
-    keyText: string
-    flex: boolean
-    item: string | number | boolean | ReactNode
-  }) => (
-    <span className={styles.catalog__list__item__code}>
-      {flex ? (
-        <div style={{ marginBottom: '5px' }}>{keyText}:</div>
-      ) : (
-        keyText + ': '
-      )}
-      <b style={{ letterSpacing: '1px', color: 'black' }}>{item}</b>
-    </span>
-  )
+  console.log(`${formatPrice(item.price)}`.replace('.00', ''))
 
   return (
     <li className={`${styles.catalog__list__item} ${darkModeClass}`}>
@@ -80,16 +53,22 @@ const CatologItem = ({ item }: { item: IBoilerPart }) => {
           />
         </a>
       </Link>
-      <div className={styles.catalog__list__item__inner}>
-        <TextComponent keyText={'ID'} item={item.id} flex={false} />
-        <Link href={`/catalog/${item.id}`} passHref legacyBehavior>
-          <a target="_blank">
-            <TextComponent keyText={'AD'} item={item.name} flex={true} />
-          </a>
-        </Link>
-        <TextComponent keyText={'Code'} item={item.vendor_code} flex={false} />
 
-        <TextComponent
+      <div className={styles.catalog__list__item__inner}>
+        <CatalogTextComponent keyText={'ID'} item={item.id} />
+
+        {/* product name */}
+        <CatalogNameComponent item={item} />
+
+        {/* product code */}
+        <CatalogCodeComponent item={item} />
+
+        <CatalogTextComponent
+          keyText={'Ölçü vahidləri'}
+          item={item.bestseller === false ? 'Ədəd ' : 'Metr'}
+        />
+
+        <CatalogTextComponent
           keyText={'Migdar'}
           item={
             item.in_stock === 0 ? (
@@ -98,36 +77,30 @@ const CatologItem = ({ item }: { item: IBoilerPart }) => {
               item.in_stock
             )
           }
-          flex={false}
         />
 
-        <TextComponent
-          keyText={'Ölçü vahidləri'}
-          item={item.bestseller === false ? 'Ədəd ' : 'Metr'}
-          flex={false}
-        />
-
-        <TextComponent
+        <CatalogTextComponent
           keyText={'Yaranma tarixi'}
-          item={formatDateTime(`${createdAtDate}`)}
+          item={formatDateTime(`${createdAtString}`)}
           flex={true}
         />
 
         {showUpdatedAt && (
-          <TextComponent
+          <CatalogTextComponent
             keyText={'Son yenilənmə tarixi'}
             item={formatDateTime(`${item.updatedAt}`)}
             flex={true}
           />
         )}
 
-        <TextComponent
+        <CatalogTextComponent
           keyText={'Qiymət'}
           item={`${formatPrice(item.price)} manat`}
           flex={true}
         />
       </div>
 
+      {/* Cart Check btn   */}
       <div
         style={{
           display: 'flex',

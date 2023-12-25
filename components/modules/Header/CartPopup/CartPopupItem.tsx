@@ -1,34 +1,34 @@
-import { useStore } from 'effector-react'
-import { $mode } from '@/context/mode'
-import { IShoppingCartItem } from '@/types/shopping-cart'
-
 import Image from 'next/image'
 import Link from 'next/link'
-import DeleteSvg from '@/components/elements/DeleteSvg/DeleteSvg'
-import styles from '@/styles/cartPopup/index.module.scss'
-import spinnerStyles from '@/styles/spinner/index.module.scss'
-// import { formatPrice } from '@/utils/common'
-import CartItemCounter from '@/components/elements/CartItemCounter/CartItemCounter'
-import { formatFromPriceToString } from '@/utils/shopping-cart'
+import { useStore } from 'effector-react'
 import { usePrice } from '@/hooks/usePrice'
+import DeleteSvg from '@/components/elements/DeleteSvg/DeleteSvg'
+import CartItemCounter from '@/components/elements/CartItemCounter/CartItemCounter'
+import { $mode } from '@/context/mode'
+import { IShoppingCartItem } from '@/types/shopping-cart'
+import { formatFromPriceToString } from '@/utils/shopping-cart'
 import { formatPrice } from '@/utils/common'
 
-const CartPopupItem = ({
-  item,
-  index,
-}: {
+import styles from '@/styles/cartPopup/index.module.scss'
+import spinnerStyles from '@/styles/spinner/index.module.scss'
+
+interface ICartPopupItemProps {
   item: IShoppingCartItem
   index: number
-}) => {
+}
+
+const CartPopupItem = ({ item, index }: ICartPopupItemProps) => {
   const mode = useStore($mode)
   const darkModeClass = mode === 'dark' ? `${styles.dark_mode}` : ''
   const spinnerDarkModeClass =
     mode === 'dark' ? `${spinnerStyles.dark_mode}` : ''
 
   const { price, spinner, decreasePrice, deleteCartItem, increasePrice } =
-    usePrice(item.count, item.partId, item.price)
-
-  console.log(item.image)
+    usePrice({
+      count: item.count,
+      partId: item.partId,
+      initialPrice: item.price,
+    })
 
   return (
     <li className={styles.cart__popup__list__item}>
