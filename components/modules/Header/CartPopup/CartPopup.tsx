@@ -22,13 +22,14 @@ import ShoppingCartSvg from '@/components/elements/ShoppingCartSvg/ShoppingCartS
 import CartPopupItem from './CartPopupItem'
 import styles from '@/styles/cartPopup/index.module.scss'
 import spinnerStyles from '@/styles/spinner/index.module.scss'
+import { getItemLocalStorageUserId } from '@/getItemLocalStorageUserId'
 
 const CartPopup = forwardRef<HTMLDivElement, IWrappedComponentProps>(
   ({ open, setOpen }, ref) => {
+    const localUserId = getItemLocalStorageUserId().userId
     const user = useStore($user)
     const shoppingCart = useStore($shoppingCart)
     const totalPrice = useStore($totalPrice)
-
     const mode = useStore($mode)
     const darkModeClass = mode === 'dark' ? `${styles.dark_mode}` : ''
 
@@ -63,14 +64,14 @@ const CartPopup = forwardRef<HTMLDivElement, IWrappedComponentProps>(
     const loadCartItems = useCallback(async () => {
       try {
         const cartItems: IShoppingCartItem[] = await getCartItemsFx(
-          `/shopping-cart/${user.userId}`
+          `/shopping-cart/${user.userId || localUserId}`
         )
 
         setShoppingCart(cartItems)
       } catch (error) {
         toast.error((error as Error).message)
       }
-    }, [user.userId])
+    }, [user.userId, localUserId])
 
     useEffect(() => {
       loadCartItems()

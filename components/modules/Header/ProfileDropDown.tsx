@@ -23,6 +23,7 @@ const ProfileDropDown = forwardRef<HTMLDivElement, IWrappedComponentProps>(
 
     const handleLogout = async () => {
       await logoutFx('/users/logout')
+      localStorage.removeItem('userId')
       router.push('/')
     }
 

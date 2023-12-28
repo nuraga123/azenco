@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useStore } from 'effector-react'
 
-import { signUpFx } from '@/app/api/auth'
+import { singUpFx } from '@/app/api/auth'
 import { $mode } from '@/context/mode'
 import { IInputs } from '@/types/auth'
 import { showAuthError } from '@/utils/errors'
@@ -28,7 +28,7 @@ const SignUpForm = ({ switchForm }: { switchForm: () => void }) => {
   const onSubmit = async (data: IInputs) => {
     try {
       setSpinner(true)
-      const userData = await signUpFx({
+      const userData = await singUpFx({
         url: '/users/signup',
         username: data.name,
         password: data.password,
@@ -43,6 +43,7 @@ const SignUpForm = ({ switchForm }: { switchForm: () => void }) => {
       resetField('name')
       resetField('password')
       switchForm()
+      console.log(userData)
     } catch (error) {
       showAuthError(error)
     } finally {
@@ -64,7 +65,7 @@ const SignUpForm = ({ switchForm }: { switchForm: () => void }) => {
       <button
         className={`${styles.form__button} ${styles.button} ${styles.submit} ${darkModeClass}`}
       >
-        {spinner ? <div className={spinnerStyles.spinner} /> : 'QEYDİYYATD'}
+        {spinner ? <div className={spinnerStyles.spinner} /> : 'QEYDİYYAT'}
       </button>
     </form>
   )

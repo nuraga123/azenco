@@ -2,9 +2,8 @@ import { useForm } from 'react-hook-form'
 import { useState } from 'react'
 import { useStore } from 'effector-react'
 import { useRouter } from 'next/router'
-
 import { IInputs } from '@/types/auth'
-import { signInFx } from '@/app/api/auth'
+import { singInFx } from '@/app/api/auth'
 import { showAuthError } from '@/utils/errors'
 import { $mode } from '@/context/mode'
 
@@ -13,6 +12,7 @@ import PasswordInput from '@/components/elements/AuthPage/PasswordInput'
 
 import styles from '@/styles/auth/index.module.scss'
 import spinnerStyles from '@/styles/spinner/index.module.scss'
+import { setUser } from '@/context/user'
 
 const SignInForm = () => {
   const [spinner, setSpinner] = useState(false)
@@ -24,20 +24,38 @@ const SignInForm = () => {
   } = useForm<IInputs>()
   const mode = useStore($mode)
   const darkModeClass = mode === 'dark' ? `${styles.dark_mode}` : ''
-  const route = useRouter()
+  const router = useRouter()
 
   const onSubmit = async (data: IInputs) => {
     try {
       setSpinner(true)
-      await signInFx({
+      const userData = await singInFx({
         url: '/users/login',
         username: data.name,
         password: data.password,
       })
 
+      debugger
+
       resetField('name')
       resetField('password')
-      route.push('/dashboard')
+
+      if (userData?.user) {
+        const userDataOne = userData.user
+
+        localStorage.setItem('userId', userDataOne.userId)
+        localStorage.setItem('username', userDataOne.username)
+        localStorage.setItem('email', userDataOne.email)
+
+        setUser({
+          userId: userDataOne.userId,
+          username: userDataOne.username,
+          email: userDataOne.email,
+        })
+        router.push('/dashboard')
+      }
+
+      router.push('/')
     } catch (error) {
       showAuthError(error)
     } finally {
