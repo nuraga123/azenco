@@ -25,12 +25,12 @@ export const usePrice = ({ count, partId, initialPrice }: IUsePrice) => {
 
   function increasePrice() {
     const result = Number(price) + Number(initialPrice)
-    setPrice(+result.toFixed(2))
+    setPrice(Number(result.toFixed(2)))
   }
 
   const decreasePrice = () => {
     const result = Number(price) - Number(initialPrice)
-    setPrice(+result.toFixed(2))
+    setPrice(Number(result.toFixed(2)))
   }
 
   const deleteCartItem = () => removeItemFromCart(partId)

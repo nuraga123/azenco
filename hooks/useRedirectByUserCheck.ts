@@ -12,24 +12,27 @@ const useRedirectByUserCheck = (isAuthPage = false) => {
   useEffect(() => {
     const checkUser = async () => {
       const localUser = getItemLocalStorageUserId().userId
-      const user = await checkUserAuthFx(`/users/${localUser}`)
+      if (localUser) {
+        const user = await checkUserAuthFx(`/users/${localUser}`)
+        console.log(user)
 
-      console.log(user)
+        if (isAuthPage) {
+          if (!user) {
+            setShouldLoadContent(true)
+            return
+          }
 
-      if (isAuthPage) {
-        if (!user) {
-          setShouldLoadContent(true)
+          router.push('/catalog')
           return
         }
 
-        router.push('/dashboard')
-        return
-      }
-
-      if (user) {
-        setUser(user)
-        setShouldLoadContent(true)
-        return
+        if (user) {
+          setUser(user)
+          setShouldLoadContent(true)
+          return
+        }
+      } else {
+        router.push('/login')
       }
     }
 

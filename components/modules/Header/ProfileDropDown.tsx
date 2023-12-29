@@ -1,19 +1,25 @@
-import ProfileSvg from '@/components/elements/ProfileSvg/ProfileSvg'
-import { $mode } from '@/context/mode'
-import { IWrappedComponentProps } from '@/types/common'
-import { useStore } from 'effector-react'
+import { useRouter } from 'next/router'
 import { forwardRef } from 'react'
+import { useStore } from 'effector-react'
 import { AnimatePresence, motion } from 'framer-motion'
 
-import styles from '@/styles/profileDropDown/index.module.scss'
+import { logoutFx } from '@/app/api/auth'
+import { IWrappedComponentProps } from '@/types/common'
+import { $mode } from '@/context/mode'
+import { $user } from '@/context/user'
+import ProfileSvg from '@/components/elements/ProfileSvg/ProfileSvg'
 import LogoutSvg from '@/components/elements/LogoutSvg/LogoutSvg'
 import { withClickOutside } from '@/utils/withClickOutside'
-import { $user } from '@/context/user'
-import { logoutFx } from '@/app/api/auth'
-import { useRouter } from 'next/router'
+import {
+  getItemLocalStorageUserId,
+  removeItemLocalStorageUserId,
+} from '@/getItemLocalStorageUserId'
+
+import styles from '@/styles/profileDropDown/index.module.scss'
 
 const ProfileDropDown = forwardRef<HTMLDivElement, IWrappedComponentProps>(
   ({ open, setOpen }, ref) => {
+    const localUserId = getItemLocalStorageUserId().userId
     const mode = useStore($mode)
     const user = useStore($user)
     const router = useRouter()
@@ -22,9 +28,9 @@ const ProfileDropDown = forwardRef<HTMLDivElement, IWrappedComponentProps>(
     const toggleProfileDropDown = () => setOpen(!open)
 
     const handleLogout = async () => {
+      removeItemLocalStorageUserId()
+      router.push('/login')
       await logoutFx('/users/logout')
-      localStorage.removeItem('userId')
-      router.push('/')
     }
 
     return (
@@ -49,7 +55,7 @@ const ProfileDropDown = forwardRef<HTMLDivElement, IWrappedComponentProps>(
                   <span
                     className={`${styles.profile__dropdown__username} ${darkModeClass}`}
                   >
-                    {user.userId}
+                    {user.userId || localUserId}
                   </span>
                 </div>
                 <div>
