@@ -16,6 +16,10 @@ const useRedirectByUserCheck = (isAuthPage = false) => {
         const user = await checkUserAuthFx(`/users/${localUser}`)
         console.log(user)
 
+        const loginCheckData = await checkUserAuthFx('/users/login-check')
+        console.log('loginCheckData')
+        console.log(loginCheckData)
+
         if (isAuthPage) {
           if (!user) {
             setShouldLoadContent(true)
