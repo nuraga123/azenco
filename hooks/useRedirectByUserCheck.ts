@@ -1,6 +1,6 @@
 import { checkUserAuthFx } from '@/app/api/auth'
 import { setUser } from '@/context/user'
-import { getItemLocalStorageUserId } from '@/getItemLocalStorageUserId'
+import { getItemLocalStorageUserId } from '@/localStorageUser'
 import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
 

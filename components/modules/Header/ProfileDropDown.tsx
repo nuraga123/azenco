@@ -13,7 +13,7 @@ import { withClickOutside } from '@/utils/withClickOutside'
 import {
   getItemLocalStorageUserId,
   removeItemLocalStorageUserId,
-} from '@/getItemLocalStorageUserId'
+} from '@/localStorageUser'
 
 import styles from '@/styles/profileDropDown/index.module.scss'
 
