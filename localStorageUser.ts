@@ -1,4 +1,4 @@
-export const getItemLocalStorageUserId = () => {
+export const getLocalStorageUser = () => {
   const userIdStorage = (localStorage.getItem('userId') as string) || ''
   const usernameStorage = (localStorage.getItem('username') as string) || ''
   const emailStorage = (localStorage.getItem('email') as string) || ''
@@ -10,7 +10,7 @@ export const getItemLocalStorageUserId = () => {
   }
 }
 
-export const removeItemLocalStorageUserId = () => {
+export const removeLocalStorageUser = () => {
   localStorage.removeItem('userId')
   localStorage.removeItem('username')
   localStorage.removeItem('email')

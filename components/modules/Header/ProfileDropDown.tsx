@@ -10,16 +10,13 @@ import { $user } from '@/context/user'
 import ProfileSvg from '@/components/elements/ProfileSvg/ProfileSvg'
 import LogoutSvg from '@/components/elements/LogoutSvg/LogoutSvg'
 import { withClickOutside } from '@/utils/withClickOutside'
-import {
-  getItemLocalStorageUserId,
-  removeItemLocalStorageUserId,
-} from '@/localStorageUser'
+import { getLocalStorageUser, removeLocalStorageUser } from '@/localStorageUser'
 
 import styles from '@/styles/profileDropDown/index.module.scss'
 
 const ProfileDropDown = forwardRef<HTMLDivElement, IWrappedComponentProps>(
   ({ open, setOpen }, ref) => {
-    const localUserId = getItemLocalStorageUserId().userId
+    const localUserId = getLocalStorageUser().userId
     const mode = useStore($mode)
     const user = useStore($user)
     const router = useRouter()
@@ -28,7 +25,7 @@ const ProfileDropDown = forwardRef<HTMLDivElement, IWrappedComponentProps>(
     const toggleProfileDropDown = () => setOpen(!open)
 
     const handleLogout = async () => {
-      removeItemLocalStorageUserId()
+      removeLocalStorageUser()
       router.push('/login')
       await logoutFx('/users/logout')
     }

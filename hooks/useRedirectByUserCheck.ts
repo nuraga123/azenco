@@ -1,6 +1,6 @@
 import { checkUserAuthFx } from '@/app/api/auth'
 import { setUser } from '@/context/user'
-import { getItemLocalStorageUserId } from '@/localStorageUser'
+import { getLocalStorageUser } from '@/localStorageUser'
 import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
 
@@ -11,7 +11,7 @@ const useRedirectByUserCheck = (isAuthPage = false) => {
 
   useEffect(() => {
     const checkUser = async () => {
-      const localUser = getItemLocalStorageUserId().userId
+      const localUser = getLocalStorageUser().userId
       if (localUser) {
         const user = await checkUserAuthFx(`/users/${localUser}`)
         console.log(user)
