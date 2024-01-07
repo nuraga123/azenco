@@ -22,11 +22,11 @@ import ShoppingCartSvg from '@/components/elements/ShoppingCartSvg/ShoppingCartS
 import CartPopupItem from './CartPopupItem'
 import styles from '@/styles/cartPopup/index.module.scss'
 import spinnerStyles from '@/styles/spinner/index.module.scss'
-import { getItemLocalStorageUserId } from '@/localStorageUser'
+import { getLocalStorageUser } from '@/localStorageUser'
 
 const CartPopup = forwardRef<HTMLDivElement, IWrappedComponentProps>(
   ({ open, setOpen }, ref) => {
-    const localUserId = getItemLocalStorageUserId().userId
+    const localUserId = getLocalStorageUser().userId
     const user = useStore($user)
     const shoppingCart = useStore($shoppingCart)
     const totalPrice = useStore($totalPrice)
