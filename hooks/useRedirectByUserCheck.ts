@@ -1,4 +1,4 @@
-import { checkUserAuthFx } from '@/app/api/auth'
+import { getTokenFx } from '@/app/api/auth'
 import { setUser } from '@/context/user'
 import { getLocalStorageUser } from '@/localStorageUser'
 import { useRouter } from 'next/router'
@@ -11,22 +11,19 @@ const useRedirectByUserCheck = (isAuthPage = false) => {
 
   useEffect(() => {
     const checkUser = async () => {
-      const localUser = getLocalStorageUser().userId
-      if (localUser) {
-        const user = await checkUserAuthFx(`/users/${localUser}`)
+      const localToken = getLocalStorageUser().token
+      console.log(localToken)
+
+      if (localToken) {
+        const user = await getTokenFx(localToken)
         console.log(user)
-
-        const loginCheckData = await checkUserAuthFx('/users/login-check')
-        console.log('loginCheckData')
-        console.log(loginCheckData)
-
         if (isAuthPage) {
           if (!user) {
             setShouldLoadContent(true)
             return
           }
 
-          router.push('/catalog')
+          router.push('/dashboard')
           return
         }
 

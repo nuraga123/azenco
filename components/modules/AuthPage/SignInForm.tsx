@@ -34,15 +34,14 @@ const SignInForm = () => {
         username: data.name,
         password: data.password,
       })
-
-      debugger
-
       resetField('name')
       resetField('password')
 
+      // После успешного входа
       if (userData?.user) {
         const userDataOne = userData.user
 
+        localStorage.setItem('token', userDataOne.token)
         localStorage.setItem('userId', userDataOne.userId)
         localStorage.setItem('username', userDataOne.username)
         localStorage.setItem('email', userDataOne.email)
@@ -52,6 +51,7 @@ const SignInForm = () => {
           username: userDataOne.username,
           email: userDataOne.email,
         })
+
         router.push('/dashboard')
       }
 

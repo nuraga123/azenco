@@ -56,3 +56,22 @@ export const logoutFx = createEffect(async (url: string) => {
     toast.error((error as Error).message)
   }
 })
+
+export const getTokenFx = createEffect(async (token: string) => {
+  try {
+    const { data } = await api.post(
+      '/users/validate-token',
+      { token },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+
+    console.log(data)
+    return data
+  } catch (error) {
+    toast.error((error as Error).message)
+  }
+})
