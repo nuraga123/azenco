@@ -16,9 +16,10 @@ const ProductImg = ({ data, id }: { data: Product[]; id: number }) => {
     <>
       {!open && (
         <Image
+          style={{ cursor: 'pointer' }}
           src={picture}
-          width={48}
-          height={48}
+          width={30}
+          height={30}
           alt="img"
           onClick={showPicture}
         />

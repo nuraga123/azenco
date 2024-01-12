@@ -8,7 +8,7 @@ function Products() {
   return (
     <>
       {shouldLoadContent && (
-        <Layout title={'Products'}>
+        <Layout title={'Materiallar'}>
           <ProductsPage />
         </Layout>
       )}

@@ -1,11 +1,15 @@
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { getProductsFx } from '@/app/api/products'
-import { ProductsResponse } from '@/types/products'
+import { IProductsResponse } from '@/types/products'
 import ProductTable from '@/components/modules/ProductsPage/ProductTable'
+import { getLocalStorageUser } from '@/localStorageUser'
 import styles from '@/styles/products/index.module.scss'
 
 const ProductsPage = () => {
-  const [products, setProducts] = useState<ProductsResponse>({
+  const username = getLocalStorageUser().username === 'nuraga'
+
+  const [products, setProducts] = useState<IProductsResponse>({
     count: 0,
     rows: [],
   })
@@ -16,7 +20,7 @@ const ProductsPage = () => {
 
   const loadProducts = async () => {
     try {
-      const data: ProductsResponse = await getProductsFx(
+      const data: IProductsResponse = await getProductsFx(
         '/products?limit=20&offset=0&sortBy=asc'
       )
 
@@ -32,7 +36,14 @@ const ProductsPage = () => {
 
   return (
     <div>
-      <h1 className={styles.title}>Materiallar</h1>
+      <div className={styles.products__header}>
+        <h1 className={styles.title}>Materiallar</h1>
+        {username && (
+          <Link href={'/products/add-product'} legacyBehavior passHref>
+            <button className={styles.add__button}>Yeni Material Yarat</button>
+          </Link>
+        )}
+      </div>
 
       <ProductTable data={products} />
     </div>

@@ -23,16 +23,16 @@ const HeaderTop = () => {
 
   const navsArr: INavElement[] = [
     {
+      href: '/products',
+      title: 'Materiallar',
+    },
+    {
+      href: '/anbar',
+      title: 'Anbarlar',
+    },
+    {
       href: '/shipping-payment',
-      title: 'Çatdırılma və ödəniş',
-    },
-    {
-      href: '/catalog?offset=1&sortBy=asc',
-      title: 'Kataloq',
-    },
-    {
-      href: '/wholesale-buyers',
-      title: 'Topdan alıcılar üçün',
+      title: 'Çatdırılma',
     },
     {
       href: '/contacts',
