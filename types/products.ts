@@ -15,14 +15,16 @@ export interface IProductsResponse {
   rows: IProduct[]
 }
 
+export interface DataNewProduct {
+  azenco__code: string
+  name: string
+  type: string
+  unit: string
+  price: string
+  images: string
+}
+
 export interface addProductFxProps {
   url: string
-  new__product: {
-    name: string
-    type: string
-    price: string
-    unit: string
-    azenco__code: string
-    images: string
-  }
+  new__product: DataNewProduct
 }

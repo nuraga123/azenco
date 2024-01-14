@@ -1,10 +1,10 @@
 import React from 'react'
-import { Product, ProductsResponse } from '@/types/products'
+import { IProduct, IProductsResponse } from '@/types/products'
 import styles from '@/styles/products/index.module.scss'
 import ProductImg from './ProductImg'
 import { formatDateTime } from '@/utils/formatDateTime'
 
-const ProductTable = ({ data }: { data: ProductsResponse }) => {
+const ProductTable = ({ data }: { data: IProductsResponse }) => {
   const products = data.rows.length ? data.rows : []
 
   if (products.length === 0) {
@@ -30,7 +30,7 @@ const ProductTable = ({ data }: { data: ProductsResponse }) => {
           </tr>
         </thead>
         <tbody>
-          {products.map((product: Product, index: number) => (
+          {products.map((product: IProduct, index: number) => (
             <tr key={product.id} className={styles.tr}>
               <td className={styles.td}>{`${index + 1})`}</td>
               <td className={styles.td}>{product.azenco__code}</td>

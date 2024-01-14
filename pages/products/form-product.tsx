@@ -1,13 +1,17 @@
 import Layout from '@/components/layout/Layout'
-import AddProductPage from '@/components/templates/AddProductPage'
+import AddProductPage from '@/components/templates/FormProductPage'
 import useRedirectByUserCheck from '@/hooks/useRedirectByUserCheck'
 import { getLocalStorageUser } from '@/localStorageUser'
 import '@/styles/globals.css'
 import Link from 'next/link'
 
-function AddProduct() {
+const FormProduct = () => {
   const { shouldLoadContent } = useRedirectByUserCheck()
-  const username = getLocalStorageUser().username === 'nuraga'
+  const username =
+    getLocalStorageUser().username === `${process.env.NEXT_PUBLIC_ADMIN_NAME}`
+
+  console.log(`username =>`)
+  console.log(`username => ${username}`)
 
   if (username) {
     return (
@@ -23,7 +27,7 @@ function AddProduct() {
     return (
       <>
         {shouldLoadContent && (
-          <Layout title={'Yeni Materiallar Yarat'}>
+          <Layout title={'əsas səhifəyə qayidin'}>
             <Link href={'/dashboard'}>
               <span
                 style={{
@@ -47,4 +51,4 @@ function AddProduct() {
   }
 }
 
-export default AddProduct
+export default FormProduct

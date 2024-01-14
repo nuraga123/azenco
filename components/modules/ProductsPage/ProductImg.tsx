@@ -3,9 +3,9 @@ import Image from 'next/image'
 import { useState } from 'react'
 import picture from '@/public/icon/icons-image.png'
 import styles from '@/styles/products/index.module.scss'
-import { Product } from '@/types/products'
+import { IProduct } from '@/types/products'
 
-const ProductImg = ({ data, id }: { data: Product[]; id: number }) => {
+const ProductImg = ({ data, id }: { data: IProduct[]; id: number }) => {
   const [open, setOpen] = useState<boolean>(false)
   const showPicture = () => setOpen(true)
   const closePicture = () => setOpen(false)

@@ -107,6 +107,14 @@
   color: black;
 }
 
+.btnDisabled {
+  @extend .button;
+  background-color: grey;
+  color: white;
+  cursor: not-allowed;
+}
+
+// form
 .form {
   width: 280px;
   margin: 0 auto;
@@ -119,7 +127,7 @@
 
   div {
     font-size: 16px;
-    margin-bottom: 8px;
+    margin: 10px;
   }
 
   input {
