@@ -1,56 +1,92 @@
 import { useRouter } from 'next/router'
-import { FormEvent, useEffect, useState } from 'react'
+import { FormEvent, useState, useEffect } from 'react'
 import { toast } from 'react-toastify'
 import { addProductFx } from '@/app/api/products'
 import { DataNewProduct } from '@/types/products'
 import styles from '@/styles/products/index.module.scss'
 import spinnerStyles from '@/styles/spinner/index.module.scss'
 
-const FormProductPage = () => {
+const FormProductPage: React.FC = () => {
   const router = useRouter()
   const [spinner, setSpinner] = useState<boolean>(false)
   const [btnDisabled, setBtnDisabled] = useState<boolean>(true)
 
-  // azenco__code
+  // Состояния для полей формы
   const [azenco__code, setAzenco__code] = useState<string>('')
   const [azenco__codeErrorMessage, setAzenco__codeErrorMessage] =
     useState<string>('')
 
-  // name
   const [name, setName] = useState<string>('')
   const [nameErrorMessage, setNameErrorMessage] = useState<string>('')
 
-  // type
   const [type, setType] = useState<string>('')
   const [typeErrorMessage, setTypeErrorMessage] = useState<string>('')
 
-  // unit
   const [unit, setUnit] = useState<string>('')
   const [unitErrorMessage, setUnitErrorMessage] = useState<string>('')
 
-  // price
   const [price, setPrice] = useState<string>('')
   const [priceErrorMessage, setPriceErrorMessage] = useState<string>('')
 
   const [images, setImages] = useState<string>('')
 
-  const dataInputsProduct = {
-    azenco__code,
-    name,
-    type,
-    unit,
-    price,
-    images,
+  // Функции для валидации полей
+  const validateAzencoCode = () => {
+    if (azenco__code.length < 2 || azenco__code.length > 15) {
+      setAzenco__codeErrorMessage(
+        'Azenco code должен содержать от 2 до 15 символов'
+      )
+      return false
+    }
+    setAzenco__codeErrorMessage('')
+    return true
   }
 
-  const dataInputsProductError = [
-    azenco__codeErrorMessage,
-    nameErrorMessage,
-    typeErrorMessage,
-    unitErrorMessage,
-    priceErrorMessage,
-  ]
+  const validateName = () => {
+    if (name.length < 3 || name.length > 100) {
+      setNameErrorMessage('Name должно содержать от 3 до 100 символов')
+      return false
+    }
+    setNameErrorMessage('')
+    return true
+  }
 
+  const validatePrice = () => {
+    const priceRegex = /^\d+(\.\d{1,2})?$/
+    if (!priceRegex.test(price)) {
+      setPriceErrorMessage(
+        'Цена должна быть числом с не более чем двумя десятичными знаками'
+      )
+      return false
+    }
+    setPriceErrorMessage('')
+    return true
+  }
+
+  const validateTypeAndUnit = () => {
+    const minLength = 3
+    const maxLength = 35
+
+    if (type.length < minLength || type.length > maxLength) {
+      setTypeErrorMessage(
+        `Type должно содержать от ${minLength} до ${maxLength} символов`
+      )
+      return false
+    }
+
+    if (unit.length < minLength || unit.length > maxLength) {
+      setUnitErrorMessage(
+        `Unit должно содержать от ${minLength} до ${maxLength} символов`
+      )
+      return false
+    }
+
+    setTypeErrorMessage('')
+    setUnitErrorMessage('')
+    return true
+  }
+
+  // Функция для отправки данных формы
   const addProductAF = async (dataNewProduct: DataNewProduct) => {
     try {
       setSpinner(true)
@@ -58,8 +94,6 @@ const FormProductPage = () => {
         url: '/products/add',
         new__product: dataNewProduct,
       })
-
-      console.log(dataInputsProductError.length)
 
       console.log(result)
 
@@ -79,39 +113,42 @@ const FormProductPage = () => {
     }
   }
 
+  // Функция валидации данных формы
+  const validateInput = () =>
+    validateAzencoCode() &&
+    validateName() &&
+    validatePrice() &&
+    validateTypeAndUnit()
+
+  // Объект с данными формы
+  const dataInputsProduct = {
+    azenco__code,
+    name,
+    type,
+    unit,
+    price,
+    images,
+  }
+
+  // Функция для обработки события отправки формы
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    console.log(dataInputsProduct)
 
-    if (
-      dataInputsProduct.azenco__code.length >= 3 &&
-      dataInputsProduct.name &&
-      dataInputsProduct.type &&
-      dataInputsProduct.unit &&
-      dataInputsProduct.price
-    ) {
+    // Проверка валидации перед отправкой данных
+    if (validateInput()) {
       setBtnDisabled(false)
       addProductAF(dataInputsProduct)
-    }
-  }
-
-  useEffect(() => {
-    validateInput()
-  }, [dataInputsProduct])
-
-  const validateInput = () => {
-    if (
-      dataInputsProduct.azenco__code.length >= 3 &&
-      dataInputsProduct.name.length >= 3 &&
-      dataInputsProduct.type &&
-      dataInputsProduct.unit &&
-      dataInputsProduct.price
-    ) {
-      setBtnDisabled(false)
     } else {
-      setBtnDisabled(true)
+      toast.error('Пожалуйста, проверьте правильность введенных данных')
     }
   }
+
+  // Обновление состояния btnDisabled при изменении данных формы
+  useEffect(() => {
+    setBtnDisabled(!validateInput())
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [azenco__code, name, type, unit, price, images])
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
@@ -124,6 +161,9 @@ const FormProductPage = () => {
             value={azenco__code}
             onChange={(e) => setAzenco__code(e.target.value)}
           />
+          {azenco__codeErrorMessage && (
+            <div className={styles.error}>{azenco__codeErrorMessage}</div>
+          )}
         </div>
 
         <div className={styles.container}>
@@ -133,6 +173,9 @@ const FormProductPage = () => {
             type="text"
             onChange={(e) => setName(e.target.value)}
           />
+          {nameErrorMessage && (
+            <div className={styles.error}>{nameErrorMessage}</div>
+          )}
         </div>
 
         <div className={styles.container}>
@@ -142,6 +185,9 @@ const FormProductPage = () => {
             value={type}
             onChange={(e) => setType(e.target.value)}
           />
+          {typeErrorMessage && (
+            <div className={styles.error}>{typeErrorMessage}</div>
+          )}
         </div>
 
         <div className={styles.container}>
@@ -151,6 +197,9 @@ const FormProductPage = () => {
             value={unit}
             onChange={(e) => setUnit(e.target.value)}
           />
+          {unitErrorMessage && (
+            <div className={styles.error}>{unitErrorMessage}</div>
+          )}
         </div>
 
         <div className={styles.container}>
@@ -160,10 +209,13 @@ const FormProductPage = () => {
             type="text"
             onChange={(e) => setPrice(e.target.value)}
           />
+          {priceErrorMessage && (
+            <div className={styles.error}>{priceErrorMessage}</div>
+          )}
         </div>
 
         <div className={styles.container}>
-          <div>{`Şəkil (isteğe bağlı sahə)`}</div>
+          <div>{`Şəkil (isteğe bağlı саhе)`}</div>
           <input
             type="text"
             value={images}
