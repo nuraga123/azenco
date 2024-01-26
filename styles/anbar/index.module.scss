@@ -1,0 +1,33 @@
+.anbar {
+  max-width: 1200px;
+  width: 100%;
+  margin: 10px auto;
+  padding: 10px;
+
+  list-style: none;
+  border: 2px solid #000;
+  border-radius: 10px;
+
+  &__items {
+    border: 2px solid rgb(128, 0, 109);
+    padding: 5px;
+  }
+
+  &__item {
+    border: 2px solid green;
+    padding: 5px;
+    margin: 3px;
+  }
+}
+
+.title {
+  display: flex;
+  justify-content: center;
+  letter-spacing: 5px;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  border: 1px solid rgb(13, 202, 236);
+}
