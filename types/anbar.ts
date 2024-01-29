@@ -11,6 +11,25 @@ export interface AnbarProduct {
   updatedAt: string
 }
 
+export interface AnbarProductProps {
+  createdAt: string
+  id: number
+  img: string
+  name: string
+  ordered: boolean
+  previous_stock: string
+  previous_total_price: string
+  price: string
+  productId: number
+  stock: string
+  total_price: string
+  type: string
+  unit: string
+  updatedAt: string
+  userId: number
+  username: string
+}
+
 export interface AnbarUser {
   id: number
   username: string
