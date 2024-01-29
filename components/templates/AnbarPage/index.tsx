@@ -2,17 +2,16 @@
 import React from 'react'
 import AnbarImg from '@/public/img/garage-icon.jpg'
 import styles from '@/styles/anbar/index.module.scss'
-import {Anbars} from '@/types/anbar'
-
+import { Anbars } from '@/types/anbar'
 
 const AnbarPage = () => {
-  const serverData: Anbars  = {
+  const serverData: Anbars = {
     AnbarUsers: [
       {
         username: 'ferid',
         id: 1,
         anbar: [
-          { 
+          {
             userId: 1,
             productId: 1,
             name: 'des',
@@ -35,13 +34,13 @@ const AnbarPage = () => {
             images: 'des',
             createdAt: 'des',
             updatedAt: 'des',
-          },        
-        ]
+          },
+        ],
       },
-    
+
       {
         id: 2,
-        
+
         username: 'tural',
         anbar: [
           {
@@ -70,7 +69,7 @@ const AnbarPage = () => {
           },
         ],
       },
-    ]
+    ],
   }
 
   return (
@@ -78,15 +77,15 @@ const AnbarPage = () => {
       <h1 className={styles.title}>Anbar Page</h1>
 
       <div className={styles.anbar__items}>
-        {serverData.Anbars.map((el, index) => (
+        {serverData.AnbarUsers.map((el, index) => (
           <li key={index} className={styles.anbar__item}>
             <div className={styles.container}>
               <img src={AnbarImg.src} alt="d" width={50} height={35} />
-              Anbar {el.username}
+              {`${index + 1}) ${el.username} Anbar`}
             </div>
             <div>
               {el.anbar.map((product, indexProduct) => (
-                
+                <ul key={indexProduct}>{product.azenco__code}</ul>
               ))}
             </div>
           </li>
