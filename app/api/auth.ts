@@ -75,3 +75,14 @@ export const getTokenFx = createEffect(async (token: string) => {
     toast.error((error as Error).message)
   }
 })
+
+export const getWorkingServer = createEffect(async () => {
+  try {
+    const { data } = await api.get('/users/work')
+
+    console.log(data)
+    return data
+  } catch (error) {
+    toast.error((error as Error).message)
+  }
+})

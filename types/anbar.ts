@@ -12,22 +12,23 @@ export interface AnbarProduct {
 }
 
 export interface AnbarProductProps {
-  createdAt: string
-  id: number
-  img: string
-  name: string
-  ordered: boolean
-  previous_stock: string
-  previous_total_price: string
-  price: string
-  productId: number
-  stock: string
-  total_price: string
-  type: string
-  unit: string
-  updatedAt: string
-  userId: number
-  username: string
+  id?: number
+  userId?: number
+  azenco__code?: string
+  name?: string
+  img?: string
+  ordered?: boolean
+  previous_stock?: string
+  previous_total_price?: string
+  price?: string
+  productId?: number
+  stock?: string
+  total_price?: string
+  type?: string
+  unit?: string
+  username?: string
+  updatedAt?: string
+  createdAt?: string
 }
 
 export interface AnbarUser {

@@ -29,5 +29,38 @@
 .container {
   display: flex;
   align-items: center;
-  border: 1px solid rgb(13, 202, 236);
+}
+
+.table {
+  max-width: 1400px;
+  margin: 10px auto;
+  padding: 10px;
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+
+  .ordered {
+    background-color: yellow;
+    font-weight: 1000;
+  }
+
+  th {
+    background-color: #4caf50;
+    padding: 12px;
+    text-align: left;
+    border: 2px solid #616161;
+  }
+
+  td {
+    border: 2px solid #616161;
+    padding: 12px;
+  }
+
+  tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+
+  tr:hover {
+    background-color: #e7e7e7;
+  }
 }

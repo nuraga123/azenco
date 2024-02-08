@@ -7,6 +7,7 @@ import '@/styles/globals.css'
 
 function Auth() {
   const { shouldLoadContent } = useRedirectByUserCheck(true)
+
   return (
     <>
       <Head>

@@ -19,6 +19,22 @@ export const getAnbarsFx = createEffect(async (url: string) => {
   }
 })
 
+export const getAnbarOneFx = createEffect(async (url: string) => {
+  try {
+    const token = getLocalStorageUser().token
+    const { data } = await api.get(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+
+    console.log(data)
+    return data
+  } catch (error) {
+    console.log(error)
+  }
+})
+
 export const addProductFx = createEffect(
   async ({ url, new__product }: addProductFxProps) => {
     try {
