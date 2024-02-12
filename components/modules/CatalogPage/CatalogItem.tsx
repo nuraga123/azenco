@@ -1,6 +1,4 @@
 import { useStore } from 'effector-react'
-import Link from 'next/link'
-import Image from 'next/image'
 import { removeFromCartFx } from '@/app/api/shopping-cart'
 import { IBoilerPart } from '@/types/boilerparts'
 import { $mode } from '@/context/mode'
@@ -20,8 +18,6 @@ import styles from '@/styles/catalog/index.module.scss'
 import spinnerStyles from '@/styles/spinner/index.module.scss'
 
 const CatologItem = ({ item }: { item: IBoilerPart }) => {
-  const imageUrl = JSON.parse(item.images)[0]
-
   const spinner = useStore(removeFromCartFx.pending)
   const mode = useStore($mode)
   const darkModeClass = mode === 'dark' ? `${styles.dark_mode}` : ''
