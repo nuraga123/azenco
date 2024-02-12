@@ -11,6 +11,8 @@
   &__items {
     border: 2px solid rgb(128, 0, 109);
     padding: 5px;
+    display: flex;
+    flex-direction: column;
   }
 
   &__item {
@@ -62,5 +64,70 @@
 
   tr:hover {
     background-color: #e7e7e7;
+  }
+}
+
+// add to anbar form styles
+.add_to_anbar_form {
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 20px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+
+  label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #333;
+  }
+
+  input {
+    width: calc(100% - 20px);
+    padding: 15px;
+    margin-top: 5px;
+    border: none;
+    border-radius: 10px;
+    background-color: #eee;
+    transition:
+      background-color 0.3s,
+      transform 0.2s;
+
+    &:focus {
+      background-color: #ddd;
+      transform: translateY(-2px);
+    }
+  }
+
+  button {
+    width: calc(100% - 20px);
+    padding: 15px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition:
+      background-color 0.3s,
+      transform 0.2s;
+    margin-top: 20px;
+
+    &:hover {
+      background-color: #0056b3;
+      transform: translateY(-2px);
+    }
+  }
+
+  .error_message {
+    color: red;
+    margin-top: 10px;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .add_to_anbar_form {
+    max-width: 100%;
   }
 }

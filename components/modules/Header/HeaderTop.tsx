@@ -42,6 +42,10 @@ const HeaderTop = () => {
       href: '/about',
       title: 'Şirkət haqqında',
     },
+    {
+      href: '/catalog',
+      title: 'catalog',
+    },
   ]
 
   return (

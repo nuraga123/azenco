@@ -29,6 +29,22 @@ const AnbarPage = () => {
     getAnbarServer()
   }, [])
 
+  const filterUsernameAnbarList = anbars.reduce(
+    (unique: AnbarProductProps[], item) => {
+      const existingItem = unique.find(
+        (user) => user.username === item.username
+      )
+      if (!existingItem) {
+        unique.push(item)
+      }
+      return unique
+    },
+    []
+  )
+
+  console.log('filterUsernameAnbarList')
+  console.log(filterUsernameAnbarList)
+
   return (
     <div className={styles.anbar}>
       <h1 className={styles.title}>Anbar Səhifəsi</h1>
@@ -45,12 +61,17 @@ const AnbarPage = () => {
             }}
           />
         ) : anbars.length ? (
-          anbars.map((el, index) => (
-            <Link key={index} href={`/anbar/${el.id}`} passHref legacyBehavior>
+          filterUsernameAnbarList.map((el, index) => (
+            <Link
+              key={index}
+              href={`/anbar/${el.userId}`}
+              passHref
+              legacyBehavior
+            >
               <a className={styles.anbar__item}>
                 <div className={styles.container}>
                   <Image src={AnbarImg.src} alt="d" width={50} height={35} />
-                  {`${index + 1}) ${el.username} Anbar`}
+                  {`${index + 1}) ${el.username} Anbar ${el.userId}`}
                 </div>
               </a>
             </Link>

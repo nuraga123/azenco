@@ -42,18 +42,6 @@ const CatologItem = ({ item }: { item: IBoilerPart }) => {
 
   return (
     <li className={`${styles.catalog__list__item} ${darkModeClass}`}>
-      <Link href={`/catalog/${item.id}`} passHref legacyBehavior>
-        <a target="_blank" rel="noopener noreferrer">
-          <Image
-            src={imageUrl}
-            alt={item.name}
-            width={200}
-            height={200}
-            priority={true}
-          />
-        </a>
-      </Link>
-
       <div className={styles.catalog__list__item__inner}>
         <CatalogTextComponent keyText={'ID'} item={item.id} />
 
