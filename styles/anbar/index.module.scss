@@ -67,8 +67,8 @@
   }
 }
 
-// add to anbar form styles
-.add_to_anbar_form {
+// transfer_stock_form
+.transfer_stock_form {
   max-width: 400px;
   margin: 20px auto;
   padding: 20px;
@@ -76,6 +76,22 @@
   border-radius: 20px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   overflow: hidden;
+
+  h2 {
+    text-align: center;
+    margin: 10px 0;
+  }
+
+  .form__item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid;
+    font-size: 22px;
+    letter-spacing: 1px;
+    padding: 10px 0;
+    margin: 0 0 5px 0;
+  }
 
   label {
     display: block;
@@ -86,6 +102,7 @@
 
   input {
     width: calc(100% - 20px);
+    font-size: 22px;
     padding: 15px;
     margin-top: 5px;
     border: none;
@@ -96,13 +113,15 @@
       transform 0.2s;
 
     &:focus {
-      background-color: #ddd;
-      transform: translateY(-2px);
+      border: 2px solid #007bff;
+      outline: none;
     }
   }
 
   button {
     width: calc(100% - 20px);
+    font-size: 18px;
+    letter-spacing: 2px;
     padding: 15px;
     background-color: #007bff;
     color: #fff;
@@ -127,7 +146,7 @@
 }
 
 @media only screen and (max-width: 600px) {
-  .add_to_anbar_form {
+  .transfer_stock_form {
     max-width: 100%;
   }
 }

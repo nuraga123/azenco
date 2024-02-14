@@ -3,11 +3,8 @@ import Link from 'next/link'
 import { useStore } from 'effector-react'
 import { usePrice } from '@/hooks/usePrice'
 import DeleteSvg from '@/components/elements/DeleteSvg/DeleteSvg'
-import CartItemCounter from '@/components/elements/CartItemCounter/CartItemCounter'
 import { $mode } from '@/context/mode'
 import { IShoppingCartItem } from '@/types/shopping-cart'
-import { formatFromPriceToString } from '@/utils/shopping-cart'
-import { formatPrice } from '@/utils/common'
 
 import styles from '@/styles/cartPopup/index.module.scss'
 import spinnerStyles from '@/styles/spinner/index.module.scss'
@@ -23,12 +20,11 @@ const CartPopupItem = ({ item, index }: ICartPopupItemProps) => {
   const spinnerDarkModeClass =
     mode === 'dark' ? `${spinnerStyles.dark_mode}` : ''
 
-  const { price, spinner, decreasePrice, deleteCartItem, increasePrice } =
-    usePrice({
-      count: item.count,
-      partId: item.partId,
-      initialPrice: item.price,
-    })
+  const { spinner, deleteCartItem } = usePrice({
+    count: item.count,
+    partId: item.partId,
+    initialPrice: item.price,
+  })
 
   return (
     <li className={styles.cart__popup__list__item}>
@@ -59,22 +55,8 @@ const CartPopupItem = ({ item, index }: ICartPopupItemProps) => {
         </button>
       </div>
       <div className={styles.cart__popup__list__item__bottom}>
-        {item.in_stock === 0 ? (
-          <span className={styles.cart__popup__list__item__empty}>
-            stokda yoxdur
-          </span>
-        ) : (
-          <CartItemCounter
-            totalCount={item.in_stock}
-            partId={item.partId}
-            initialCount={item.count}
-            increasePrice={increasePrice}
-            decreasePrice={decreasePrice}
-          />
-        )}
-        <span className={`${styles.cart__popup__list__price} ${darkModeClass}`}>
-          {formatPrice(+formatFromPriceToString(price))}
-        </span>
+        qiymet: {item.price}
+        anbar Adi: {item.userId}
       </div>
     </li>
   )

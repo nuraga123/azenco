@@ -20,9 +20,9 @@ export interface AnbarProductProps {
   ordered?: boolean
   previous_stock?: string
   previous_total_price?: string
-  price?: string
+  price: string
   productId?: number
-  stock?: string
+  stock: string
   total_price?: string
   type?: string
   unit?: string
@@ -39,4 +39,21 @@ export interface AnbarUser {
 
 export interface Anbars {
   AnbarUsers: AnbarUser[]
+}
+
+export interface IOrderTransfer {
+  fromUserId: number
+  fromUsername: string
+  toUserId: number
+  toUsername: string
+  product: AnbarProductProps
+}
+
+export interface ITransfer extends IOrderTransfer {
+  quantity?: number
+}
+
+export interface ITransferSend {
+  url: string
+  transfer: ITransfer
 }

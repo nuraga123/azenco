@@ -1,13 +1,21 @@
+import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
-import { AnbarProductProps } from '@/types/anbar'
+
 import { getAnbarOneFx } from '@/app/api/anbar'
+import { AnbarProductProps } from '@/types/anbar'
 import styles from '@/styles/anbar/index.module.scss'
 import spinnerStyles from '@/styles/spinner/index.module.scss'
+import { setTransfer } from '@/context/transfer'
+import { useStore } from 'effector-react'
+import { $user } from '@/context/user'
+import { numberMetricFormat } from '@/utils/anbar'
 
 const AnbarItem = ({ userId }: { userId: string | number }) => {
+  const user = useStore($user)
+  console.log(user)
+
   const [spinner, setSpinner] = useState(false)
   const [anbar, setAnbar] = useState<AnbarProductProps[]>([])
-  const [selectedItems, setSelectedItems] = useState<string[]>([])
 
   useEffect(() => {
     const getAnbarServer = async () => {
@@ -28,25 +36,17 @@ const AnbarItem = ({ userId }: { userId: string | number }) => {
     getAnbarServer()
   }, [userId])
 
-  const numberMetricFormat = (el: string | undefined) => {
-    if (typeof el === 'undefined') {
-      return 'rəqəm deyil'
-    } else {
-      return Intl.NumberFormat().format(Number(el || 0))
+  const handleOrderClick = (item: AnbarProductProps) => {
+    if (!!item) {
+      setTransfer({
+        fromUserId: item.userId ? +item.userId : 0,
+        fromUsername: item.username ? item.username : '',
+        toUserId: +user.userId ? +user.userId : 0,
+        toUsername: user.username ? user.username : '',
+        product: item,
+      })
     }
   }
-
-  const toggleItemSelection = (itemId: string) => {
-    setSelectedItems((prevSelectedItems) => {
-      if (prevSelectedItems.includes(itemId)) {
-        return prevSelectedItems.filter((id) => id !== itemId)
-      } else {
-        return [...prevSelectedItems, itemId]
-      }
-    })
-  }
-
-  console.log(selectedItems)
 
   return (
     <div
@@ -89,31 +89,11 @@ const AnbarItem = ({ userId }: { userId: string | number }) => {
                         justifyContent: 'space-between',
                       }}
                     >
-                      <button
-                        onClick={() => toggleItemSelection(String(item.id))}
-                      >
-                        {item.ordered || selectedItems.includes(String(item.id))
-                          ? ''
-                          : 'заказать'}
-                      </button>
-
-                      {selectedItems.includes(String(item.id)) && (
-                        <button
-                          onClick={() => toggleItemSelection(String(item.id))}
-                        >
-                          Отменить
+                      <Link href={'/anbar/transfer-form'}>
+                        <button onClick={() => handleOrderClick(item)}>
+                          заказать
                         </button>
-                      )}
-
-                      {item.ordered ? (
-                        ''
-                      ) : (
-                        <input
-                          type="checkbox"
-                          checked={selectedItems.includes(String(item.id))}
-                          onChange={() => toggleItemSelection(String(item.id))}
-                        />
-                      )}
+                      </Link>
                     </div>
                   </td>
                   <td className={item.ordered ? styles.ordered : ''}>

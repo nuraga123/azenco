@@ -1,16 +1,12 @@
-import Link from 'next/link'
-import SearchInput from '@/components/elements/SearchInput/SearchInput'
-import ModeToggler from '@/components/elements/ModeToggler/ModeToggler'
-import { $mode } from '@/context/mode'
-import { useStore } from 'effector-react'
-import CartPopup from './CartPopup/CartPopup'
-import { useMediaQuery } from '@/hooks/useMediaQuery'
-import styles from '@/styles/header/index.module.scss'
 import Image from 'next/image'
+import Link from 'next/link'
+import { useStore } from 'effector-react'
+
+import SearchInput from '@/components/elements/SearchInput/SearchInput'
+import { $mode } from '@/context/mode'
+import styles from '@/styles/header/index.module.scss'
 
 const HeaderBottom = () => {
-  const isMedia950 = useMediaQuery(950)
-
   const mode = useStore($mode)
   const darkModeClass = mode === 'dark' ? `${styles.dark_mode}` : ''
 
@@ -33,11 +29,6 @@ const HeaderBottom = () => {
 
         <div className={styles.header__search}>
           <SearchInput />
-        </div>
-
-        <div className={styles.header__shopping_cart}>
-          {!isMedia950 && <ModeToggler />}
-          <CartPopup />
         </div>
       </div>
     </div>
