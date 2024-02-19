@@ -2,7 +2,7 @@ import { ChangeEvent, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { useStore } from 'effector-react'
 
-import { productsAnbarSendToUserFx } from '@/app/api/anbar'
+// import { productsAnbarSendToUserFx } from '@/app/api/anbar'
 import styles from '@/styles/anbar/index.module.scss'
 import { $transfer } from '@/context/transfer'
 import { ITransfer } from '@/types/anbar'
@@ -15,12 +15,12 @@ const TransferStockForm = () => {
 
   useEffect(() => {
     // Если объект пустой, перенаправляем пользователя на страницу `/anbar`
-    if (transferState.toUsername === '') {
+    if (transferState.toUserId === 0) {
       router.push(`/anbar`)
     }
   }, [router, transferState])
 
-  const transferMAXSTOCK = +transferState?.product?.stock
+  const transferMaxStock: number = +transferState?.product?.stock
 
   const [formData, setFormData] = useState<{ quantity: number }>({
     quantity: 0,
@@ -48,7 +48,9 @@ const TransferStockForm = () => {
         ? transferState.product.stock
         : 0
     ) {
-      setError('Нельзя перевести более 5 единиц товара за один раз')
+      setError(`
+        Нельзя перевести более ${transferMaxStock} единиц товара за один раз
+      `)
       return
     }
 
@@ -57,15 +59,18 @@ const TransferStockForm = () => {
       quantity: +formData.quantity,
     }
 
-    try {
-      await productsAnbarSendToUserFx({
-        url: 'anbar/transfer-stock',
-        transfer: transferForm,
-      })
+    console.log(transferForm)
 
-      toast.success('Товар успешно переведен между амбарами!')
-      setFormData({ quantity: formData.quantity })
-      setError('')
+    try {
+      /*
+        await productsAnbarSendToUserFx({
+          url: 'anbar/transfer-stock',
+          transfer: transferForm,
+        })
+        toast.success('Товар успешно переведен между амбарами!')
+        setFormData({ quantity: formData.quantity })
+        setError('')
+      */
     } catch (error) {
       console.error('Ошибка при переводе товара между амбарами:', error)
       toast.error('Ошибка при переводе товара между амбарами')
@@ -75,7 +80,7 @@ const TransferStockForm = () => {
 
   const sum = (stok: number, price: number | undefined) => {
     if (stok && price) {
-      return stok * price
+      return +stok * +price
     }
 
     return 0
@@ -115,7 +120,7 @@ const TransferStockForm = () => {
           <i>Maksimal stok</i>
         </div>
         <div>
-          <h3>{numberMetricFormat(transferMAXSTOCK)}</h3>
+          <h3>{numberMetricFormat(transferMaxStock)}</h3>
         </div>
       </div>
 

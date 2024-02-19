@@ -12,7 +12,7 @@ import { numberMetricFormat } from '@/utils/anbar'
 
 const AnbarItem = ({ userId }: { userId: string | number }) => {
   const user = useStore($user)
-  console.log(user)
+  console.log(user.id)
 
   const [spinner, setSpinner] = useState(false)
   const [anbar, setAnbar] = useState<AnbarProductProps[]>([])
@@ -37,11 +37,13 @@ const AnbarItem = ({ userId }: { userId: string | number }) => {
   }, [userId])
 
   const handleOrderClick = (item: AnbarProductProps) => {
+    console.log(user)
+
     if (!!item) {
       setTransfer({
         fromUserId: item.userId ? +item.userId : 0,
         fromUsername: item.username ? item.username : '',
-        toUserId: +user.userId ? +user.userId : 0,
+        toUserId: +user.id ? +user.id : 0,
         toUsername: user.username ? user.username : '',
         product: item,
       })

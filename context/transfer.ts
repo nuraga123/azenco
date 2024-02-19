@@ -11,6 +11,9 @@ export const $transfer = transfer
     fromUsername: '',
     toUserId: 0,
     toUsername: '',
-    productId: 0,
+    product: {
+      price: '',
+      stock: '',
+    },
   })
   .on(setTransfer, (_, transfer) => transfer)
