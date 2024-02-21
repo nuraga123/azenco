@@ -1,11 +1,11 @@
 import Layout from '@/components/layout/Layout'
-import AddToAnbarForm from '@/components/templates/AnbarPage/AddToAnbarForm'
+import TransferStockForm from '@/components/templates/AnbarPage/TransferStockForm'
 import '@/styles/globals.css'
 
 function Anbar() {
   return (
     <Layout title={'Anbarlar'}>
-      <AddToAnbarForm />
+      <TransferStockForm />
     </Layout>
   )
 }

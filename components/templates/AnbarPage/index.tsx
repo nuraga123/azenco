@@ -71,7 +71,7 @@ const AnbarPage = () => {
               <a className={styles.anbar__item}>
                 <div className={styles.container}>
                   <Image src={AnbarImg.src} alt="d" width={50} height={35} />
-                  {`${index + 1}) ${el.username} Anbar ${el.userId}`}
+                  <div>{`${index + 1}) ${el.username} Anbar`}</div>
                 </div>
               </a>
             </Link>

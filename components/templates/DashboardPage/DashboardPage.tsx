@@ -38,34 +38,6 @@ const DashboardPage = () => {
     simulateProductCountChange()
   }, [simulateProductCountChange])
 
-  // const [newParts, setNewParts] = useState<IBoilerParts>({} as IBoilerParts)
-  // const [bestsellers, setBestsellers] = useState<IBoilerParts>(
-  //   {} as IBoilerParts
-  // )
-
-  // const [spinner, setSpiner] = useState<boolean>(false)
-
-  // useEffect(() => {
-  //   loadBoilerParts()
-  // }, [])
-
-  // const loadBoilerParts = async () => {
-  //   try {
-  //     setSpiner(true)
-  //     const bestsellers = await getBestsellersOrNewPartsFx(
-  //       '/boiler-parts/bestsellers'
-  //     )
-  //     setBestsellers(bestsellers)
-
-  //     const newParts = await getBestsellersOrNewPartsFx('/boiler-parts/new')
-  //     setNewParts(newParts)
-  //   } catch (error) {
-  //     toast.error((error as Error).message)
-  //   } finally {
-  //     setSpiner(false)
-  //   }
-  // }
-
   return (
     <section className={`${styles.dashboard}`}>
       <div className={`container`}>
@@ -90,33 +62,6 @@ const DashboardPage = () => {
             </AnimatePresence>
           )
         )}
-        {/*
-        <h2 className={`${styles.dashboard__title} ${darkModeClass}`}>
-          products
-        </h2>
-        <div className={styles.dashboard__parts}>
-          <h3 className={`${styles.dashboard__parts__title} ${darkModeClass}`}>
-            Bestsellers
-          </h3>
-          <DashboardSlider items={bestsellers.rows || []} spinner={spinner} />
-        </div>
-        <div className={styles.dashboard__parts}>
-          <h3 className={`${styles.dashboard__parts__title} ${darkModeClass}`}>
-            New products
-          </h3>
-          <DashboardSlider items={newParts.rows || []} spinner={spinner} />
-        </div>
-        <div className={styles.styles__about}>
-          <h3 className={`${styles.dashboard__parts__title} ${darkModeClass}`}>
-            About
-          </h3>
-          <p className={`${styles.dashboard__about__text} ${darkModeClass}`}>
-            hello world
-          </p>
-        </div> */}
-        <p className={`${styles.dashboard__about__text} ${darkModeClass}`}>
-          hello world
-        </p>
       </div>
     </section>
   )

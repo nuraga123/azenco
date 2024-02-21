@@ -14,7 +14,7 @@ const HeaderBottom = () => {
     <div className={`container ${styles.header__bottom}`}>
       <div className={`container ${styles.header__bottom__container}`}>
         <h1 className={styles.header__logo} id="header__logo">
-          <Link href="/dashboard" passHref legacyBehavior>
+          <Link href="/anbar/my" passHref legacyBehavior>
             <a className={styles.header__logo__link}>
               <Image src="/img/logo.svg" alt="logo" width={40} height={25} />
               <span

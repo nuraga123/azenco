@@ -7,7 +7,9 @@ import '@/styles/globals.css'
 
 function AnbarOnePage() {
   const { shouldLoadContent } = useRedirectByUserCheck()
+
   const router = useRouter()
+
   const userId = Array.isArray(router.query.anbarId)
     ? router.query.anbarId[0]
     : router.query.anbarId || '0'

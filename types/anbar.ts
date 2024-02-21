@@ -18,12 +18,12 @@ export interface AnbarProductProps {
   name?: string
   img?: string
   ordered?: boolean
-  previous_stock?: string
-  previous_total_price?: string
+  previous_stock: string
+  previous_total_price: string
   price: string
   productId?: number
   stock: string
-  total_price?: string
+  total_price: string
   type?: string
   unit?: string
   username?: string
@@ -50,7 +50,7 @@ export interface IOrderTransfer {
 }
 
 export interface ITransfer extends IOrderTransfer {
-  quantity?: number
+  quantity: number
 }
 
 export interface ITransferSend {

@@ -16,11 +16,12 @@ import styles from '@/styles/profileDropDown/index.module.scss'
 
 const ProfileDropDown = forwardRef<HTMLDivElement, IWrappedComponentProps>(
   ({ open, setOpen }, ref) => {
-    const localUserId = getLocalStorageUser().userId
-    const mode = useStore($mode)
-    const user = useStore($user)
     const router = useRouter()
+    const mode = useStore($mode)
     const darkModeClass = mode === 'dark' ? `${styles.dark_mode}` : ''
+
+    const { id, username, email } = useStore($user)
+    const { userIdStorage, usernameStorage, emailStorage } = getLocalStorageUser()
 
     const toggleProfileDropDown = () => setOpen(!open)
 
@@ -52,7 +53,7 @@ const ProfileDropDown = forwardRef<HTMLDivElement, IWrappedComponentProps>(
                   <span
                     className={`${styles.profile__dropdown__username} ${darkModeClass}`}
                   >
-                    {user.userId || localUserId}
+                    {id || userIdStorage}
                   </span>
                 </div>
                 <div>
@@ -60,7 +61,7 @@ const ProfileDropDown = forwardRef<HTMLDivElement, IWrappedComponentProps>(
                   <span
                     className={`${styles.profile__dropdown__username} ${darkModeClass}`}
                   >
-                    {user.username}
+                    {username || usernameStorage}
                   </span>
                 </div>
                 <div>
@@ -68,7 +69,7 @@ const ProfileDropDown = forwardRef<HTMLDivElement, IWrappedComponentProps>(
                   <span
                     className={`${styles.profile__dropdown__email} ${darkModeClass}`}
                   >
-                    {user.email}
+                    {email || emailStorage}
                   </span>
                 </div>
               </li>

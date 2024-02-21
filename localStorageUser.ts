@@ -5,10 +5,10 @@ export const getLocalStorageUser = () => {
   const tokenStorage = (localStorage.getItem('token') as string) || ''
 
   return {
-    userId: userIdStorage,
-    username: usernameStorage,
-    email: emailStorage,
-    token: tokenStorage,
+    userIdStorage,
+    usernameStorage,
+    emailStorage,
+    tokenStorage,
   }
 }
 

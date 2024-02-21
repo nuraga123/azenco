@@ -1,8 +1,10 @@
-export const numberMetricFormat = (num: string | undefined | number) => {
+export const numberMetricFormat = (num: string | number) => {
   if (typeof num === 'undefined') {
     return 'rəqəm deyil'
   } else {
-    const intlNumber = Intl.NumberFormat().format(Number(num || 0))
-    return Number(intlNumber).toFixed(2)
+    console.log(Intl.NumberFormat().format(Number('9.50')))
+
+    const intlNumber = Intl.NumberFormat().format(Number(num))
+    return Number(intlNumber)
   }
 }

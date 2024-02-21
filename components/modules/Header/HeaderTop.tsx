@@ -23,6 +23,10 @@ const HeaderTop = () => {
 
   const navsArr: INavElement[] = [
     {
+      href: '/anbar/my',
+      title: 'Mənim Anbarım',
+    },
+    {
       href: '/products',
       title: 'Materiallar',
     },
@@ -44,7 +48,7 @@ const HeaderTop = () => {
     },
     {
       href: '/catalog',
-      title: 'catalog',
+      title: 'Catalog',
     },
   ]
 

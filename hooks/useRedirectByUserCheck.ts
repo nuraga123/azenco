@@ -11,11 +11,10 @@ const useRedirectByUserCheck = (isAuthPage = false) => {
 
   useEffect(() => {
     const checkUser = async () => {
-      const localToken = getLocalStorageUser().token
-      console.log(localToken)
+      const { tokenStorage } = getLocalStorageUser()
 
-      if (localToken) {
-        const user = await getTokenFx(localToken)
+      if (tokenStorage) {
+        const user = await getTokenFx(tokenStorage)
         console.log(user)
         if (isAuthPage) {
           if (!user) {
@@ -23,7 +22,7 @@ const useRedirectByUserCheck = (isAuthPage = false) => {
             return
           }
 
-          router.push('/products')
+          router.push('/anbar/my')
           return
         }
 
@@ -42,7 +41,6 @@ const useRedirectByUserCheck = (isAuthPage = false) => {
       checkUser()
     }
   }, [isAuthPage, router])
-
   return { shouldLoadContent }
 }
 

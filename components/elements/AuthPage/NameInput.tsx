@@ -10,19 +10,18 @@ const NameInput = ({ register, errors }: IAuthPageInput) => {
 
   return (
     <label className={styles.form__label}>
+      <span style={{ textAlign: 'center', marginBottom: '10px' }}>
+        Məsələn: Nurağa Yusifli Yusif
+      </span>
       <input
         {...register('name', {
           required: 'adınızı yazın',
           minLength: 4,
-          maxLength: 15,
-          pattern: {
-            value: /^[a-zA-Z0-9]+$/,
-            message: 'Ad yalnız hərf və rəqəmlərdən ibarət ola bilər!',
-          },
+          maxLength: 100,
         })}
         className={styles.form__input}
         type="text"
-        placeholder={'Adınızı yazın'}
+        placeholder={'Ad, soyad və ata adı'}
       />
       {errors.name && (
         <span className={`${styles.error_alert} ${darkModeClass}`}>
@@ -36,7 +35,7 @@ const NameInput = ({ register, errors }: IAuthPageInput) => {
       )}
       {errors.name && errors.name.type === 'maxLength' && (
         <span className={`${styles.error_alert} ${darkModeClass}`}>
-          maksimum 15 simvol
+          maksimum 100 simvol
         </span>
       )}
     </label>

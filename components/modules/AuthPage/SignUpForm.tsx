@@ -30,7 +30,7 @@ const SignUpForm = ({ switchForm }: { switchForm: () => void }) => {
       setSpinner(true)
       const userData = await singUpFx({
         url: '/users/signup',
-        username: data.name,
+        username: `${data.name}`,
         password: data.password,
         email: data.email,
       })

@@ -1,6 +1,6 @@
-import { ILayoutProps } from '@/types/common'
-import Header from '@/components/modules/Header/Header'
 import Head from 'next/head'
+import Header from '@/components/modules/Header/Header'
+import { ILayoutProps } from '@/types/common'
 
 const Layout = ({ children, title }: ILayoutProps) => (
   <>
@@ -13,7 +13,7 @@ const Layout = ({ children, title }: ILayoutProps) => (
     </Head>
     <Header />
     <div className="overlay" />
-    {children}
+    <div>{children}</div>
   </>
 )
 
