@@ -18,7 +18,7 @@ const AnbarItem = ({
   userId: string | number
   tableActions: boolean
 }) => {
-  const { username, id } = useStore($user)
+  const user = useStore($user)
   const [spinner, setSpinner] = useState(false)
   const [anbar, setAnbar] = useState<AnbarProductProps[]>([])
 
@@ -27,7 +27,7 @@ const AnbarItem = ({
       try {
         setSpinner(true)
         const data: AnbarProductProps[] = await getAnbarOneFx(`anbar/${userId}`)
-        console.log(data.filter((el) => el.userId !== id))
+        console.log(data.filter((el) => el.userId !== user.userId))
         if (data) {
           setAnbar(data)
         } else {
@@ -42,15 +42,15 @@ const AnbarItem = ({
     }
 
     getAnbarServer()
-  }, [userId])
+  }, [user.userId, userId])
 
   const handleOrderClick = (item: AnbarProductProps) => {
-    if (!!item && id && username) {
+    if (!!item && user.userId && user.username) {
       setTransfer({
-        fromUserId: item.userId ? +item.userId : 0,
-        fromUsername: item.username ? item.username : '',
-        toUserId: +id,
-        toUsername: username,
+        fromUserId: +item.userId,
+        fromUsername: item.username,
+        toUserId: +user.userId,
+        toUsername: user.username,
         product: item,
       })
     }
