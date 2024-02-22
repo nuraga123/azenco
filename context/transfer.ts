@@ -14,6 +14,21 @@ export const $transfer = transfer
     product: {
       price: '',
       stock: '',
+      id: 0,
+      userId: 0,
+      azenco__code: '',
+      name: '',
+      img: '',
+      ordered: false,
+      previous_stock: '',
+      previous_total_price: '',
+      productId: 0,
+      total_price: '',
+      type: '',
+      unit: '',
+      username: '',
+      updatedAt: '',
+      createdAt: '',
     },
   })
   .on(setTransfer, (_, transfer) => transfer)

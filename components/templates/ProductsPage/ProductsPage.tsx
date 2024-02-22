@@ -8,7 +8,7 @@ import styles from '@/styles/products/index.module.scss'
 
 const ProductsPage = () => {
   const { usernameStorage } = getLocalStorageUser()
-  const username = usernameStorage === `${process.env.NEXT_PUBLIC_ADMIN_NAME}`
+  const username = usernameStorage === `${process.env.ADMIN_NAME}`
 
   const [products, setProducts] = useState<IProductsResponse>({
     count: 0,

@@ -6,10 +6,19 @@ import { AnbarProductProps } from '@/types/anbar'
 import { getAnbarsFx } from '@/app/api/anbar'
 import styles from '@/styles/anbar/index.module.scss'
 import spinnerStyles from '@/styles/spinner/index.module.scss'
+import { useStore } from 'effector-react'
+import { $user } from '@/context/user'
+import { getLocalStorageUser } from '@/localStorageUser'
 
 const AnbarPage = () => {
-  const [spinner, setSpinner] = useState(false)
+  const { username } = useStore($user)
+  const { usernameStorage } = getLocalStorageUser()
+  const [spinner, setSpinner] = useState<boolean>(false)
   const [anbars, setAnbars] = useState<AnbarProductProps[]>([])
+
+  const adminCheckUsername: boolean =
+    process.env.ADMIN_NAME === username ||
+    process.env.ADMIN_NAME === usernameStorage
 
   const getAnbarServer = async () => {
     try {
@@ -50,6 +59,13 @@ const AnbarPage = () => {
       <h1 className={styles.title}>Anbar Səhifəsi</h1>
 
       <div className={styles.anbar__items}>
+        {adminCheckUsername && (
+          <div>
+            <Link href={`anbar/add-form`} passHref legacyBehavior>
+              <a>Создать Анбар</a>
+            </Link>
+          </div>
+        )}
         {spinner ? (
           <div
             className={spinnerStyles.spinner}
