@@ -27,7 +27,7 @@ import { getLocalStorageUser } from '@/localStorageUser'
 const CartPopup = forwardRef<HTMLDivElement, IWrappedComponentProps>(
   ({ open, setOpen }, ref) => {
     const { userIdStorage } = getLocalStorageUser()
-    const { id } = useStore($user)
+    const { userId } = useStore($user)
     const shoppingCart = useStore($shoppingCart)
     const totalPrice = useStore($totalPrice)
     const mode = useStore($mode)
@@ -64,14 +64,14 @@ const CartPopup = forwardRef<HTMLDivElement, IWrappedComponentProps>(
     const loadCartItems = useCallback(async () => {
       try {
         const cartItems: IShoppingCartItem[] = await getCartItemsFx(
-          `/shopping-cart/${id || userIdStorage}`
+          `/shopping-cart/${userId || userIdStorage}`
         )
 
         setShoppingCart(cartItems)
       } catch (error) {
         toast.error((error as Error).message)
       }
-    }, [id, userIdStorage])
+    }, [userId, userIdStorage])
 
     useEffect(() => {
       loadCartItems()
