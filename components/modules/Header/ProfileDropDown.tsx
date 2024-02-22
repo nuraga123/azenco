@@ -20,7 +20,7 @@ const ProfileDropDown = forwardRef<HTMLDivElement, IWrappedComponentProps>(
     const mode = useStore($mode)
     const darkModeClass = mode === 'dark' ? `${styles.dark_mode}` : ''
 
-    const { id, username, email } = useStore($user)
+    const { userId, username, email } = useStore($user)
     const { userIdStorage, usernameStorage, emailStorage } =
       getLocalStorageUser()
 
@@ -54,7 +54,7 @@ const ProfileDropDown = forwardRef<HTMLDivElement, IWrappedComponentProps>(
                   <span
                     className={`${styles.profile__dropdown__username} ${darkModeClass}`}
                   >
-                    {id || userIdStorage}
+                    {userId || userIdStorage}
                   </span>
                 </div>
                 <div>

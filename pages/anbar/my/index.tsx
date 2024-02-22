@@ -14,13 +14,13 @@ const MyAnbar = () => {
   const [loading, setLoading] = useState(true)
 
   // Получаем ID пользователя
-  const { id, username } = useStore($user)
+  const { userId, username } = useStore($user)
   const { userIdStorage } = getLocalStorageUser()
-  const userId = id || userIdStorage || 0
+  const userIdResult = userId || userIdStorage || 0
 
   useEffect(() => {
-    if (id) setLoading(false)
-  }, [id])
+    if (userIdResult) setLoading(false)
+  }, [userIdResult])
 
   // Отображаем спиннер, если происходит загрузка
   // или контент не должен загружаться
