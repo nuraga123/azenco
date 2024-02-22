@@ -39,7 +39,7 @@ const MyAnbar = () => {
   // и контент должен загружаться
   return (
     <Layout title={`Anbar | ${username}`}>
-      <AnbarItem userId={userId} tableActions={false} />
+      <AnbarItem userId={userIdResult} tableActions={false} />
     </Layout>
   )
 }
