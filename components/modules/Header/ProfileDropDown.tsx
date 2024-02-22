@@ -21,7 +21,8 @@ const ProfileDropDown = forwardRef<HTMLDivElement, IWrappedComponentProps>(
     const darkModeClass = mode === 'dark' ? `${styles.dark_mode}` : ''
 
     const { id, username, email } = useStore($user)
-    const { userIdStorage, usernameStorage, emailStorage } = getLocalStorageUser()
+    const { userIdStorage, usernameStorage, emailStorage } =
+      getLocalStorageUser()
 
     const toggleProfileDropDown = () => setOpen(!open)
 

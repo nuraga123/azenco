@@ -6,10 +6,10 @@ import { ITransferSend } from '@/types/anbar'
 
 export const getAnbarsFx = createEffect(async (url: string) => {
   try {
-    const token = getLocalStorageUser().token
+    const { tokenStorage } = getLocalStorageUser()
     const { data } = await api.get(url, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${tokenStorage}`,
       },
     })
 
@@ -22,10 +22,10 @@ export const getAnbarsFx = createEffect(async (url: string) => {
 
 export const getAnbarOneFx = createEffect(async (url: string) => {
   try {
-    const token = getLocalStorageUser().token
+    const { tokenStorage } = getLocalStorageUser()
     const { data } = await api.get(url, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${tokenStorage}`,
       },
     })
 
@@ -39,10 +39,10 @@ export const getAnbarOneFx = createEffect(async (url: string) => {
 export const addProductFx = createEffect(
   async ({ url, new__product }: addProductFxProps) => {
     try {
-      const token = getLocalStorageUser().token
+      const { tokenStorage } = getLocalStorageUser()
       const { data } = await api.post(url, new__product, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${tokenStorage}`,
         },
       })
 
@@ -57,10 +57,10 @@ export const addProductFx = createEffect(
 export const productsAnbarSendToUserFx = createEffect(
   async ({ url, transfer }: ITransferSend) => {
     try {
-      const token = getLocalStorageUser().token
+      const { tokenStorage } = getLocalStorageUser()
       const { data } = await api.post(url, transfer, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${tokenStorage}`,
         },
       })
 

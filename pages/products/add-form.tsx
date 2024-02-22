@@ -1,16 +1,16 @@
+import Link from 'next/link'
 import Layout from '@/components/layout/Layout'
 import AddProductPage from '@/components/templates/FormProductPage'
 import useRedirectByUserCheck from '@/hooks/useRedirectByUserCheck'
 import { getLocalStorageUser } from '@/localStorageUser'
+
 import '@/styles/globals.css'
-import Link from 'next/link'
 
-const FormProduct = () => {
+const AddForm = () => {
   const { shouldLoadContent } = useRedirectByUserCheck()
-  const username =
-    getLocalStorageUser().username === `${process.env.NEXT_PUBLIC_ADMIN_NAME}`
+  const { usernameStorage } = getLocalStorageUser()
+  const username = usernameStorage === `${process.env.NEXT_PUBLIC_ADMIN_NAME}`
 
-  console.log(`username =>`)
   console.log(`username => ${username}`)
 
   if (username) {
@@ -51,4 +51,4 @@ const FormProduct = () => {
   }
 }
 
-export default FormProduct
+export default AddForm
