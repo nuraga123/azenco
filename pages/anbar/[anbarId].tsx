@@ -18,7 +18,7 @@ function AnbarOnePage() {
     <>
       {shouldLoadContent && (
         <Layout title={'Anbar'}>
-          <AnbarItem userId={userId} />
+          <AnbarItem userId={userId} tableActions={false} />
         </Layout>
       )}
     </>
