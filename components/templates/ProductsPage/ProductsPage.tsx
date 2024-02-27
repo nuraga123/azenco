@@ -8,8 +8,9 @@ import styles from '@/styles/products/index.module.scss'
 
 const ProductsPage = () => {
   const { usernameStorage } = getLocalStorageUser()
-  const username = usernameStorage === `${process.env.NEXT_PUBLIC_ADMIN_NAME}`
-  console.log(username)
+  const adminCheck = usernameStorage === `${process.env.NEXT_PUBLIC_ADMIN_NAME}`
+  console.log(`admin check = ${adminCheck}`)
+
   const [products, setProducts] = useState<IProductsResponse>({
     count: 0,
     rows: [],
@@ -39,7 +40,7 @@ const ProductsPage = () => {
     <div>
       <div className={styles.products__header}>
         <h1 className={styles.title}>Materiallar</h1>
-        {username && (
+        {adminCheck && (
           <Link href={'/products/form-product'} legacyBehavior passHref>
             <button className={styles.add__button}>Yeni Material Yarat</button>
           </Link>
