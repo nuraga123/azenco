@@ -41,7 +41,7 @@ const ProductsPage = () => {
       <div className={styles.products__header}>
         <h1 className={styles.title}>Materiallar</h1>
         {adminCheck && (
-          <Link href={'/products/form-product'} legacyBehavior passHref>
+          <Link href={'/products/add-form'} legacyBehavior passHref>
             <button className={styles.add__button}>Yeni Material Yarat</button>
           </Link>
         )}
