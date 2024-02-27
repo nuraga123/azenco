@@ -11,16 +11,12 @@ import { useStore } from 'effector-react'
 import { $user } from '@/context/user'
 import { numberMetricFormat } from '@/utils/anbar'
 
-const AnbarItem = ({
-  userId,
-  tableActions = true,
-}: {
-  userId: string | number
-  tableActions: boolean
-}) => {
+const AnbarItem = ({ userId }: { userId: string | number }) => {
   const user = useStore($user)
   const [spinner, setSpinner] = useState(false)
   const [anbar, setAnbar] = useState<AnbarProductProps[]>([])
+
+  const tableActions = Boolean(user.userId !== userId)
 
   useEffect(() => {
     const getAnbarServer = async () => {

@@ -9,9 +9,7 @@ import '@/styles/globals.css'
 const AddForm = () => {
   const { shouldLoadContent } = useRedirectByUserCheck()
   const { usernameStorage } = getLocalStorageUser()
-  const username = usernameStorage === `${process.env.ADMIN_NAME}`
-
-  console.log(`username => ${username}`)
+  const username = usernameStorage === `${process.env.NEXT_PUBLIC_ADMIN_NAME}`
 
   if (username) {
     return (
