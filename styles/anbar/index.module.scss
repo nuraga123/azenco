@@ -150,3 +150,27 @@
     max-width: 100%;
   }
 }
+
+.add__form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 250px;
+  height: 50px;
+  border: 2px solid black;
+  padding: 5px;
+  margin: 10px auto;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  border-radius: 10px;
+  background-color: #007bff;
+  color: #eee;
+  transition: ease-in-out 0.3s;
+
+  &:hover {
+    background-color: #0056b3;
+    transform: translateY(2px);
+  }
+}
+

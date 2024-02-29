@@ -11,6 +11,13 @@ export interface AnbarProduct {
   updatedAt: string
 }
 
+export interface IAddAnbarProduct {
+  url: string
+  username: string
+  productId: number
+  stock: number
+}
+
 export interface AnbarProductProps {
   id: number
   userId: number

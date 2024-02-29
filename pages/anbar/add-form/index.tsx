@@ -1,10 +1,15 @@
 import Layout from '@/components/layout/Layout'
 import React from 'react'
+import AddForm from '@/components/templates/AnbarPage/AddForm'
 
-const AddForm = () => {
+const AddFormPage = () => {
   console.log()
 
-  return <Layout title={'AddForm'}>AddForm</Layout>
+  return (
+    <Layout title={'Add Form'}>
+      <AddForm />
+    </Layout>
+  )
 }
 
-export default AddForm
+export default AddFormPage

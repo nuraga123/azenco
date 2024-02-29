@@ -5,14 +5,14 @@
   display: block;
   width: 30px;
   height: 30px;
-  border: 3px solid #03A9F4;
+  border: 5px solid #03A9F4;
   border-radius: 50%;
   border-top-color: #fff;
   animation: spin 1s ease-in-out infinite;
   -webkit-animation: spin 1s ease-in-out infinite;
 
   &.dark__mode {
-    border: 3px solid rgba(124, 119, 119, 0.3);
+    border: 5px solid rgba(124, 119, 119, 0.3);
     border-top-color: black;
   }
 }

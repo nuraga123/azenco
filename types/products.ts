@@ -15,6 +15,11 @@ export interface IProductsResponse {
   rows: IProduct[]
 }
 
+export interface IGetSearchNameProduct {
+  url: string
+  search_word: string
+}
+
 export interface DataNewProduct {
   azenco__code: string
   name: string

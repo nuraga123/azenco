@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from 'react'
-import Image from 'next/image'
 import Link from 'next/link'
-import AnbarImg from '@/public/img/garage-icon.jpg'
-import { AnbarProductProps } from '@/types/anbar'
-import { getAnbarsFx } from '@/app/api/anbar'
-import styles from '@/styles/anbar/index.module.scss'
-import spinnerStyles from '@/styles/spinner/index.module.scss'
+import Image from 'next/image'
+import React, { useEffect, useState } from 'react'
 import { useStore } from 'effector-react'
+
+import AnbarImg from '@/public/img/garage-icon.jpg'
+import { getAnbarsFx } from '@/app/api/anbar'
 import { $user } from '@/context/user'
+import { AnbarProductProps } from '@/types/anbar'
 import { getLocalStorageUser } from '@/localStorageUser'
+
+import spinnerStyles from '@/styles/spinner/index.module.scss'
+import styles from '@/styles/anbar/index.module.scss'
 
 const AnbarPage = () => {
   const { username } = useStore($user)
@@ -17,8 +19,8 @@ const AnbarPage = () => {
   const [anbars, setAnbars] = useState<AnbarProductProps[]>([])
 
   const adminCheckUsername: boolean =
-    process.env.ADMIN_NAME === username ||
-    process.env.ADMIN_NAME === usernameStorage
+    process.env.NEXT_PUBLIC_ADMIN_NAME === username ||
+    process.env.NEXT_PUBLIC_ADMIN_NAME === usernameStorage
 
   const getAnbarServer = async () => {
     try {
@@ -57,15 +59,14 @@ const AnbarPage = () => {
   return (
     <div className={styles.anbar}>
       <h1 className={styles.title}>Anbar Səhifəsi</h1>
-
+      {adminCheckUsername && (
+        <div>
+          <Link href={`anbar/add-form`} passHref legacyBehavior>
+            <a className={styles.add__form}>Создать Анбар</a>
+          </Link>
+        </div>
+      )}
       <div className={styles.anbar__items}>
-        {adminCheckUsername && (
-          <div>
-            <Link href={`anbar/add-form`} passHref legacyBehavior>
-              <a>Создать Анбар</a>
-            </Link>
-          </div>
-        )}
         {spinner ? (
           <div
             className={spinnerStyles.spinner}
