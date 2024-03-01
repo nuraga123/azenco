@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 import { toast } from 'react-toastify'
 import { useStore } from 'effector-react'
 
@@ -7,18 +7,11 @@ import styles from '@/styles/anbar/index.module.scss'
 import { $transfer } from '@/context/transfer'
 import { ITransfer } from '@/types/anbar'
 import { numberMetricFormat } from '@/utils/anbar'
-import { useRouter } from 'next/router'
+import { productsAnbarSendToUserFx } from '@/app/api/anbar'
 
 const TransferStockForm = () => {
   const transferState = useStore($transfer)
-  const router = useRouter()
-
-  useEffect(() => {
-    // Если объект пустой, перенаправляем пользователя на страницу `/anbar`
-    if (transferState.toUserId === 0) {
-      router.push(`/anbar`)
-    }
-  }, [router, transferState])
+  console.log(transferState)
 
   const transferMaxStock: number = +transferState?.product?.stock
 
@@ -62,15 +55,15 @@ const TransferStockForm = () => {
     console.log(transferForm)
 
     try {
-      /*
-        await productsAnbarSendToUserFx({
-          url: 'anbar/transfer-stock',
-          transfer: transferForm,
-        })
-        toast.success('Товар успешно переведен между амбарами!')
-        setFormData({ quantity: formData.quantity })
-        setError('')
-      */
+      const result = await productsAnbarSendToUserFx({
+        url: 'anbar/transfer-stock',
+        transfer: transferForm,
+      })
+      toast.success('Товар успешно переведен между амбарами!')
+      setFormData({ quantity: formData.quantity })
+      setError('')
+
+      console.log(result)
     } catch (error) {
       console.error('Ошибка при переводе товара между амбарами:', error)
       toast.error('Ошибка при переводе товара между амбарами')

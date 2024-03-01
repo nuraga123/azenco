@@ -1,11 +1,14 @@
 import React, { useState } from 'react'
+import { toast } from 'react-toastify'
 import SearchBar from '@/components/modules/AnbarPage/SearchBar'
 import ProductCard from '@/components/modules/AnbarPage/ProductCard'
-import Modal from '@/components/modules/AnbarPage/Modal'
-import Spinner from '@/components/modules/Spinner/Spinner'
 import { getSearchNameProductFx } from '@/app/api/products'
+import { addAnbarProductFx } from '@/app/api/anbar'
 import { IProduct } from '@/types/products'
 import styles from '@/styles/anbar/add_form.module.scss'
+import { AxiosError } from 'axios'
+import Spinner from '@/components/modules/Spinner/Spinner'
+import Modal from '@/components/modules/AnbarPage/Modal'
 
 const AddForm = () => {
   const [spinner, setSpinner] = useState<boolean>(false)
@@ -29,7 +32,7 @@ const AddForm = () => {
   })
 
   const [username, setUsername] = useState<string>('')
-  const [quantity, setQuantity] = useState<number>(0)
+  const [quantity, setQuantity] = useState<string>('')
 
   const handleSearch = async () => {
     setSpinner(true)
@@ -50,11 +53,13 @@ const AddForm = () => {
         } else {
           setSearchProductName('')
           setError(`${searchProductName} нет в базе данных`)
+          toast.error(`${searchProductName} нет в базе данных`)
         }
       } catch (error) {
         setSpinner(false)
         console.log(error)
         setError('Произошла ошибка при загрузке данных')
+        toast.error((error as AxiosError).message)
       } finally {
         setSpinner(false)
       }
@@ -66,14 +71,36 @@ const AddForm = () => {
     handleSearch()
   }
 
-  const handleModalSubmit = () => {
+  const handleModalSubmit = async () => {
     console.log('Имя пользователя:', username)
     console.log('ID продукта:', selectedProduct.id)
     console.log('Количество товара:', quantity)
-    setSelectedProduct({} as IProduct)
-    setQuantity(0)
-    setUsername('')
-    setModalOpen(false)
+
+    if (!!username && selectedProduct?.id && !!quantity && !isNaN(+quantity)) {
+      const result = await addAnbarProductFx({
+        url: '/anbar/add',
+        username,
+        stock: Number(quantity),
+        productId: +selectedProduct.id,
+      })
+
+      if (result?.message && result?.newAnbar?.id) {
+        setModalOpen(false)
+        toast.success(result.message)
+      }
+
+      if (result?.message) {
+        setModalOpen(false)
+        toast.warning(result.message)
+      }
+
+      if (result.message) {
+        setModalOpen(false)
+        toast.error(result.message)
+      }
+
+      console.log(result)
+    }
   }
 
   return (

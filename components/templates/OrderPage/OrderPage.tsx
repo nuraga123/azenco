@@ -99,7 +99,7 @@ const OrderPage = () => {
 
   const resetCart = async () => {
     sessionStorage.removeItem('paymentId')
-    await removeFromCartFx(`/shopping-cart/all/${user.userId}`)
+    await removeFromCartFx(`/shopping-cart/all/${user.id}`)
     setShoppingCart([])
   }
 

@@ -6,7 +6,7 @@ import { useStore } from 'effector-react'
 import AnbarImg from '@/public/img/garage-icon.jpg'
 import { getAnbarsFx } from '@/app/api/anbar'
 import { $user } from '@/context/user'
-import { AnbarProductProps } from '@/types/anbar'
+import { IAnbarProductProps } from '@/types/anbar'
 import { getLocalStorageUser } from '@/localStorageUser'
 
 import spinnerStyles from '@/styles/spinner/index.module.scss'
@@ -16,7 +16,7 @@ const AnbarPage = () => {
   const { username } = useStore($user)
   const { usernameStorage } = getLocalStorageUser()
   const [spinner, setSpinner] = useState<boolean>(false)
-  const [anbars, setAnbars] = useState<AnbarProductProps[]>([])
+  const [anbars, setAnbars] = useState<IAnbarProductProps[]>([])
 
   const adminCheckUsername: boolean =
     process.env.NEXT_PUBLIC_ADMIN_NAME === username ||
@@ -25,7 +25,7 @@ const AnbarPage = () => {
   const getAnbarServer = async () => {
     try {
       setSpinner(true)
-      const data = (await getAnbarsFx(`anbar/all`)) as AnbarProductProps[]
+      const data = (await getAnbarsFx(`anbar/all`)) as IAnbarProductProps[]
       if (data) {
         setAnbars(data)
       }
@@ -41,7 +41,7 @@ const AnbarPage = () => {
   }, [])
 
   const filterUsernameAnbarList = anbars.reduce(
-    (unique: AnbarProductProps[], item) => {
+    (unique: IAnbarProductProps[], item) => {
       const existingItem = unique.find(
         (user) => user.username === item.username
       )

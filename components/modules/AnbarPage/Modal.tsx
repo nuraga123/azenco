@@ -7,8 +7,8 @@ interface ModalProps {
   product: { name: string; id: number }
   username: string
   setUsername: React.Dispatch<React.SetStateAction<string>>
-  quantity: number
-  setQuantity: React.Dispatch<React.SetStateAction<number>>
+  quantity: string
+  setQuantity: React.Dispatch<React.SetStateAction<string>>
   onSubmit: () => void
 }
 
@@ -38,9 +38,9 @@ const Modal: React.FC<ModalProps> = ({
           className={styles.modal__input}
         />
         <input
-          type="number"
+          type="text"
           value={quantity}
-          onChange={(e) => setQuantity(parseInt(e.target.value))}
+          onChange={(e) => setQuantity(e.target.value)}
           placeholder="Введите количество товара"
           className={styles.modal__input}
         />

@@ -14,9 +14,9 @@ const MyAnbar = () => {
   const [loading, setLoading] = useState(true)
 
   // Получаем ID пользователя
-  const { userId, username } = useStore($user)
+  const { id, username } = useStore($user)
   const { userIdStorage } = getLocalStorageUser()
-  const userIdResult = userId || userIdStorage || 0
+  const userIdResult = id || userIdStorage || 0
 
   useEffect(() => {
     if (userIdResult) setLoading(false)

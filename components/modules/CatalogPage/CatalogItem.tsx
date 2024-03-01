@@ -34,8 +34,6 @@ const CatologItem = ({ item }: { item: IBoilerPart }) => {
   const showUpdatedAt: boolean =
     formatDateTime(`${createdAtString}`) !== formatDateTime(`${item.updatedAt}`)
 
-  console.log(`${formatPrice(item.price)}`.replace('.00', ''))
-
   return (
     <li className={`${styles.catalog__list__item} ${darkModeClass}`}>
       <div className={styles.catalog__list__item__inner}>

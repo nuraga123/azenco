@@ -18,7 +18,7 @@ export interface IAddAnbarProduct {
   stock: number
 }
 
-export interface AnbarProductProps {
+export interface IAnbarProductProps {
   id: number
   userId: number
   azenco__code: string
@@ -38,6 +38,11 @@ export interface AnbarProductProps {
   createdAt: string
 }
 
+export interface IAnbarNewProductResponse {
+  message: string
+  newAnbar: IAnbarProductProps
+}
+
 export interface AnbarUser {
   id: number
   username: string
@@ -53,7 +58,7 @@ export interface IOrderTransfer {
   fromUsername: string
   toUserId: number
   toUsername: string
-  product: AnbarProductProps
+  product: IAnbarProductProps
 }
 
 export interface ITransfer extends IOrderTransfer {

@@ -1,31 +1,35 @@
-import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 
 import { getAnbarOneFx } from '@/app/api/anbar'
-import { AnbarProductProps } from '@/types/anbar'
+import { IAnbarProductProps } from '@/types/anbar'
 import styles from '@/styles/anbar/index.module.scss'
 import spinnerStyles from '@/styles/spinner/index.module.scss'
 import { setTransfer } from '@/context/transfer'
 import { useStore } from 'effector-react'
 import { $user } from '@/context/user'
 import { numberMetricFormat } from '@/utils/anbar'
+import { getLocalStorageAnbar, setLocalStorageAnbar } from '@/localStorageAnbar'
+import Link from 'next/link'
 
 const AnbarItem = ({ userId }: { userId: string | number }) => {
-  const user = useStore($user)
+  const { id, username } = useStore($user)
   const [spinner, setSpinner] = useState(false)
-  const [anbar, setAnbar] = useState<AnbarProductProps[]>([])
+  const [anbar, setAnbar] = useState<IAnbarProductProps[]>([])
 
-  const tableActions = Boolean(user.userId !== userId)
+  const tableActions = Boolean(id !== userId)
 
   useEffect(() => {
     const getAnbarServer = async () => {
+      setSpinner(true)
       try {
-        setSpinner(true)
-        const data: AnbarProductProps[] = await getAnbarOneFx(`anbar/${userId}`)
-        console.log(data.filter((el) => el.userId !== user.userId))
-        if (data) {
-          setAnbar(data)
+        const data: IAnbarProductProps[] = await getAnbarOneFx(
+          `anbar/${userId}`
+        )
+
+        const result = data.filter((el) => el.userId !== id)
+        if (result.length) {
+          setAnbar(result)
         } else {
           setAnbar([])
         }
@@ -38,19 +42,27 @@ const AnbarItem = ({ userId }: { userId: string | number }) => {
     }
 
     getAnbarServer()
-  }, [user.userId, userId])
+  }, [id, userId])
 
-  const handleOrderClick = (item: AnbarProductProps) => {
-    if (!!item && user.userId && user.username) {
-      setTransfer({
+  const handleOrderClick = (item: IAnbarProductProps) => {
+    if (item && item.userId && username) {
+      const transferData = {
         fromUserId: +item.userId,
+        toUserId: id,
         fromUsername: item.username,
-        toUserId: +user.userId,
-        toUsername: user.username,
+        toUsername: username,
         product: item,
-      })
+      }
+
+      setTransfer(transferData)
+
+      setLocalStorageAnbar(JSON.stringify(transferData))
     }
   }
+
+  const resulting = getLocalStorageAnbar()
+
+  console.log(JSON.parse(`${resulting}`))
 
   return (
     <div>
@@ -88,7 +100,7 @@ const AnbarItem = ({ userId }: { userId: string | number }) => {
                 </tr>
               </thead>
               <tbody>
-                {anbar.map((item: AnbarProductProps, index: number) => (
+                {anbar.map((item: IAnbarProductProps, index: number) => (
                   <tr key={index}>
                     {tableActions && (
                       <td>
