@@ -2,14 +2,16 @@ import { ChangeEvent, useState } from 'react'
 import { toast } from 'react-toastify'
 import { useStore } from 'effector-react'
 
-// import { productsAnbarSendToUserFx } from '@/app/api/anbar'
-import styles from '@/styles/anbar/index.module.scss'
+import { useRouter } from 'next/router'
 import { $transfer } from '@/context/transfer'
-import { ITransfer } from '@/types/anbar'
+import Spinner from '@/components/modules/Spinner/Spinner'
+import { IOrderTransferProductId } from '@/types/anbar'
 import { numberMetricFormat } from '@/utils/anbar'
 import { productsAnbarSendToUserFx } from '@/app/api/anbar'
+import styles from '@/styles/anbar/index.module.scss'
 
 const TransferStockForm = () => {
+  const router = useRouter()
   const transferState = useStore($transfer)
   console.log(transferState)
 
@@ -20,6 +22,8 @@ const TransferStockForm = () => {
   })
 
   const [error, setError] = useState('')
+  const [spinner, setSpinner] = useState(false)
+  const [disabledBtn, setDisabledBtn] = useState(false)
 
   const handleChange = (changeEvent: ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -30,6 +34,7 @@ const TransferStockForm = () => {
 
   const handleSubmit = async (formEvent: React.FormEvent<HTMLFormElement>) => {
     formEvent.preventDefault()
+    setSpinner(true)
 
     if (formData.quantity <= 0) {
       setError('Количество товара должно быть больше нуля')
@@ -47,23 +52,25 @@ const TransferStockForm = () => {
       return
     }
 
-    const transferForm: ITransfer = {
+    const transferForm: IOrderTransferProductId = {
       ...transferState,
+      productId: +transferState.product.productId,
       quantity: +formData.quantity,
     }
 
     console.log(transferForm)
-
     try {
       const result = await productsAnbarSendToUserFx({
         url: 'anbar/transfer-stock',
         transfer: transferForm,
       })
-      toast.success('Товар успешно переведен между амбарами!')
-      setFormData({ quantity: formData.quantity })
+      setSpinner(false)
       setError('')
+      setFormData({ quantity: formData.quantity })
+      router.push('/anbar')
 
-      console.log(result)
+      toast.success(result.message)
+      console.log(result.message)
     } catch (error) {
       console.error('Ошибка при переводе товара между амбарами:', error)
       toast.error('Ошибка при переводе товара между амбарами')
@@ -75,8 +82,11 @@ const TransferStockForm = () => {
     if (stok && price) {
       return +stok * +price
     }
-
     return 0
+  }
+
+  if (transferState.fromUserId === 0) {
+    router.push('/anbar')
   }
 
   return (
@@ -101,7 +111,7 @@ const TransferStockForm = () => {
 
       <div className={styles.form__item}>
         <div>
-          <i>Məhsul name:</i>
+          <i>Məhsulun adı:</i>
         </div>
         <div>
           <h3>{transferState?.product?.name}</h3>
@@ -110,16 +120,24 @@ const TransferStockForm = () => {
 
       <div className={styles.form__item}>
         <div>
-          <i>Maksimal stok</i>
+          <i>Ölçü vahidi: </i>
         </div>
         <div>
-          <h3>{numberMetricFormat(transferMaxStock)}</h3>
+          <h3>{transferState.product.unit}</h3>
         </div>
       </div>
 
       <div className={styles.form__item}>
         <div>
-          <i>Məhsul price:</i>
+          <i>Maksimal miqdar</i>
+        </div>
+        <div>
+          <h3>{numberMetricFormat(transferMaxStock)}</h3>
+        </div>
+      </div>
+      <div className={styles.form__item}>
+        <div>
+          <i>Məhsul qiymət: </i>
         </div>
         <div>
           <h3>{numberMetricFormat(transferState?.product?.price)}</h3>
@@ -136,20 +154,31 @@ const TransferStockForm = () => {
         />
       </div>
 
-      <div>
+      <div style={{ borderTop: '1px solid', marginTop: '10px' }}>
         <h2>Umumi qiymet:</h2>
+        <br />
+        <br />
         <div>
-          <h3>
+          <h3 style={{ textAlign: 'center' }}>
             {numberMetricFormat(
               sum(formData.quantity, +transferState?.product?.price)
-            )}
+            )}{' '}
+            m
           </h3>
         </div>
       </div>
 
       {error && <p className={styles.error_message}>{error}</p>}
 
-      <button type="submit">G Ö N D Ə R I N</button>
+      <div style={{ borderTop: '1px solid', marginTop: '10px' }}>
+        {spinner ? (
+          <Spinner />
+        ) : (
+          <button type="submit" disabled={disabledBtn}>
+            {'sifariş etmək'.toLocaleUpperCase()}
+          </button>
+        )}
+      </div>
     </form>
   )
 }

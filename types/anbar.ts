@@ -60,6 +60,14 @@ export interface IOrderTransfer {
   toUsername: string
   product: IAnbarProductProps
 }
+export interface IOrderTransferProductId {
+  fromUserId: number
+  fromUsername: string
+  toUserId: number
+  toUsername: string
+  productId: number
+  quantity: number
+}
 
 export interface ITransfer extends IOrderTransfer {
   quantity: number
@@ -67,5 +75,5 @@ export interface ITransfer extends IOrderTransfer {
 
 export interface ITransferSend {
   url: string
-  transfer: ITransfer
+  transfer: IOrderTransferProductId
 }

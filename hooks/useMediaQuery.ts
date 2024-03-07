@@ -21,7 +21,7 @@ export const useMediaQuery = (maxWidth: number) => {
     windowWidth: { windowWidth },
   } = useWindowWidth()
 
-  const [isMedia, setIsMedia] = useState(false)
+  const [isMedia, setIsMedia] = useState<boolean>(false)
 
   useEffect(() => {
     windowWidth <= maxWidth ? setIsMedia(true) : setIsMedia(false)

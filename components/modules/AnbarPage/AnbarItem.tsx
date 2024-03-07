@@ -17,19 +17,20 @@ const AnbarItem = ({ userId }: { userId: string | number }) => {
   const [spinner, setSpinner] = useState(false)
   const [anbar, setAnbar] = useState<IAnbarProductProps[]>([])
 
-  const tableActions = Boolean(id !== userId)
+  const tableActions = Boolean(+id !== +userId)
+  console.log('tableActions')
+  console.log(tableActions, id, userId)
 
   useEffect(() => {
     const getAnbarServer = async () => {
       setSpinner(true)
       try {
         const data: IAnbarProductProps[] = await getAnbarOneFx(
-          `anbar/${userId}`
+          `anbar/user-id/${userId}`
         )
 
-        const result = data.filter((el) => el.userId !== id)
-        if (result.length) {
-          setAnbar(result)
+        if (data.length) {
+          setAnbar(data)
         } else {
           setAnbar([])
         }
@@ -42,7 +43,7 @@ const AnbarItem = ({ userId }: { userId: string | number }) => {
     }
 
     getAnbarServer()
-  }, [id, userId])
+  }, [userId])
 
   const handleOrderClick = (item: IAnbarProductProps) => {
     if (item && item.userId && username) {

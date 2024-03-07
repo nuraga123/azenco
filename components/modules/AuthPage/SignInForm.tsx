@@ -47,12 +47,12 @@ const SignInForm = () => {
         localStorage.setItem('email', userDataOne.email)
 
         setUser({
-          userId: userDataOne.userId,
+          id: userDataOne.userId,
           username: userDataOne.username,
           email: userDataOne.email,
         })
 
-        router.push('/dashboard')
+        router.push('/anbar/my')
       }
 
       router.push('/')

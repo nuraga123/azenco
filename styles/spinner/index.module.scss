@@ -1,11 +1,9 @@
 .spinner {
-  position: absolute;
-  top: 7px;
-  left: 40%;
-  display: block;
+  display: flex;
+  margin: 0 auto;
   width: 30px;
   height: 30px;
-  border: 5px solid #03A9F4;
+  border: 5px solid #03a9f4;
   border-radius: 50%;
   border-top-color: #fff;
   animation: spin 1s ease-in-out infinite;
@@ -23,7 +21,7 @@
   }
 }
 
-@-webkit-keyframes spin { 
+@-webkit-keyframes spin {
   to {
     -webkit-transform: rotate(360deg);
   }

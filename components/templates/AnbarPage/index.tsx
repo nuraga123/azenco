@@ -6,7 +6,6 @@ import { useStore } from 'effector-react'
 import AnbarImg from '@/public/img/garage-icon.jpg'
 import { getAnbarsFx } from '@/app/api/anbar'
 import { $user } from '@/context/user'
-import { IAnbarProductProps } from '@/types/anbar'
 import { getLocalStorageUser } from '@/localStorageUser'
 
 import spinnerStyles from '@/styles/spinner/index.module.scss'
@@ -16,7 +15,9 @@ const AnbarPage = () => {
   const { username } = useStore($user)
   const { usernameStorage } = getLocalStorageUser()
   const [spinner, setSpinner] = useState<boolean>(false)
-  const [anbars, setAnbars] = useState<IAnbarProductProps[]>([])
+  const [anbars, setAnbars] = useState<[{ username: string; userId: number }]>([
+    { username: '', userId: 0 },
+  ])
 
   const adminCheckUsername: boolean =
     process.env.NEXT_PUBLIC_ADMIN_NAME === username ||
@@ -25,7 +26,7 @@ const AnbarPage = () => {
   const getAnbarServer = async () => {
     try {
       setSpinner(true)
-      const data = (await getAnbarsFx(`anbar/all`)) as IAnbarProductProps[]
+      const data = await getAnbarsFx(`anbar/usernames`)
       if (data) {
         setAnbars(data)
       }
@@ -40,21 +41,14 @@ const AnbarPage = () => {
     getAnbarServer()
   }, [])
 
-  const filterUsernameAnbarList = anbars.reduce(
-    (unique: IAnbarProductProps[], item) => {
-      const existingItem = unique.find(
-        (user) => user.username === item.username
-      )
-      if (!existingItem) {
-        unique.push(item)
-      }
-      return unique
-    },
-    []
+  const filterUsername = anbars.filter(
+    (obj, index) =>
+      anbars.findIndex((item) => item.username === obj.username) === index
   )
 
-  console.log('filterUsernameAnbarList')
-  console.log(filterUsernameAnbarList)
+  const filterUsernameAnbarList = filterUsername.filter(
+    (el) => el.username !== usernameStorage
+  )
 
   return (
     <div className={styles.anbar}>
@@ -77,18 +71,20 @@ const AnbarPage = () => {
               background: 'gray',
             }}
           />
-        ) : anbars.length ? (
+        ) : filterUsernameAnbarList.length ? (
           filterUsernameAnbarList.map((el, index) => (
             <Link
               key={index}
-              href={`/anbar/${el.userId}`}
+              href={`/anbar/user-id/${el.userId}`}
               passHref
               legacyBehavior
             >
               <a className={styles.anbar__item}>
                 <div className={styles.container}>
                   <Image src={AnbarImg.src} alt="d" width={50} height={35} />
-                  <div>{`${index + 1}) ${el.username} Anbar`}</div>
+                  <div>
+                    {`${index + 1}) Anbar: `} <b>{el.username}</b>
+                  </div>
                 </div>
               </a>
             </Link>
