@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import Image from 'next/image'
 import { useState } from 'react'
-import picture from '@/public/icon/icons-image.png'
 import styles from '@/styles/products/index.module.scss'
 import { IProduct } from '@/types/products'
 
@@ -17,7 +16,7 @@ const ProductImg = ({ data, id }: { data: IProduct[]; id: number }) => {
       {!open && (
         <Image
           style={{ cursor: 'pointer' }}
-          src={picture}
+          src={''}
           width={30}
           height={30}
           alt="img"
