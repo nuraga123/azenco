@@ -18,7 +18,7 @@ const Layout = ({ children, title }: ILayoutProps) => (
         <Navbar />
         <div className={styles.wrapper__content}>
           <header className={styles.header}>
-            <h1>Azenco Anbar Programm</h1>
+            <h1>Azenco</h1>
             <ProfileDropDown />
           </header>
           <div className={styles.main}>

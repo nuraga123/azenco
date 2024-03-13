@@ -1,7 +1,6 @@
 import { ChangeEvent, useState } from 'react'
 import { toast } from 'react-toastify'
 import { useStore } from 'effector-react'
-
 import { useRouter } from 'next/router'
 import { $transfer } from '@/context/transfer'
 import Spinner from '@/components/modules/Spinner/Spinner'
@@ -13,22 +12,28 @@ import styles from '@/styles/anbar/index.module.scss'
 const TransferStockForm = () => {
   const router = useRouter()
   const transferState = useStore($transfer)
-  console.log(transferState)
-
-  const transferMaxStock: number = +transferState?.product?.stock
-
-  const [formData, setFormData] = useState<{ quantity: number }>({
-    quantity: 0,
+  const [formData, setFormData] = useState<{ quantity: string }>({
+    quantity: '0.001',
   })
-
   const [error, setError] = useState('')
   const [spinner, setSpinner] = useState(false)
-  const [disabledBtn, setDisabledBtn] = useState(false)
+  const transferMaxStock: number = +transferState?.product?.stock
 
   const handleChange = (changeEvent: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = changeEvent.target
+    // Проверяем, что введенное значение больше или равно 0.001
+    if (+value < 0.001) {
+      // Если введенное значение меньше 0.001, устанавливаем его в 0.001
+      setFormData({
+        ...formData,
+        [name]: '0.001',
+      })
+      return
+    }
+    // Устанавливаем значение в состояние
     setFormData({
       ...formData,
-      [changeEvent.target.name]: changeEvent.target.value,
+      [name]: value,
     })
   }
 
@@ -36,29 +41,28 @@ const TransferStockForm = () => {
     formEvent.preventDefault()
     setSpinner(true)
 
-    if (formData.quantity <= 0) {
+    const quantity = +formData.quantity
+
+    if (quantity <= 0) {
       setError('Количество товара должно быть больше нуля')
+      setSpinner(false)
       return
     }
 
-    if (
-      formData.quantity > +transferState?.product?.stock
-        ? transferState.product.stock
-        : 0
-    ) {
-      setError(`
-        Нельзя перевести более ${transferMaxStock} единиц товара за один раз
-      `)
+    if (quantity > transferMaxStock) {
+      setError(
+        `Нельзя перевести более ${transferMaxStock} единиц товара за один раз`
+      )
+      setSpinner(false)
       return
     }
 
     const transferForm: IOrderTransferProductId = {
       ...transferState,
       productId: +transferState.product.productId,
-      quantity: +formData.quantity,
+      quantity,
     }
 
-    console.log(transferForm)
     try {
       const result = await productsAnbarSendToUserFx({
         url: 'anbar/transfer-stock',
@@ -66,11 +70,9 @@ const TransferStockForm = () => {
       })
       setSpinner(false)
       setError('')
-      setFormData({ quantity: formData.quantity })
+      setFormData({ quantity: '0.001' })
       router.push('/anbar')
-
       toast.success(result.message)
-      console.log(result.message)
     } catch (error) {
       console.error('Ошибка при переводе товара между амбарами:', error)
       toast.error('Ошибка при переводе товара между амбарами')
@@ -78,11 +80,10 @@ const TransferStockForm = () => {
     }
   }
 
-  const sum = (stok: number, price: number | undefined) => {
-    if (stok && price) {
-      return +stok * +price
-    }
-    return 0
+  const calculateTotalPrice = () => {
+    const { quantity } = formData
+    const { price } = transferState?.product || {}
+    return numberMetricFormat(+quantity * +price)
   }
 
   if (transferState.fromUserId === 0) {
@@ -120,7 +121,7 @@ const TransferStockForm = () => {
 
       <div className={styles.form__item}>
         <div>
-          <i>Ölçü vahidi: </i>
+          <i>Ölçü vahidi:</i>
         </div>
         <div>
           <h3>{transferState.product.unit}</h3>
@@ -129,15 +130,16 @@ const TransferStockForm = () => {
 
       <div className={styles.form__item}>
         <div>
-          <i>Maksimal miqdar</i>
+          <i>Maksimal miqdar:</i>
         </div>
         <div>
           <h3>{numberMetricFormat(transferMaxStock)}</h3>
         </div>
       </div>
+
       <div className={styles.form__item}>
         <div>
-          <i>Məhsul qiymət: </i>
+          <i>Məhsul qiymət:</i>
         </div>
         <div>
           <h3>{numberMetricFormat(transferState?.product?.price)}</h3>
@@ -159,12 +161,7 @@ const TransferStockForm = () => {
         <br />
         <br />
         <div>
-          <h3 style={{ textAlign: 'center' }}>
-            {numberMetricFormat(
-              sum(formData.quantity, +transferState?.product?.price)
-            )}{' '}
-            m
-          </h3>
+          <h3 style={{ textAlign: 'center' }}>{calculateTotalPrice()} m</h3>
         </div>
       </div>
 
@@ -174,9 +171,7 @@ const TransferStockForm = () => {
         {spinner ? (
           <Spinner />
         ) : (
-          <button type="submit" disabled={disabledBtn}>
-            {'sifariş etmək'.toLocaleUpperCase()}
-          </button>
+          <button type="submit">{'sifariş etmək'.toLocaleUpperCase()}</button>
         )}
       </div>
     </form>

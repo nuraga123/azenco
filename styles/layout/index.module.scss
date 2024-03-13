@@ -4,33 +4,43 @@
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  font-family: 'Montserrat', sans-serif; /* Пример шрифта */
-  background-color: #f0f2f5; /* Более нейтральный цвет фона */
+  font-family: 'Montserrat', sans-serif;
+
+  // Медиа-запрос для мобильных телефонов
+  @media only screen and (min-width: 300px) {
+    min-width: 300px; // Минимальная ширина контейнера для мобильных телефонов
+  }
+
+  // Медиа-запрос для планшетов
+  @media only screen and (min-width: 500px) {
+    min-width: 500px; // Минимальная ширина контейнера для планшетов
+  }
 }
 
 .logo {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
-  background-color: #6c5ce7; /* Цвет фона логотипа */
+  color: #333;
+  background-color: #b2d0aa;
   padding: 20px;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: bold;
-  text-transform: uppercase; /* Преобразование текста в верхний регистр */
+  text-transform: uppercase;
   letter-spacing: 1px;
   cursor: pointer;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Тень */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .nav {
-  background: #6c5ce7; /* Цвет фона навигационной панели */
-  color: #fff;
+  background-color: #dde5db;
+  color: #333;
   display: flex;
   flex-direction: column;
-  height: calc(100vh); /* Учитывайте высоту заголовка и логотипа */
-  transition: background-color 0.3s ease;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Тень */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  height: 100vh;
+  border-right: 5px solid #4caf50;
+  transition: width 0.5s ease-in-out;
 }
 
 .navItem {
@@ -42,7 +52,12 @@
     background-color 0.3s ease,
     color 0.3s ease;
   position: relative;
-  border-bottom: 1px solid #ccc;
+  color: #5b5b5b;
+  border-bottom: 3px solid;
+
+  &:hover {
+    color: #007bff;
+  }
 }
 
 .navItem__text {
@@ -50,8 +65,8 @@
 }
 
 .active {
-  background-color: #ff5722;
-  color: #fff;
+  background-color: #fff;
+  color: #333;
   font-weight: bold;
   border-bottom-color: transparent;
 }
@@ -63,26 +78,31 @@
   left: 0;
   width: 100%;
   height: 3px;
-  background-color: #fff;
+  background-color: #333;
 }
 
 .navItem__icon {
   font-size: 24px;
+  transition: color 0.3s ease;
+}
+
+.navItem__icon:hover {
+  color: #007bff;
 }
 
 .navItem:hover {
-  background-color: #4834d4; /* Цвет фона при наведении */
+  background-color: #f0f0f0;
 }
 
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #4834d4; /* Цвет фона шапки */
-  color: #fff;
+  background: #dde5db;
+  color: #333;
   padding: 20px;
   font-weight: bold;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Тень */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   height: 70px;
 }
 
@@ -92,6 +112,12 @@
   &__content {
     max-width: 1450px;
     width: 100%;
+    margin: 0 auto;
+    overflow-x: auto; // Добавляем горизонтальный скролл, если содержимое выходит за пределы
   }
 }
 
+.main {
+  margin: 20px 10px 0;
+  overflow-x: auto; // Добавляем горизонтальный скролл для содержимого
+}

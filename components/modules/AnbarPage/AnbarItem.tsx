@@ -1,16 +1,17 @@
+import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
+import { useStore } from 'effector-react'
 
 import { getAnbarOneFx } from '@/app/api/anbar'
 import { IAnbarProductProps } from '@/types/anbar'
-import styles from '@/styles/anbar/index.module.scss'
-import spinnerStyles from '@/styles/spinner/index.module.scss'
 import { setTransfer } from '@/context/transfer'
-import { useStore } from 'effector-react'
 import { $user } from '@/context/user'
 import { numberMetricFormat } from '@/utils/anbar'
 import { getLocalStorageAnbar, setLocalStorageAnbar } from '@/localStorageAnbar'
-import Link from 'next/link'
+
+import styles from '@/styles/anbar/index.module.scss'
+import spinnerStyles from '@/styles/spinner/index.module.scss'
 
 const AnbarItem = ({ userId }: { userId: string | number }) => {
   const { id, username } = useStore($user)
