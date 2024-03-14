@@ -22,7 +22,7 @@ const useRedirectByUserCheck = (isAuthPage = false) => {
             return
           }
 
-          router.push('/anbar/my')
+          router.push('/my')
           return
         }
 

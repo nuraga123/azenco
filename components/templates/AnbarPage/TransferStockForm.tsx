@@ -4,37 +4,40 @@ import { useStore } from 'effector-react'
 import { useRouter } from 'next/router'
 import { $transfer } from '@/context/transfer'
 import Spinner from '@/components/modules/Spinner/Spinner'
-import { IOrderTransferProductId } from '@/types/anbar'
+import { IOrderTransfer, IOrderTransferProductId } from '@/types/anbar'
 import { numberMetricFormat } from '@/utils/anbar'
 import { productsAnbarSendToUserFx } from '@/app/api/anbar'
 import styles from '@/styles/anbar/index.module.scss'
+import {
+  getLocalStorageAnbar,
+  deleteLocalStorageAnbar,
+} from '@/localStorageAnbar'
 
 const TransferStockForm = () => {
   const router = useRouter()
   const transferState = useStore($transfer)
+  const transferStorege: IOrderTransfer = JSON.parse(getLocalStorageAnbar())
+  const transferData: IOrderTransfer =
+    transferState.fromUserId === 0 ? transferStorege : transferState
+
   const [formData, setFormData] = useState<{ quantity: string }>({
-    quantity: '0.001',
+    quantity: '0',
   })
+
   const [error, setError] = useState('')
   const [spinner, setSpinner] = useState(false)
-  const transferMaxStock: number = +transferState?.product?.stock
+  const transferMaxStock: number = +transferData?.product?.stock
 
   const handleChange = (changeEvent: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = changeEvent.target
-    // Проверяем, что введенное значение больше или равно 0.001
-    if (+value < 0.001) {
-      // Если введенное значение меньше 0.001, устанавливаем его в 0.001
+
+    if (transferData.product.unit === 'ədəd') {
       setFormData({
         ...formData,
-        [name]: '0.001',
+        [name]: value,
       })
       return
     }
-    // Устанавливаем значение в состояние
-    setFormData({
-      ...formData,
-      [name]: value,
-    })
   }
 
   const handleSubmit = async (formEvent: React.FormEvent<HTMLFormElement>) => {
@@ -58,8 +61,8 @@ const TransferStockForm = () => {
     }
 
     const transferForm: IOrderTransferProductId = {
-      ...transferState,
-      productId: +transferState.product.productId,
+      ...transferData,
+      productId: +transferData.product.productId,
       quantity,
     }
 
@@ -68,11 +71,12 @@ const TransferStockForm = () => {
         url: 'anbar/transfer-stock',
         transfer: transferForm,
       })
+
       setSpinner(false)
       setError('')
-      setFormData({ quantity: '0.001' })
-      router.push('/anbar')
+      deleteLocalStorageAnbar()
       toast.success(result.message)
+      router.push('/anbars')
     } catch (error) {
       console.error('Ошибка при переводе товара между амбарами:', error)
       toast.error('Ошибка при переводе товара между амбарами')
@@ -87,7 +91,7 @@ const TransferStockForm = () => {
   }
 
   if (transferState.fromUserId === 0) {
-    router.push('/anbar')
+    router.push('/anbars')
   }
 
   return (

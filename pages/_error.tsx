@@ -1,9 +1,8 @@
-// pages/404.tsx
-
+import { NextApiResponse } from 'next'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 
-const Error404Page = () => {
+const ErrorPage = () => {
   const router = useRouter()
 
   useEffect(() => {
@@ -38,4 +37,14 @@ const Error404Page = () => {
   )
 }
 
-export default Error404Page
+// Устанавливаем статус код 404
+export const getServerSideProps = ({ res }: { res: NextApiResponse }) => {
+  if (res) {
+    res.statusCode = 404
+  }
+  return {
+    props: {},
+  }
+}
+
+export default ErrorPage

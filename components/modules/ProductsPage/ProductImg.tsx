@@ -1,8 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
-import Image from 'next/image'
 import { useState } from 'react'
-import styles from '@/styles/products/index.module.scss'
 import { IProduct } from '@/types/products'
+import styles from '@/styles/products/index.module.scss'
 
 const ProductImg = ({ data, id }: { data: IProduct[]; id: number }) => {
   const [open, setOpen] = useState<boolean>(false)
@@ -14,9 +13,9 @@ const ProductImg = ({ data, id }: { data: IProduct[]; id: number }) => {
   return (
     <>
       {!open && (
-        <Image
+        <img
           style={{ cursor: 'pointer' }}
-          src={''}
+          src={urlImg}
           width={30}
           height={30}
           alt="img"
@@ -26,7 +25,7 @@ const ProductImg = ({ data, id }: { data: IProduct[]; id: number }) => {
 
       {open && (
         <div className={styles.img}>
-          <img src={urlImg} width={100} height={100} alt="img" />
+          <img src={urlImg} width={150} height={150} alt="img" />
           <button className={styles.btn__close} onClick={closePicture}>
             X
           </button>

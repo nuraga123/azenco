@@ -18,6 +18,27 @@ export const getAnbarsFx = createEffect(async (url: string) => {
     console.log(error)
   }
 })
+export const getAnbarsUsernameFx = createEffect(async () => {
+  try {
+    const { tokenStorage, usernameStorage } = getLocalStorageUser()
+    const { data } = await api.post(
+      'anbar/usernames',
+      {
+        name: usernameStorage,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${tokenStorage}`,
+        },
+      }
+    )
+
+    console.log(data)
+    return data
+  } catch (error) {
+    console.log(error)
+  }
+})
 
 export const getAnbarOneFx = createEffect(async (url: string) => {
   try {

@@ -14,7 +14,7 @@ interface INavbarElement {
 
 export const navbarArray: INavbarElement[] = [
   {
-    href: '/anbar/my',
+    href: '/my',
     title: 'Mənim Anbarım',
     icon: <AiOutlineHome />,
   },
@@ -24,7 +24,7 @@ export const navbarArray: INavbarElement[] = [
     icon: <AiOutlineFileText />,
   },
   {
-    href: '/anbar',
+    href: '/anbars',
     title: 'Anbarlar',
     icon: <AiOutlineDatabase />,
   },

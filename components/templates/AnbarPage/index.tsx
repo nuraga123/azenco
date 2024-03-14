@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { useStore } from 'effector-react'
 
 import AnbarImg from '@/public/img/garage-icon.jpg'
-import { getAnbarsFx } from '@/app/api/anbar'
+import { getAnbarsUsernameFx } from '@/app/api/anbar'
 import { $user } from '@/context/user'
 import { getLocalStorageUser } from '@/localStorageUser'
 
@@ -26,10 +26,8 @@ const AnbarPage = () => {
   const getAnbarServer = async () => {
     try {
       setSpinner(true)
-      const data = await getAnbarsFx(`anbar/usernames`)
-      if (data) {
-        setAnbars(data)
-      }
+      const data = await getAnbarsUsernameFx()
+      if (data) setAnbars(data)
     } catch (error) {
       console.log((error as Error).message)
     } finally {
@@ -55,7 +53,7 @@ const AnbarPage = () => {
       <h1 className={styles.title}>Anbar Səhifəsi</h1>
       {adminCheckUsername && (
         <div>
-          <Link href={`anbar/add-form`} passHref legacyBehavior>
+          <Link href={`anbars/add-form`} passHref legacyBehavior>
             <a className={styles.add__form}>Создать Анбар</a>
           </Link>
         </div>
@@ -75,7 +73,7 @@ const AnbarPage = () => {
           filterUsernameAnbarList.map((el, index) => (
             <Link
               key={index}
-              href={`/anbar/user-id/${el.userId}`}
+              href={`/anbars/user-id/${el.userId}`}
               passHref
               legacyBehavior
             >

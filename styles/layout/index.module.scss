@@ -18,18 +18,21 @@
 }
 
 .logo {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   color: #333;
   background-color: #b2d0aa;
-  padding: 20px;
-  font-size: 20px;
+  padding: 10px 5px;
+  font-size: 18px;
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 1px;
   cursor: pointer;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  &__content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 .nav {
@@ -46,6 +49,7 @@
 .navItem {
   display: flex;
   align-items: center;
+  justify-content: center;
   cursor: pointer;
   padding: 20px;
   transition:
@@ -120,4 +124,45 @@
 .main {
   margin: 20px 10px 0;
   overflow-x: auto; // Добавляем горизонтальный скролл для содержимого
+}
+
+.toggleSwitch {
+  position: absolute;
+  opacity: 0;
+}
+
+.toggleLabel {
+  display: inline-block;
+  width: 50px;
+  height: 25px;
+  background-color: #ccc;
+  border-radius: 10px;
+  position: relative;
+  cursor: pointer;
+
+  .toggleButton {
+    width: 25px;
+    height: 25px;
+    background-color: #fff;
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: transform 0.3s ease; /* Плавное переключение */
+  }
+}
+
+.toggleSwitch:checked + .toggleLabel .toggleButton {
+  transform: translateX(20px); /* Сдвигаем переключатель при включении */
+  background-color: #01a267;
+}
+
+.logo__content {
+  margin-top: 10px;
+  width: 100px;
+  transition: transform 0.3s ease; /* Плавное переключение */
+}
+
+.open {
+  transform: translateY(-100px); /* Перемещаем элемент вверх при открытии */
 }

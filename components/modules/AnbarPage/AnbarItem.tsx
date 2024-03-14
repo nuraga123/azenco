@@ -113,7 +113,7 @@ const AnbarItem = ({ userId }: { userId: string | number }) => {
                             justifyContent: 'space-between',
                           }}
                         >
-                          <Link href={'/anbar/transfer-form'}>
+                          <Link href={'/anbars/transfer-form'}>
                             <button onClick={() => handleOrderClick(item)}>
                               заказать
                             </button>

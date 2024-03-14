@@ -3,6 +3,7 @@ import { IProduct, IProductsResponse } from '@/types/products'
 import styles from '@/styles/products/index.module.scss'
 import ProductImg from './ProductImg'
 import { formatDateTime } from '@/utils/formatDateTime'
+import { numberMetricFormat } from '@/utils/anbar'
 
 const ProductTable = ({ data }: { data: IProductsResponse }) => {
   const products = data.rows.length ? data.rows : []
@@ -37,7 +38,7 @@ const ProductTable = ({ data }: { data: IProductsResponse }) => {
               <td className={styles.td}>{product.name}</td>
               <td className={styles.td}>{product.type}</td>
               <td className={styles.td}>{product.unit}</td>
-              <td className={styles.td}>{product.price}</td>
+              <td className={styles.td}>{numberMetricFormat(product.price)}</td>
               <td className={styles.td}>
                 <ProductImg data={products} id={product.id} />
               </td>
