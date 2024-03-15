@@ -18,6 +18,7 @@ export const getAnbarsFx = createEffect(async (url: string) => {
     console.log(error)
   }
 })
+
 export const getAnbarsUsernameFx = createEffect(async () => {
   try {
     const { tokenStorage, usernameStorage } = getLocalStorageUser()

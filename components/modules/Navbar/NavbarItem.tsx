@@ -19,7 +19,6 @@ const NavbarItem = ({
   toggleNavVisibility,
 }: INavbarItem) => {
   const router = useRouter()
-  console.log(router)
   const [isActive, setIsActive] = useState<boolean>(false)
 
   const handleClick = () => {
@@ -30,7 +29,6 @@ const NavbarItem = ({
   useEffect(() => {
     if (router.pathname.includes(url)) {
       setIsActive(true)
-      console.log(router.asPath, url, router.pathname.includes(url))
     }
   }, [router.asPath, router.pathname, url])
 

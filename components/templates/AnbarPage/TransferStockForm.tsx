@@ -20,6 +20,8 @@ const TransferStockForm = () => {
   const transferData: IOrderTransfer =
     transferState.fromUserId === 0 ? transferStorege : transferState
 
+  console.log(transferData)
+
   const [formData, setFormData] = useState<{ quantity: string }>({
     quantity: '0',
   })
@@ -76,7 +78,7 @@ const TransferStockForm = () => {
       setError('')
       deleteLocalStorageAnbar()
       toast.success(result.message)
-      router.push('/anbars')
+      // router.push('/anbars')
     } catch (error) {
       console.error('Ошибка при переводе товара между амбарами:', error)
       toast.error('Ошибка при переводе товара между амбарами')
@@ -86,22 +88,24 @@ const TransferStockForm = () => {
 
   const calculateTotalPrice = () => {
     const { quantity } = formData
-    const { price } = transferState?.product || {}
+    const { price } = transferData?.product || {}
     return numberMetricFormat(+quantity * +price)
   }
 
-  if (transferState.fromUserId === 0) {
-    router.push('/anbars')
-  }
+  if (transferData.fromUserId === 0) router.push('/anbars')
 
   return (
     <form className={styles.transfer_stock_form} onSubmit={handleSubmit}>
+      <h1 style={{ borderBottom: '1px solid black' }}>
+        Məhsul sifariş forması
+      </h1>
+      <br />
       <div className={styles.form__item}>
         <div>
           <i>Göndərən:</i>
         </div>
         <div>
-          <h3>{transferState.fromUsername}</h3>
+          <h3>{transferData.fromUsername}</h3>
         </div>
       </div>
 
@@ -110,7 +114,7 @@ const TransferStockForm = () => {
           <i>Alıcı:</i>
         </div>
         <div>
-          <h3>{transferState.toUsername}</h3>
+          <h3>{transferData.toUsername}</h3>
         </div>
       </div>
 
@@ -119,7 +123,7 @@ const TransferStockForm = () => {
           <i>Məhsulun adı:</i>
         </div>
         <div>
-          <h3>{transferState?.product?.name}</h3>
+          <h3>{transferData?.product?.name}</h3>
         </div>
       </div>
 
@@ -128,7 +132,7 @@ const TransferStockForm = () => {
           <i>Ölçü vahidi:</i>
         </div>
         <div>
-          <h3>{transferState.product.unit}</h3>
+          <h3>{transferData.product.unit}</h3>
         </div>
       </div>
 
@@ -146,7 +150,7 @@ const TransferStockForm = () => {
           <i>Məhsul qiymət:</i>
         </div>
         <div>
-          <h3>{numberMetricFormat(transferState?.product?.price)}</h3>
+          <h3>{numberMetricFormat(transferData?.product?.price)}</h3>
         </div>
       </div>
 
