@@ -27,9 +27,7 @@ const NavbarItem = ({
   }
 
   useEffect(() => {
-    if (router.pathname.includes(url)) {
-      setIsActive(true)
-    }
+    if (router.pathname.includes(url)) setIsActive(true)
   }, [router.asPath, router.pathname, url])
 
   return (

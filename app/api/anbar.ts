@@ -3,10 +3,10 @@ import api from '@/app/axiosClient'
 import { getLocalStorageUser } from '@/localStorageUser'
 import { IAddAnbarProduct, ITransferSend } from '@/types/anbar'
 
-export const getAnbarsFx = createEffect(async (url: string) => {
+export const getAnbarsFx = createEffect(async (oneUserId: number) => {
   try {
     const { tokenStorage } = getLocalStorageUser()
-    const { data } = await api.get(url, {
+    const { data } = await api.get(`anbar/user/${oneUserId}`, {
       headers: {
         Authorization: `Bearer ${tokenStorage}`,
       },

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { useStore } from 'effector-react'
 
-import { getAnbarOneFx } from '@/app/api/anbar'
+import { getAnbarsFx } from '@/app/api/anbar'
 import { IAnbarProductProps } from '@/types/anbar'
 import { setTransfer } from '@/context/transfer'
 import { $user } from '@/context/user'
@@ -13,7 +13,7 @@ import { getLocalStorageAnbar, setLocalStorageAnbar } from '@/localStorageAnbar'
 import styles from '@/styles/anbar/index.module.scss'
 import spinnerStyles from '@/styles/spinner/index.module.scss'
 
-const AnbarItem = ({ userId }: { userId: string | number }) => {
+const AnbarItem = ({ userId }: { userId: number }) => {
   const { id, username } = useStore($user)
   const [spinner, setSpinner] = useState(false)
   const [anbar, setAnbar] = useState<IAnbarProductProps[]>([])
@@ -26,9 +26,7 @@ const AnbarItem = ({ userId }: { userId: string | number }) => {
     const getAnbarServer = async () => {
       setSpinner(true)
       try {
-        const data: IAnbarProductProps[] = await getAnbarOneFx(
-          `anbar/user-id/${userId}`
-        )
+        const data: IAnbarProductProps[] = await getAnbarsFx(userId)
 
         if (data.length) {
           setAnbar(data)

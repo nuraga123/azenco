@@ -23,30 +23,21 @@ const AnbarPage = () => {
     process.env.NEXT_PUBLIC_ADMIN_NAME === username ||
     process.env.NEXT_PUBLIC_ADMIN_NAME === usernameStorage
 
-  const getAnbarServer = async () => {
-    try {
-      setSpinner(true)
-      const data = await getAnbarsUsernameFx()
-      if (data) setAnbars(data)
-    } catch (error) {
-      console.log((error as Error).message)
-    } finally {
-      setSpinner(false)
-    }
-  }
-
   useEffect(() => {
+    const getAnbarServer = async () => {
+      try {
+        setSpinner(true)
+        const { usernamesArray } = await getAnbarsUsernameFx()
+        if (usernamesArray) setAnbars(usernamesArray)
+      } catch (error) {
+        console.log((error as Error).message)
+      } finally {
+        setSpinner(false)
+      }
+    }
+
     getAnbarServer()
   }, [])
-
-  const filterUsername = anbars.filter(
-    (obj, index) =>
-      anbars.findIndex((item) => item.username === obj.username) === index
-  )
-
-  const filterUsernameAnbarList = filterUsername.filter(
-    (el) => el.username !== usernameStorage
-  )
 
   return (
     <div className={styles.anbar}>
@@ -69,8 +60,8 @@ const AnbarPage = () => {
               background: 'gray',
             }}
           />
-        ) : filterUsernameAnbarList.length ? (
-          filterUsernameAnbarList.map((el, index) => (
+        ) : anbars ? (
+          anbars.map((el, index) => (
             <Link
               key={index}
               href={`/anbars/user-id/${el.userId}`}
