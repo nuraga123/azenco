@@ -41,9 +41,13 @@
   border-collapse: collapse;
   margin-bottom: 20px;
 
+  &__no_wrap {
+    white-space: nowrap;
+  }
+
   .ordered {
     background-color: yellow;
-    font-weight: 1000;
+    font-weight: 700;
   }
 
   th {
@@ -173,4 +177,3 @@
     transform: translateY(2px);
   }
 }
-

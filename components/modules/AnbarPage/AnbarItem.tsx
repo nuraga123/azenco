@@ -94,9 +94,9 @@ const AnbarItem = ({ userId }: { userId: number }) => {
                   <th>Miqdar</th>
                   <th>Ümumi Qiymət</th>
                   <th>Sifariş statusu</th>
-                  <th>Sifariş miqdarından əvvəl</th>
+                  <th>Sifarişdən əvvəl miqdar</th>
                   <th>Sifarişdən əvvəl Ümumi Qiymət</th>
-                  <th>Anbar ID</th>
+                  <th>ID</th>
                 </tr>
               </thead>
               <tbody>
@@ -126,7 +126,13 @@ const AnbarItem = ({ userId }: { userId: number }) => {
                     <td className={item.ordered ? styles.ordered : ''}>
                       {item.azenco__code}
                     </td>
-                    <td className={item.ordered ? styles.ordered : ''}>
+                    <td
+                      className={
+                        item.ordered
+                          ? `${styles.ordered} ${styles.table__no_wrap}`
+                          : `${styles.table__no_wrap}`
+                      }
+                    >
                       {item.name}
                     </td>
                     <td className={item.ordered ? styles.ordered : ''}>

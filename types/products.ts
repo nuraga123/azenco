@@ -15,8 +15,7 @@ export interface IProductsResponse {
   rows: IProduct[]
 }
 
-export interface IGetSearchNameProduct {
-  url: string
+export interface IGetSearchNameWordProduct {
   search_word: string
 }
 

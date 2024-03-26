@@ -1,7 +1,7 @@
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import styles from '@/styles/layout/index.module.scss'
-import { useRouter } from 'next/router'
 
 interface INavbarItem {
   text: string
@@ -40,7 +40,7 @@ const NavbarItem = ({
       </span>
       {showNavbar && (
         <Link href={url} passHref legacyBehavior>
-          <a style={{ width: '100%' }}>
+          <a style={{ width: '100vw' }}>
             <span className={styles.navItem__text}>{text}</span>
           </a>
         </Link>

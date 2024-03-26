@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { toast } from 'react-toastify'
 import SearchBar from '@/components/modules/AnbarPage/SearchBar'
 import ProductCard from '@/components/modules/AnbarPage/ProductCard'
-import { getSearchNameProductFx } from '@/app/api/products'
+import { getSearchNameWordProductFx } from '@/app/api/products'
 import { addAnbarProductFx } from '@/app/api/anbar'
 import { IProduct } from '@/types/products'
 import styles from '@/styles/anbar/add_form.module.scss'
@@ -41,8 +41,7 @@ const AddForm = () => {
       setError('Введите название продукта')
     } else {
       try {
-        const result = await getSearchNameProductFx({
-          url: 'products/search-word',
+        const result = await getSearchNameWordProductFx({
           search_word: searchProductName,
         })
 
