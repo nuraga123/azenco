@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { useStore } from 'effector-react'
 
 import AnbarImg from '@/public/img/garage-icon.jpg'
-import { getAnbarsUsernameFx } from '@/app/api/anbar'
+import { getAnbarsUsernameFx } from '@/app/api/barn'
 import { $user } from '@/context/user'
 import { getLocalStorageUser } from '@/localStorageUser'
 

@@ -1,0 +1,36 @@
+.barn {
+  
+}
+
+.container {
+  padding: 20px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.item {
+  padding: 15px;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 15px;
+}
+
+.keys {
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.values {
+  color: #666;
+}
+
+.image {
+  width: 100px;
+}
+
+.title {
+  text-align: center;
+}

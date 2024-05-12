@@ -6,7 +6,7 @@ import { $transfer } from '@/context/transfer'
 import Spinner from '@/components/modules/Spinner/Spinner'
 import { IOrderTransfer, IOrderTransferProductId } from '@/types/anbar'
 import { numberMetricFormat } from '@/utils/anbar'
-import { productsAnbarSendToUserFx } from '@/app/api/anbar'
+import { productsAnbarSendToUserFx } from '@/app/api/barn'
 import styles from '@/styles/anbar/index.module.scss'
 import {
   getLocalStorageAnbar,
