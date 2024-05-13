@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { useState, useEffect } from 'react'
 import { useStore } from 'effector-react'
 import { toast } from 'react-toastify'
@@ -14,6 +15,8 @@ import '@/styles/globals.css'
 const MyAnbar = () => {
   const { shouldLoadContent } = useRedirectByUserCheck()
   const [loading, setLoading] = useState(true)
+  const [image, setImage] = useState(false)
+
   const [barn, setBarn] = useState<BarnResponse>({
     barns: [],
     message: '',
@@ -42,6 +45,8 @@ const MyAnbar = () => {
     getAnbarServer()
   }, [userIdResult])
 
+  const toggleImage = () => setImage(!image)
+
   // Отображаем спиннер, если происходит загрузка или контент не должен загружаться
   if (loading || !shouldLoadContent) {
     return (
@@ -58,57 +63,138 @@ const MyAnbar = () => {
   return (
     <Layout title={`Anbar | ${username}`}>
       <div>
-        <h1 className={styles.title}>Anbardar: {username}</h1>
-        
+        <h1>Anbardar: {username}</h1>
+        <table className={styles.table}>
+          <thead>
+            <tr>
+              <th className={styles.title__main} colSpan={5}>
+                Əsas
+              </th>
 
-        {barn.barns.map((el) => (
-          <div className={styles.container} key={+el.id}>
-            <div className={styles.sablon1}>
-              <div className={styles.left__part}>
-                <p>
-                  Anbar №<h1 className={styles.der}>{el.id}</h1>
-                </p>
+              <th className={styles.title__main} colSpan={4}>
+                Malların miqdarı
+              </th>
 
-                <div>
-                  <p>
-                    Adı: <p>{el.name}</p>
-                  </p>
-                  <p>Azenco Kodu:</p>
-                  <p>{el.azencoCode}</p>
-                </div>
-              </div>
-            </div>
-            <div className={styles.sablon2}></div>
-            <div className={styles.item}>
-              <img className={styles.image} src={el.img} alt={el.name} />
-            </div>
-            <p>Növ: {el.type}</p>
-            <p>Vahid: {el.unit}</p>
-            <p>Şəkil: {el.img}</p>
-            <p>Yer: {el.location}</p>
-            <p>Yeni ehtiyat: {el.newStock}</p>
-            <p>İstifadə olunmuş ehtiyat: {el.usedStock}</p>
-            <p>Qırılmış səhm: {el.brokenStock}</p>
-            <p>Ümumi ehtiyat: {el.totalStock}</p>
-            <p>Qiymət: {el.price}</p>
-            <p>Yeni Ümumi Qiymət: {el.newTotalPrice}</p>
-            <p>İstifadə olunmuş Ümumi Qiymət: {el.usedTotalPrice}</p>
-            <p>Sınıq Ümumi Qiymət: {el.brokenTotalPrice}</p>
-            <p>Ümumi Qiymət: {el.totalPrice}</p>
-            <p>İtirilmiş yeni səhm: {el.lostNewStock}</p>
-            <p>İtirilmiş istifadə edilmiş ehtiyat: {el.lostUsedStock}</p>
-            <p>İtirilmiş Sınıq Səhm: {el.lostBrokenStock}</p>
-            <p>İtirilmiş ümumi ehtiyat: {el.lostTotalStock}</p>
-            <p>İtirilmiş Yeni Ümumi Qiymət: {el.lostNewTotalPrice}</p>
-            <p>
-              İtirilmiş İstifadə olunmuş Ümumi Qiymət: {el.lostUsedTotalPrice}
-            </p>
-            <p>İtirilmiş Sınıq Ümumi Qiymət: {el.lostBrokenTotalPrice}</p>
-            <p>İtirilmiş Ümumi Qiymət: {el.lostTotalPrice}</p>
-            <p>Yaradılma tarixi: {el.createdAt}</p>
-            <p>Yenilənib: {el.updatedAt}</p>
-          </div>
-        ))}
+              <th className={styles.title__main} colSpan={4}>
+                Malların məbləğ
+              </th>
+
+              <th className={styles.title__main} colSpan={4}>
+                İtirilmiş miqdarı
+              </th>
+
+              <th className={styles.title__main} colSpan={4}>
+                İtirilmiş məbləğ
+              </th>
+
+              <th className={styles.title__main} colSpan={5}>
+                Əlavə
+              </th>
+            </tr>
+            <tr>
+              {/* Əsas */}
+              <th className={styles.title}>ID</th>
+              <th className={styles.title}>Azenco Kodu</th>
+              <th className={styles.title}>Materialın Adı</th>
+              <th className={styles.title}>Vahid</th>
+              <th className={styles.title}>Qiymət</th>
+
+              {/* Əsas miqdar */}
+              <th className={styles.title}>Yeni</th>
+              <th className={styles.title}>İstifadə olunmuş</th>
+              <th className={styles.title}>Yararsız</th>
+              <th className={styles.title}>Ümumi</th>
+
+              {/* Əsas məbləğ */}
+              <th className={styles.title}>Yeni</th>
+              <th className={styles.title}>İstifadə olunmuş</th>
+              <th className={styles.title}>Yararsız</th>
+              <th className={styles.title}>Ümumi</th>
+
+              {/* İtirilmiş miqdarı */}
+              <th className={styles.title}>Yeni</th>
+              <th className={styles.title}>İstifadə olunmuş</th>
+              <th className={styles.title}>Yararsız</th>
+              <th className={styles.title}>Ümumi</th>
+
+              {/* İtirilmiş məbləğ */}
+              <th className={styles.title}>Yeni</th>
+              <th className={styles.title}>İstifadə olunmuş</th>
+              <th className={styles.title}>Yararsız</th>
+              <th className={styles.title}>Ümumi</th>
+
+              {/* Əlavə */}
+              <th className={styles.title}>Növ</th>
+              <th className={styles.title}>Yer</th>
+              <th className={styles.title}>Şəkil</th>
+              <th className={styles.title}>Yaradılma tarixi</th>
+              <th className={styles.title}>Yenilənib</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {barn.barns.map((el, index) => (
+              <tr key={index}>
+                {/* Əsas */}
+                <td>{+el.id}</td>
+                <td>{el.azencoCode}</td>
+                <td>{el.name}</td>
+                <td>{el.unit}</td>
+                <td>{el.price}</td>
+
+                {/* Əsas miqdar */}
+                <td>{el.newStock}</td>
+                <td>{el.usedStock}</td>
+                <td>{el.brokenStock}</td>
+                <td>{el.totalStock}</td>
+
+                {/* Əsas məbləğ */}
+                <td>{el.newTotalPrice}</td>
+                <td>{el.usedTotalPrice}</td>
+                <td>{el.brokenTotalPrice}</td>
+                <td>{el.totalPrice}</td>
+
+                {/* İtirilmiş miqdarı */}
+                <td>{el.lostNewStock}</td>
+                <td>{el.lostUsedStock}</td>
+                <td>{el.brokenTotalPrice}</td>
+                <td>{el.lostTotalStock}</td>
+
+                {/* İtirilmiş məbləğ  */}
+                <td>{el.lostNewTotalPrice}</td>
+                <td>{el.lostUsedTotalPrice}</td>
+                <td>{el.lostBrokenTotalPrice}</td>
+                <td>{el.lostTotalPrice}</td>
+
+                {/* Əlavə */}
+                <td>{el.type}</td>
+                <td>{el.location}</td>
+                <td>
+                  <button className={styles.btn__open} onClick={toggleImage}>
+                    {!image && 'Şəkilı göstər'}
+                  </button>
+                  {image && (
+                    <div className={styles.wrapper__image}>
+                      <img
+                        className={styles.image}
+                        src={el.img}
+                        alt={el.name}
+                      />
+                      <button
+                        className={styles.btn__close}
+                        onClick={toggleImage}
+                      >
+                        {image && 'X'}
+                      </button>
+                    </div>
+                  )}
+                </td>
+                <td>{el.createdAt.substr(0, 19).replace('T', ' ')}</td>
+                <td>{el.updatedAt}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </Layout>
   )
