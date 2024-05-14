@@ -13,7 +13,7 @@ import spinnerStyles from '@/styles/spinner/index.module.scss'
 import styles from '@/styles/barn/index.module.css'
 import '@/styles/globals.css'
 
-const MyAnbar = () => {
+const MyBarn = () => {
   const { shouldLoadContent } = useRedirectByUserCheck()
   const [loading, setLoading] = useState(true)
   const [image, setImage] = useState(false)
@@ -64,25 +64,121 @@ const MyAnbar = () => {
   return (
     <Layout title={`Anbar | ${username}`}>
       <div>
-        <h1 className={styles.barn__title}>Anbardar: {username}</h1>
-
-        <div className={styles.container__btn}>
-          <Link href={'/my/barn'} passHref legacyBehavior>
-            <button className={`${styles.btn} ${styles.success}`}>Anbar mallari</button>
-          </Link>
-          <Link href={'/my/lost-barn'} passHref legacyBehavior>
-            <button className={`${styles.btn} ${styles.error}`}>
-              Anbar İtirilmiş mallari
-            </button>
+        <div>
+          <Link href='/my'>
+            {'geri'}
           </Link>
         </div>
+
+        <h1 className={styles.barn__title}>
+          Mənim Anbarım: {username}
+        </h1>
       </div>
+
+      <table className={styles.table}>
+        <thead>
+          <tr>
+            <th className={styles.title__main} colSpan={5}>
+              Material məlumatları
+            </th>
+
+            <th className={styles.title__main} colSpan={4}>
+              Materialın miqdarı
+            </th>
+
+            <th className={styles.title__main} colSpan={4}>
+              Malların məbləğı
+            </th>
+
+            <th className={styles.title__main} colSpan={5}>
+              əlavə material məlumatları
+            </th>
+          </tr>
+          <tr>
+            {/* Əsas */}
+            <th className={styles.title}>ID</th>
+            <th className={styles.title}>Azenco Kodu</th>
+            <th className={styles.title}>Materialın Adı</th>
+            <th className={styles.title}>Vahid</th>
+            <th className={styles.title}>Qiymət</th>
+
+            {/* Əsas miqdar */}
+            <th className={styles.title}>Yeni</th>
+            <th className={styles.title}>İstifadə olunmuş</th>
+            <th className={styles.title}>Yararsız</th>
+            <th className={styles.title}>Ümumi</th>
+
+            {/* Əsas məbləğ */}
+            <th className={styles.title}>Yeni</th>
+            <th className={styles.title}>İstifadə olunmuş</th>
+            <th className={styles.title}>Yararsız</th>
+            <th className={styles.title}>Ümumi</th>
+
+            {/* Əlavə */}
+            <th className={styles.title}>Növ</th>
+            <th className={styles.title}>Yer</th>
+            <th className={styles.title}>Şəkil</th>
+            <th className={styles.title}>Yaradılma tarixi</th>
+            <th className={styles.title}>Yenilənib</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {barn.barns.map((el, index) => (
+            <tr key={index}>
+              {/* Əsas */}
+              <td>{+el.id}</td>
+              <td>{el.azencoCode}</td>
+              <td>{el.name}</td>
+              <td>{el.unit}</td>
+              <td>{el.price}</td>
+
+              {/* Əsas miqdar */}
+              <td>{el.newStock}</td>
+              <td>{el.usedStock}</td>
+              <td>{el.brokenStock}</td>
+              <td>{el.totalStock}</td>
+
+              {/* Əsas məbləğ */}
+              <td>{el.newTotalPrice}</td>
+              <td>{el.usedTotalPrice}</td>
+              <td>{el.brokenTotalPrice}</td>
+              <td>{el.totalPrice}</td>
+
+              {/* Əlavə */}
+              <td>{el.type}</td>
+              <td>{el.location}</td>
+              <td>
+                <button className={styles.btn__open} onClick={toggleImage}>
+                  {!image && 'Şəkilı göstər'}
+                </button>
+                {image && (
+                  <div className={styles.wrapper__image}>
+                    <img
+                      className={styles.image}
+                      src={el.img}
+                      alt={el.name}
+                    />
+                    <button
+                      className={styles.btn__close}
+                      onClick={toggleImage}
+                    >
+                      {image && 'X'}
+                    </button>
+                  </div>
+                )}
+              </td>
+              <td>{el.createdAt.substr(0, 19).replace('T', ' ')}</td>
+              <td>{el.updatedAt}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </Layout>
   )
 }
 
-export default MyAnbar
-
+export default MyBarn
 
 /* <div
           style={{

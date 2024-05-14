@@ -4,6 +4,11 @@
   border-collapse: collapse;
 }
 
+.barn__title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
 .title__main {
   font-size: 20px;
   background-color: #0000007c;
@@ -76,4 +81,49 @@
   letter-spacing: 0.5px;
   cursor: pointer;
   border-radius: 5px;
+}
+
+
+/* Стили для контейнера кнопок */
+.container__btn {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+/* Общие стили для кнопок */
+.btn {
+  letter-spacing: 1px;
+  padding: 10px 20px;
+  font-size: 18px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  color: white;
+}
+
+/* Hover-эффект для кнопок */
+.btn:hover {
+  filter: brightness(110%);
+}
+
+/* Стили для кнопки "Anbar mallari" */
+.success {
+  background-color: #4caf50;
+  /* Зеленый цвет для успешного действия */
+}
+
+.success:hover {
+  background-color: #45a049;
+}
+
+/* Стили для кнопки "Anbar İtirilmiş mallari" */
+.error {
+  background-color: #f44336;
+  /* Красный цвет для ошибки или потери */
+}
+
+.error:hover {
+  background-color: #e53935;
 }
