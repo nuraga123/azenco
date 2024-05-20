@@ -15,6 +15,15 @@ export const getBarnByUserId = createEffect(async (id: number) => {
   }
 })
 
+export const getBarnById = createEffect(async (id: number) => {
+  try {
+    const { data } = await api.get(`barn/${+id}`)
+    return data
+  } catch (error) {
+    console.log(error)
+  }
+})
+
 export const getAnbarsUsernameFx = createEffect(async () => {
   try {
     const { tokenStorage, usernameStorage } = getLocalStorageUser()

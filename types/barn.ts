@@ -1,4 +1,4 @@
-interface BarnItem {
+export interface IBarnItem {
   id: number
   userId: number
   productId: number
@@ -31,8 +31,8 @@ interface BarnItem {
 }
 
 // Интерфейс для ответа сервера
-interface BarnResponse {
-  barns: BarnItem[]
+export interface IBarnResponse {
+  barns: IBarnItem[]
   message: string
   error_message: string
 }

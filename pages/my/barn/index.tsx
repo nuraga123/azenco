@@ -3,12 +3,19 @@ import { useState, useEffect } from 'react'
 import { useStore } from 'effector-react'
 import { toast } from 'react-toastify'
 import Link from 'next/link'
+import { IoIosAddCircle } from 'react-icons/io'
+import { GrSubtractCircle } from 'react-icons/gr'
+import { MdDeleteForever } from 'react-icons/md'
+import { IoMdArrowRoundBack } from "react-icons/io";
+import { AiFillPicture } from "react-icons/ai";
 
 import { getBarnByUserId } from '@/app/api/barn'
 import Layout from '@/components/layout/Layout'
 import { $user } from '@/context/user'
 import useRedirectByUserCheck from '@/hooks/useRedirectByUserCheck'
 import { getLocalStorageUser } from '@/localStorageUser'
+import { IBarnResponse } from '@/types/barn'
+
 import spinnerStyles from '@/styles/spinner/index.module.scss'
 import styles from '@/styles/barn/index.module.css'
 import '@/styles/globals.css'
@@ -17,8 +24,9 @@ const MyBarn = () => {
   const { shouldLoadContent } = useRedirectByUserCheck()
   const [loading, setLoading] = useState(true)
   const [image, setImage] = useState(false)
+  const [operationMenu, setOperationMenu] = useState(false)
 
-  const [barn, setBarn] = useState<BarnResponse>({
+  const [barn, setBarn] = useState<IBarnResponse>({
     barns: [],
     message: '',
     error_message: '',
@@ -47,6 +55,7 @@ const MyBarn = () => {
   }, [userIdResult])
 
   const toggleImage = () => setImage(!image)
+  const toggleOperationMenu = () => setOperationMenu(!operationMenu)
 
   // Отображаем спиннер, если происходит загрузка или контент не должен загружаться
   if (loading || !shouldLoadContent) {
@@ -64,11 +73,12 @@ const MyBarn = () => {
   return (
     <Layout title={`Anbar | ${username}`}>
       <div>
-        <div>
-          <Link href='/my'>
-            {'geri'}
-          </Link>
-        </div>
+        <Link href='/my'>
+          <div className={`${styles.header} ${styles.btn} ${styles.add}`}>
+            <IoMdArrowRoundBack style={{ fontSize: 25 }} />
+            {' geri'}
+          </div>
+        </Link>
 
         <h1 className={styles.barn__title}>
           Mənim Anbarım: {username}
@@ -78,6 +88,9 @@ const MyBarn = () => {
       <table className={styles.table}>
         <thead>
           <tr>
+            <th className={styles.title__main} colSpan={3}>
+              Əməliyyatlar
+            </th>
             <th className={styles.title__main} colSpan={5}>
               Material məlumatları
             </th>
@@ -91,10 +104,15 @@ const MyBarn = () => {
             </th>
 
             <th className={styles.title__main} colSpan={5}>
-              əlavə material məlumatları
+              Əlavə material məlumatları
             </th>
           </tr>
           <tr>
+            {/* Əməliyyatlar */}
+            <th className={styles.title}>gəlişi</th>
+            <th className={styles.title}>azalması</th>
+            <th className={styles.title}>silin</th>
+
             {/* Əsas */}
             <th className={styles.title}>ID</th>
             <th className={styles.title}>Azenco Kodu</th>
@@ -126,10 +144,23 @@ const MyBarn = () => {
         <tbody>
           {barn.barns.map((el, index) => (
             <tr key={index}>
+
               {/* Əsas */}
+              <td>
+                <IoIosAddCircle style={{ fontSize: 40, color: 'green' }} onClick={(e) => console.log(e.target)} />
+              </td>
+
+              <td>
+                <GrSubtractCircle style={{ fontSize: 35, color: 'blue' }} onClick={(e) => console.log(e.target)} />
+              </td>
+
+              <td>
+                <MdDeleteForever style={{ fontSize: 40, color: 'red' }} onClick={(e) => console.log(e.target)} />
+              </td>
+
               <td>{+el.id}</td>
               <td>{el.azencoCode}</td>
-              <td>{el.name}</td>
+              <td className={styles.name}>{el.name}</td>
               <td>{el.unit}</td>
               <td>{el.price}</td>
 
@@ -149,8 +180,8 @@ const MyBarn = () => {
               <td>{el.type}</td>
               <td>{el.location}</td>
               <td>
-                <button className={styles.btn__open} onClick={toggleImage}>
-                  {!image && 'Şəkilı göstər'}
+                <button className={`${styles.btn} ${styles.subtract}`} onClick={toggleImage}>
+                  {!image && 'Göstər'}
                 </button>
                 {image && (
                   <div className={styles.wrapper__image}>
@@ -160,21 +191,21 @@ const MyBarn = () => {
                       alt={el.name}
                     />
                     <button
-                      className={styles.btn__close}
+                      className={`${styles.btn} ${styles.delete}`}
                       onClick={toggleImage}
                     >
-                      {image && 'X'}
+                      {image && <AiFillPicture />}
                     </button>
                   </div>
                 )}
               </td>
-              <td>{el.createdAt.substr(0, 19).replace('T', ' ')}</td>
-              <td>{el.updatedAt}</td>
+              <td className={styles.date}>{el.createdAt.substr(0, 16).replace('T', ' ')}</td>
+              <td className={styles.date}>{el.updatedAt.substr(0, 16).replace('T', ' ')}</td>
             </tr>
           ))}
         </tbody>
       </table>
-    </Layout>
+    </Layout >
   )
 }
 

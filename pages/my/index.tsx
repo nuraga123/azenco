@@ -9,6 +9,8 @@ import Layout from '@/components/layout/Layout'
 import { $user } from '@/context/user'
 import useRedirectByUserCheck from '@/hooks/useRedirectByUserCheck'
 import { getLocalStorageUser } from '@/localStorageUser'
+import { IBarnResponse } from '@/types/barn'
+
 import spinnerStyles from '@/styles/spinner/index.module.scss'
 import styles from '@/styles/barn/index.module.css'
 import '@/styles/globals.css'
@@ -18,7 +20,7 @@ const MyAnbar = () => {
   const [loading, setLoading] = useState(true)
   const [image, setImage] = useState(false)
 
-  const [barn, setBarn] = useState<BarnResponse>({
+  const [barn, setBarn] = useState<IBarnResponse>({
     barns: [],
     message: '',
     error_message: '',
@@ -66,12 +68,12 @@ const MyAnbar = () => {
       <div>
         <h1 className={styles.barn__title}>Anbardar: {username}</h1>
 
-        <div className={styles.container__btn}>
+        <div className={styles.container}>
           <Link href={'/my/barn'} passHref legacyBehavior>
-            <button className={`${styles.btn} ${styles.success}`}>Anbar mallari</button>
+            <button className={`${styles.btn} ${styles.add}`}>Anbar mallari</button>
           </Link>
           <Link href={'/my/lost-barn'} passHref legacyBehavior>
-            <button className={`${styles.btn} ${styles.error}`}>
+            <button className={`${styles.btn} ${styles.delete}`}>
               Anbar İtirilmiş mallari
             </button>
           </Link>

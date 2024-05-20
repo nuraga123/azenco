@@ -1,9 +1,33 @@
+/* Styles for tables */
 .table {
   margin-bottom: 10px;
   border: 1px solid #dddddd;
   border-collapse: collapse;
+  text-align: center;
 }
 
+.table th,
+.table td {
+  padding: 5px 10px;
+  border: 2px solid #000000;
+  text-align: center;
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
+.table th {
+  font-weight: bold;
+}
+
+.table tbody tr:nth-child(odd) {
+  background: #fff;
+}
+
+.table tbody tr:nth-child(even) {
+  background: #f7f7f7;
+}
+
+/* Styles for titles */
 .barn__title {
   text-align: center;
   margin-bottom: 20px;
@@ -20,29 +44,7 @@
   background-color: #bdbdbd7d;
 }
 
-.table th {
-  letter-spacing: 1px;
-  font-weight: bold;
-  padding: 5px;
-  border: 3px solid #000000;
-}
-
-.table td {
-  padding: 5px 10px;
-  border: 3px solid #000000;
-  text-align: left;
-  max-width: max-content;
-  width: 300px;
-}
-
-.table tbody tr:nth-child(odd) {
-  background: #fff;
-}
-
-.table tbody tr:nth-child(even) {
-  background: #f7f7f7;
-}
-
+/* Styles for image wrapper */
 .wrapper__image {
   background-color: #66666680;
   position: absolute;
@@ -61,69 +63,66 @@
   border-radius: 20px 0 0 20px;
 }
 
-.btn__close {
-  background-color: red;
-  border-radius: 5px;
-  color: white;
-  padding: 5px;
-  margin: 5px 10px;
-  font-size: 18px;
-  cursor: pointer;
-  width: 40px;
-}
-
-.btn__open {
-  background-color: #29d;
-  color: white;
-  padding: 5px;
-  margin: 2px;
-  font-weight: bolder;
-  letter-spacing: 0.5px;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-
-/* Стили для контейнера кнопок */
-.container__btn {
-  display: flex;
-  justify-content: space-around;
-  margin-top: 20px;
-}
-
-/* Общие стили для кнопок */
+/* Common button styles */
 .btn {
-  letter-spacing: 1px;
-  padding: 10px 20px;
-  font-size: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  padding: 15px;
+  font-size: 16px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  color: white;
+  letter-spacing: 1px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Hover-эффект для кнопок */
 .btn:hover {
   filter: brightness(110%);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
 }
 
-/* Стили для кнопки "Anbar mallari" */
-.success {
+/* Specific button styles */
+.add {
   background-color: #4caf50;
-  /* Зеленый цвет для успешного действия */
+  /* Green for add */
 }
 
-.success:hover {
+.add:hover {
   background-color: #45a049;
 }
 
-/* Стили для кнопки "Anbar İtirilmiş mallari" */
-.error {
-  background-color: #f44336;
-  /* Красный цвет для ошибки или потери */
+.subtract {
+  background-color: #ff9800;
 }
 
-.error:hover {
+.subtract:hover {
+  background-color: #fb8c00;
+}
+
+.delete {
+  background-color: #f44336;
+}
+
+.delete:hover {
   background-color: #e53935;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 90px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px auto;
+  width: 600px;
 }
