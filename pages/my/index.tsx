@@ -12,7 +12,7 @@ import { getLocalStorageUser } from '@/localStorageUser'
 import { IBarnResponse } from '@/types/barn'
 
 import spinnerStyles from '@/styles/spinner/index.module.scss'
-import styles from '@/styles/barn/index.module.css'
+import styles from '@/styles/barn/index.module.scss'
 import '@/styles/globals.css'
 
 const MyAnbar = () => {
@@ -65,21 +65,24 @@ const MyAnbar = () => {
   // Отображаем компонент AnbarItem только когда загрузка завершена и контент должен загружаться
   return (
     <Layout title={`Anbar | ${username}`}>
-      <div>
+      <div className={styles.barn}>
         <h1 className={styles.barn__title}>Anbardar: {username}</h1>
 
-        <div className={styles.container}>
+        <div className={styles.barn__wrapper}>
           <Link href={'/my/barn'} passHref legacyBehavior>
-            <button className={`${styles.btn} ${styles.add}`}>Anbar mallari</button>
+            <button className={styles.barn__ok}>
+              mallari
+            </button>
           </Link>
           <Link href={'/my/lost-barn'} passHref legacyBehavior>
-            <button className={`${styles.btn} ${styles.delete}`}>
-              Anbar İtirilmiş mallari
+            <button className={styles.barn__not}>
+              itirilmiş materiallar
             </button>
           </Link>
         </div>
-      </div>
-    </Layout>
+
+      </div >
+    </Layout >
   )
 }
 

@@ -10,15 +10,16 @@ import { $user } from '@/context/user'
 import useRedirectByUserCheck from '@/hooks/useRedirectByUserCheck'
 import { getLocalStorageUser } from '@/localStorageUser'
 import spinnerStyles from '@/styles/spinner/index.module.scss'
-import styles from '@/styles/barn/index.module.css'
+import styles from '@/styles/barn/index.module.scss'
 import '@/styles/globals.css'
+import { IBarnResponse } from '@/types/barn'
 
 const MyLostBarn = () => {
   const { shouldLoadContent } = useRedirectByUserCheck()
   const [loading, setLoading] = useState(true)
   const [image, setImage] = useState(false)
 
-  const [barn, setBarn] = useState<BarnResponse>({
+  const [barn, setBarn] = useState<IBarnResponse>({
     barns: [],
     message: '',
     error_message: '',

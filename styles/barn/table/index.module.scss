@@ -1,0 +1,137 @@
+.table {
+  border-collapse: collapse;
+  white-space: nowrap;
+  box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.2);
+
+  &::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #888;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+
+  th,
+  td {
+    text-align: center;
+    padding: 10px;
+    border: 2px solid black;
+  }
+
+  td {
+    border: 2px solid black;
+  }
+
+
+
+  tbody tr:hover {
+    background-color: #dde5db;
+  }
+
+  .title {
+    text-align: center;
+    background-color: #02c52c;
+    padding: 5px 10px;
+    letter-spacing: 1px;
+  }
+
+  .title__main {
+    font-size: 20px;
+    background-color: #8a8a8a;
+    color: white;
+    border: 2px solid rgb(68, 68, 68);
+    padding: 10px;
+  }
+
+  .wrapper__image {
+    background-color: #66666680;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    border-radius: 20px;
+    padding: 5px;
+    width: 360px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .image {
+    width: 300px;
+    border-radius: 20px 0 0 20px;
+  }
+
+  .icon {
+    font-size: 35px;
+    cursor: pointer;
+    transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+
+    &__image {
+      @extend .icon;
+      color: #00b7ff;
+
+      &:hover {
+        color: #007acc;
+      }
+    }
+
+    &__close {
+      @extend .icon;
+      color: #e57373;
+      background-color: white;
+      border-radius: 20px;
+
+      &:hover {
+        color: white;
+        background-color: #e57373;
+      }
+    }
+
+    &__plus {
+      @extend .icon;
+      color: #009c0593;
+      border-radius: 50%;
+
+      &:hover {
+        color: #009d05;
+      }
+    }
+
+    &__minus {
+      @extend .icon;
+      color: rgba(0, 0, 255, 0.37);
+      font-size: 30px;
+
+      &:hover {
+        color: rgb(0, 0, 255);
+      }
+    }
+
+    &__delete {
+      @extend .icon;
+      color: #e57373;
+
+      &:hover {
+        color: rgb(255, 0, 0)
+      }
+    }
+  }
+
+  .name {
+    font-weight: bold;
+    font-style: italic;
+    font-size: 18px;
+  }
+
+  .date {
+    font-size: 14px;
+  }
+}

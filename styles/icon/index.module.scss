@@ -1,0 +1,55 @@
+.icon {
+  font-size: 35px;
+  cursor: pointer;
+  transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+
+  &__image {
+    @extend .icon;
+    color: #00b7ff;
+
+    &:hover {
+      color: #007acc;
+    }
+  }
+
+  &__close {
+    @extend .icon;
+    color: #e57373;
+    background-color: white;
+    border-radius: 20px;
+
+    &:hover {
+      color: white;
+      background-color: #e57373;
+    }
+  }
+
+  &__plus {
+    @extend .icon;
+    color: #009c0593;
+    border-radius: 50%;
+
+    &:hover {
+      color: #016604d5;
+    }
+  }
+
+  &__minus {
+    @extend .icon;
+    color: rgba(0, 0, 255, 0.37);
+    font-size: 30px;
+
+    &:hover {
+      color: rgb(0, 0, 255);
+    }
+  }
+
+  &__delete {
+    @extend .icon;
+    color: #e57373;
+
+    &:hover {
+      color: rgb(255, 0, 0)
+    }
+  }
+}

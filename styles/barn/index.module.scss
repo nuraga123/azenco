@@ -1,0 +1,95 @@
+.barn {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+
+  &__wrapper_table {
+    width: 100%;
+    overflow-x: auto;
+    border: 2px solid;
+    padding: 1px;
+  }
+
+  &__title {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+    text-align: center;
+
+    &::after {
+      content: '';
+      display: block;
+      height: 4px;
+      background-color: #0070f3;
+      margin: 10px auto 0;
+    }
+  }
+
+  &__wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+
+    &:hover {
+      background-color: #0070f3;
+      color: #fff;
+      transform: scale(1.01);
+    }
+
+    &.barn__ok {
+      background-color: #28a745;
+      color: #fff;
+
+      &:hover {
+        background-color: #218838;
+      }
+    }
+
+    &.barn__not {
+      background-color: #dc3545;
+      color: #fff;
+
+      &:hover {
+        background-color: #c82333;
+      }
+    }
+  }
+
+  &.btn {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    text-decoration: none;
+
+    &__back {
+      @extend .btn;
+      max-width: min-content;
+      background-color: #4CAF50; // Приятный зеленый цвет
+      color: white;
+
+      &:hover {
+        background-color: #45a049; // Темнее зеленый для ховера
+      }
+    }
+  }
+}

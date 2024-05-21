@@ -1,4 +1,4 @@
-/* Styles for tables */
+
 .table {
   margin-bottom: 10px;
   border: 1px solid #dddddd;
@@ -28,7 +28,7 @@
 }
 
 /* Styles for titles */
-.barn__title {
+.title {
   text-align: center;
   margin-bottom: 20px;
 }
@@ -63,53 +63,6 @@
   border-radius: 20px 0 0 20px;
 }
 
-/* Common button styles */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  padding: 15px;
-  font-size: 16px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  letter-spacing: 1px;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.btn:hover {
-  filter: brightness(110%);
-  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-}
-
-/* Specific button styles */
-.add {
-  background-color: #4caf50;
-  /* Green for add */
-}
-
-.add:hover {
-  background-color: #45a049;
-}
-
-.subtract {
-  background-color: #ff9800;
-}
-
-.subtract:hover {
-  background-color: #fb8c00;
-}
-
-.delete {
-  background-color: #f44336;
-}
-
-.delete:hover {
-  background-color: #e53935;
-}
-
 .header {
   display: flex;
   justify-content: space-between;
@@ -117,6 +70,9 @@
   max-width: 90px;
   width: 100%;
   margin-bottom: 20px;
+  background-color: #0000007c;
+  color: white;
+  padding: 5px 10px;
 }
 
 .container {

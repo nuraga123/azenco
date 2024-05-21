@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 
 import { getBarnById } from '@/app/api/barn'
 import { IBarnItem } from '@/types/barn'
+import styles from '@/styles/barn/index.module.scss'
 
 const UpdateBarn = () => {
     const { query } = useRouter()
