@@ -30,8 +30,6 @@
     border: 2px solid black;
   }
 
-
-
   tbody tr:hover {
     background-color: #dde5db;
   }
@@ -70,7 +68,7 @@
   }
 
   .icon {
-    font-size: 35px;
+    font-size: 30px;
     cursor: pointer;
     transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out;
 
@@ -108,7 +106,7 @@
     &__minus {
       @extend .icon;
       color: rgba(0, 0, 255, 0.37);
-      font-size: 30px;
+      font-size: 25px;
 
       &:hover {
         color: rgb(0, 0, 255);

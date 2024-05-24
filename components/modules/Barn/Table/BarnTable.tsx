@@ -3,16 +3,15 @@ import { useState } from 'react'
 import { IoIosAddCircle } from 'react-icons/io'
 import { GrSubtractCircle } from 'react-icons/gr'
 import { MdDeleteForever } from 'react-icons/md'
-import { AiFillPicture } from "react-icons/ai";
-import { IoMdCloseCircleOutline } from "react-icons/io";
+import { AiFillPicture } from 'react-icons/ai'
+import { IoMdCloseCircleOutline } from 'react-icons/io'
 
 import { IBarnItem, IBarnResponse } from '@/types/barn'
-
 import styles from '@/styles/barn/table/index.module.scss'
 import '@/styles/globals.css'
 
 const BarnTable = ({ barn }: { barn: IBarnResponse }) => {
-  const [image, setImage] = useState(false)
+  const [image, setImage] = useState<boolean>(false)
 
   const toggleImage = () => setImage(!image)
 
@@ -25,7 +24,7 @@ const BarnTable = ({ barn }: { barn: IBarnResponse }) => {
           </th>
 
           <th className={styles.title__main} colSpan={5}>
-            Material məlumatları
+            Material haqqında
           </th>
 
           <th className={styles.title__main} colSpan={4}>
@@ -55,13 +54,13 @@ const BarnTable = ({ barn }: { barn: IBarnResponse }) => {
 
           {/* Əsas miqdar */}
           <th className={styles.title}>Yeni</th>
-          <th className={styles.title}>İstifadə olunmuş</th>
+          <th className={styles.title}>Yararli</th>
           <th className={styles.title}>Yararsız</th>
           <th className={styles.title}>Ümumi</th>
 
           {/* Əsas məbləğ */}
           <th className={styles.title}>Yeni</th>
-          <th className={styles.title}>İstifadə olunmuş</th>
+          <th className={styles.title}>Yararli</th>
           <th className={styles.title}>Yararsız</th>
           <th className={styles.title}>Ümumi</th>
 
@@ -77,50 +76,51 @@ const BarnTable = ({ barn }: { barn: IBarnResponse }) => {
       <tbody>
         {barn?.barns?.map((el: IBarnItem, index: number) => (
           <tr key={index}>
-
             {/* Əsas */}
-            <td>
+            <td style={{ padding: '5px 31px' }}>
               <IoIosAddCircle
                 className={styles.icon__plus}
                 onClick={(e) => console.log(e.target)}
               />
             </td>
 
-            <td>
+            <td style={{ padding: '5px 36px' }}>
               <GrSubtractCircle
                 className={styles.icon__minus}
                 onClick={(e) => console.log(e.target)}
               />
             </td>
 
-            <td>
+            <td style={{ padding: '11px 26px' }}>
               <MdDeleteForever
                 className={styles.icon__delete}
                 onClick={(e) => console.log(e.target)}
               />
             </td>
 
-            <td>{+el.id}</td>
+            <td>{el.id}</td>
             <td>{el.azencoCode}</td>
             <td className={styles.name}>{el.name}</td>
             <td>{el.unit}</td>
-            <td>{el.price}</td>
+            <td className={styles.name}>{+el.price}</td>
 
             {/* Əsas miqdar */}
-            <td>{el.newStock}</td>
-            <td>{el.usedStock}</td>
-            <td>{el.brokenStock}</td>
-            <td className={styles.name}>{el.totalStock}</td>
+            <td>{+el.newStock}</td>
+            <td>{+el.usedStock}</td>
+            <td>{+el.brokenStock}</td>
+            <td className={styles.name}>{+el.totalStock}</td>
 
             {/* Əsas məbləğ */}
-            <td>{el.newTotalPrice}</td>
-            <td>{el.usedTotalPrice}</td>
-            <td>{el.brokenTotalPrice}</td>
-            <td className={styles.name}>{el.totalPrice}</td>
+            <td>{+el.newTotalPrice}</td>
+            <td>{+el.usedTotalPrice}</td>
+            <td>{+el.brokenTotalPrice}</td>
+            <td className={styles.name}>{+el.totalPrice}</td>
 
             {/* Əlavə */}
             <td>{el.type}</td>
+
             <td>{el.location}</td>
+
             <td>
               {!image && (
                 <AiFillPicture
@@ -131,20 +131,24 @@ const BarnTable = ({ barn }: { barn: IBarnResponse }) => {
 
               {image && (
                 <div className={styles.wrapper__image}>
-                  <img
-                    className={styles.image}
-                    src={el.img}
-                    alt={el.name}
-                  />
-                  {image && <IoMdCloseCircleOutline
-                    className={styles.icon__close}
-                    onClick={toggleImage}
-                  />}
+                  <img className={styles.image} src={el.img} alt={el.name} />
+                  {image && (
+                    <IoMdCloseCircleOutline
+                      className={styles.icon__close}
+                      onClick={toggleImage}
+                    />
+                  )}
                 </div>
               )}
             </td>
-            <td className={styles.date}>{el.createdAt.substr(0, 16).replace('T', ' ')}</td>
-            <td className={styles.date}>{el.updatedAt.substr(0, 16).replace('T', ' ')}</td>
+
+            <td className={styles.date}>
+              {el.createdAt.substr(0, 16).replace('T', ' ')}
+            </td>
+
+            <td className={styles.date}>
+              {el.updatedAt.substr(0, 16).replace('T', ' ')}
+            </td>
           </tr>
         ))}
       </tbody>

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useStore } from 'effector-react'
 import { toast } from 'react-toastify'
 import Link from 'next/link'
-import { IoMdArrowRoundBack } from "react-icons/io";
+import { IoMdArrowRoundBack } from 'react-icons/io'
 
 import { getBarnByUserId } from '@/app/api/barn'
 import Layout from '@/components/layout/Layout'
@@ -65,19 +65,19 @@ const MyBarn = () => {
   return (
     <Layout title={`Anbar | ${username}`}>
       <div className={styles.barn__table}>
-        <Link href='/my' className={styles.barn__btn_back}>
-          <IoMdArrowRoundBack />
-        </Link>
+        <button className={styles.barn__btn_back}>
+          <Link href="/my" className={styles.barn__btn_back}>
+            <IoMdArrowRoundBack />
+          </Link>
+        </button>
 
-        <h1 className={styles.barn__title}>
-          Anbardar: {username}
-        </h1>
+        <h1 className={styles.barn__title}>Anbardar: {username}</h1>
       </div>
 
       <div className={styles.barn__wrapper_table}>
         <BarnTable barn={barn} />
       </div>
-    </Layout >
+    </Layout>
   )
 }
 

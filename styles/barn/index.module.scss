@@ -73,23 +73,15 @@
     }
   }
 
-  &.btn {
-    display: flex;
-    align-items: center;
-    padding: 10px 20px;
-    border-radius: 8px;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    text-decoration: none;
+  &__btn_back {
+    padding: 5px;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 20px;
+    border-radius: 10px;
 
-    &__back {
-      @extend .btn;
-      max-width: min-content;
-      background-color: #4CAF50; // Приятный зеленый цвет
-      color: white;
-
-      &:hover {
-        background-color: #45a049; // Темнее зеленый для ховера
-      }
+    &:hover {
+      background-color: #45a049;
     }
   }
 }
