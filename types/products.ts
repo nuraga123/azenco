@@ -4,8 +4,8 @@ export interface IProduct {
   type: string
   price: string
   unit: string
-  azenco__code: string
-  images: string
+  azencoСode: string
+  img: string
   createdAt: string
   updatedAt: string
 }
@@ -16,7 +16,7 @@ export interface IProductsResponse {
 }
 
 export interface IGetSearchNameWordProduct {
-  search_word: string
+  part_name: string
 }
 
 export interface DataNewProduct {

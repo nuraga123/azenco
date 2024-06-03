@@ -52,7 +52,7 @@ const SignInForm = () => {
           email: userDataOne.email,
         })
 
-        router.push('/anbar/my')
+        router.push('/my')
       }
 
       router.push('/')

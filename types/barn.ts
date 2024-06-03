@@ -3,7 +3,7 @@ export interface IBarnItem {
   userId: number
   productId: number
   username: string
-  name: string
+  productName: string
   azencoCode: string
   type: string
   unit: string
@@ -35,4 +35,26 @@ export interface IBarnResponse {
   barns: IBarnItem[]
   message: string
   error_message: string
+}
+
+export interface IStocksBarn {
+  barnId: number
+  movementType: string
+  userSelectedDate: string
+  fromLocation: string
+  toLocation: string
+  newStock: number
+  usedStock: number
+  brokenStock: number
+}
+
+export interface IStocksLostBarn {
+  barnId: number
+  movementType: string
+  userSelectedDate: string
+  fromLocation: string
+  toLocation: string
+  lostNewStock: number
+  lostUsedStock: number
+  lostBrokenStock: number
 }

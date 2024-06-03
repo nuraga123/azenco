@@ -1,19 +1,22 @@
 import React, { useState } from 'react'
 import { toast } from 'react-toastify'
-import SearchBar from '@/components/modules/AnbarPage/SearchBar'
-import ProductCard from '@/components/modules/AnbarPage/ProductCard'
-import { getSearchNameWordProductFx } from '@/app/api/products'
-import { addAnbarProductFx } from '@/app/api/barn'
-import { IProduct } from '@/types/products'
-import styles from '@/styles/anbar/add_form.module.scss'
-import { AxiosError } from 'axios'
-import Spinner from '@/components/modules/Spinner/Spinner'
-import Modal from '@/components/modules/AnbarPage/Modal'
 
-const AddForm = () => {
+import { addAnbarProductFx } from '@/app/api/barn'
+import ProductCard from '@/components/modules/BarnsPage/ProductsCard'
+import Spinner from '@/components/modules/Spinner/Spinner'
+import Modal from '@/components/modules/BarnsPage/Modal'
+import { IProduct } from '@/types/products'
+
+import SearchContainer from '@/components/modules/BarnsPage/SearchContainer'
+import { useStore } from 'effector-react'
+import { $products } from '@/context/barns'
+import styles from '@/styles/anbar/add_form.module.scss'
+
+const CreateFormBarn = () => {
+  const searchProducts = useStore($products)
+
   const [spinner, setSpinner] = useState<boolean>(false)
 
-  const [searchProducts, setSearchProducts] = useState<IProduct[]>([])
   const [searchProductName, setSearchProductName] = useState<string>('')
   const [error, setError] = useState<string>('')
 
@@ -25,50 +28,14 @@ const AddForm = () => {
     type: '',
     price: '',
     unit: '',
-    azenco__code: '',
-    images: '',
+    azencoСode: '',
+    img: '',
     createdAt: '',
     updatedAt: '',
   })
 
   const [username, setUsername] = useState<string>('')
   const [quantity, setQuantity] = useState<string>('')
-
-  const handleSearch = async () => {
-    setSpinner(true)
-    if (searchProductName.trim() === '') {
-      setSpinner(false)
-      setError('Введите название продукта')
-    } else {
-      try {
-        const result = await getSearchNameWordProductFx({
-          search_word: searchProductName,
-        })
-
-        if (result.length) {
-          setSpinner(false)
-          setError('')
-          setSearchProducts(result)
-        } else {
-          setSearchProductName('')
-          setError(`${searchProductName} нет в базе данных`)
-          toast.error(`${searchProductName} нет в базе данных`)
-        }
-      } catch (error) {
-        setSpinner(false)
-        console.log(error)
-        setError('Произошла ошибка при загрузке данных')
-        toast.error((error as AxiosError).message)
-      } finally {
-        setSpinner(false)
-      }
-    }
-  }
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    handleSearch()
-  }
 
   const handleModalSubmit = async () => {
     console.log('Имя пользователя:', username)
@@ -77,7 +44,7 @@ const AddForm = () => {
 
     if (!!username && selectedProduct?.id && !!quantity && !isNaN(+quantity)) {
       const result = await addAnbarProductFx({
-        url: '/anbar/add',
+        url: '/barns/add',
         username,
         stock: Number(quantity),
         productId: +selectedProduct.id,
@@ -102,19 +69,17 @@ const AddForm = () => {
     }
   }
 
+  console.log(searchProducts)
+
   return (
     <div>
-      <SearchBar
-        value={searchProductName}
-        onChange={(e) => setSearchProductName(e.target.value)}
-        onSubmit={handleSubmit}
-      />
+      <SearchContainer />
 
       {spinner ? (
         <Spinner />
       ) : (
         <div className={styles.product_list}>
-          {searchProducts.length ? (
+          {searchProducts?.length ? (
             searchProducts.map((product) => (
               <ProductCard
                 key={product.id}
@@ -133,11 +98,11 @@ const AddForm = () => {
 
       <Modal
         isOpen={modalOpen && !!selectedProduct}
-        onClose={() => setModalOpen(false)}
-        product={selectedProduct || {}}
+        product={selectedProduct}
         username={username}
-        setUsername={setUsername}
         quantity={quantity}
+        setUsername={setUsername}
+        onClose={() => setModalOpen(false)}
         setQuantity={setQuantity}
         onSubmit={handleModalSubmit}
       />
@@ -145,4 +110,4 @@ const AddForm = () => {
   )
 }
 
-export default AddForm
+export default CreateFormBarn

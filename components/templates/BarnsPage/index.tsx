@@ -3,21 +3,22 @@ import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import { useStore } from 'effector-react'
 
-import AnbarImg from '@/public/img/garage-icon.jpg'
-import { getAnbarsUsernameFx } from '@/app/api/barn'
+import barnImg from '@/public/img/garage-icon.jpg'
+import { getBarnsUsernameFx } from '@/app/api/barn'
 import { $user } from '@/context/user'
 import { getLocalStorageUser } from '@/localStorageUser'
 
 import spinnerStyles from '@/styles/spinner/index.module.scss'
 import styles from '@/styles/anbar/index.module.scss'
 
-const AnbarPage = () => {
+const BarnsPage = () => {
   const { username } = useStore($user)
   const { usernameStorage } = getLocalStorageUser()
   const [spinner, setSpinner] = useState<boolean>(false)
-  const [anbars, setAnbars] = useState<[{ username: string; userId: number }]>([
-    { username: '', userId: 0 },
-  ])
+
+  const [barnsUsername, setBarnsUsername] = useState<
+    [{ username: string; userId: number }]
+  >([{ username: '', userId: 0 }])
 
   const adminCheckUsername: boolean =
     process.env.NEXT_PUBLIC_ADMIN_NAME === username ||
@@ -27,8 +28,8 @@ const AnbarPage = () => {
     const getAnbarServer = async () => {
       try {
         setSpinner(true)
-        const { usernamesArray } = await getAnbarsUsernameFx()
-        if (usernamesArray) setAnbars(usernamesArray)
+        const { usernames } = await getBarnsUsernameFx()
+        if (usernames) setBarnsUsername(usernames)
       } catch (error) {
         console.log((error as Error).message)
       } finally {
@@ -39,13 +40,15 @@ const AnbarPage = () => {
     getAnbarServer()
   }, [])
 
+  console.log(barnsUsername)
+
   return (
     <div className={styles.anbar}>
       <h1 className={styles.title}>Anbar Səhifəsi</h1>
       {adminCheckUsername && (
         <div>
-          <Link href={`anbars/add-form`} passHref legacyBehavior>
-            <a className={styles.add__form}>Создать Анбар</a>
+          <Link href={`barns/create-form`} passHref legacyBehavior>
+            <a className={styles.add__form}>Anbar yaradın</a>
           </Link>
         </div>
       )}
@@ -60,24 +63,37 @@ const AnbarPage = () => {
               background: 'gray',
             }}
           />
-        ) : anbars ? (
-          anbars.map((el, index) => (
-            <Link
-              key={index}
-              href={`/anbars/user-id/${el.userId}`}
-              passHref
-              legacyBehavior
-            >
-              <a className={styles.anbar__item}>
-                <div className={styles.container}>
-                  <Image src={AnbarImg.src} alt="d" width={50} height={35} />
-                  <div>
-                    {`${index + 1}) Anbar: `} <b>{el.username}</b>
+        ) : barnsUsername?.length ? (
+          barnsUsername.map(
+            (
+              barn: {
+                username: string
+                userId: number
+              },
+              index: number
+            ) => (
+              <Link
+                key={index}
+                href={`/barns/user-id/${barn?.userId}`}
+                passHref
+                legacyBehavior
+              >
+                <a className={styles.anbar__item}>
+                  <div className={styles.container}>
+                    <Image
+                      src={barnImg.src}
+                      alt="barn-img"
+                      width={50}
+                      height={35}
+                    />
+                    <div>
+                      {`${index + 1}) Anbar: `} <b>{barn.username}</b>
+                    </div>
                   </div>
-                </div>
-              </a>
-            </Link>
-          ))
+                </a>
+              </Link>
+            )
+          )
         ) : (
           <h3 className={styles.title}>{'Anbar Siyahısı Boşdur...'}</h3>
         )}
@@ -86,4 +102,4 @@ const AnbarPage = () => {
   )
 }
 
-export default AnbarPage
+export default BarnsPage

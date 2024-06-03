@@ -1,8 +1,8 @@
-import Link from 'next/link'
 import { useState, useEffect } from 'react'
-import { useStore } from 'effector-react'
+import { useRouter } from 'next/router'
+import Link from 'next/link'
 import { toast } from 'react-toastify'
-import { IoMdArrowRoundBack } from 'react-icons/io'
+import { useStore } from 'effector-react'
 
 import { getBarnByUserId } from '@/app/api/barn'
 import Layout from '@/components/layout/Layout'
@@ -13,11 +13,16 @@ import { getLocalStorageUser } from '@/localStorageUser'
 import { IBarnResponse } from '@/types/barn'
 
 import spinnerStyles from '@/styles/spinner/index.module.scss'
-import styles from '@/styles/barn/index.module.scss'
+import styles from '@/styles/barn/table/index.module.scss'
 import '@/styles/globals.css'
 
-const MyBarn = () => {
+function BanrnUserIdPage() {
   const { shouldLoadContent } = useRedirectByUserCheck()
+  const router = useRouter()
+
+  const userId = Array.isArray(router.query.userId)
+    ? router.query.userId[0]
+    : router.query.userId || '0'
 
   const [loading, setLoading] = useState(true)
 
@@ -27,7 +32,7 @@ const MyBarn = () => {
     error_message: '',
   })
 
-  // Получаем ID пользователя
+  // Получаем ID пользовате
   const { id, username } = useStore($user)
   const { userIdStorage } = getLocalStorageUser()
   const userIdResult = +id || +userIdStorage || 0
@@ -61,24 +66,35 @@ const MyBarn = () => {
     )
   }
 
-  // Отображаем компонент AnbarItem только когда загрузка завершена и контент должен загружаться
   return (
-    <Layout title={`Anbar | ${username}`}>
-      <div className={styles.barn__table}>
-        <button className={styles.barn__btn_back}>
-          <Link href="/my" className={styles.barn__btn_back}>
-            <IoMdArrowRoundBack />
-          </Link>
-        </button>
-
-        <h1 className={styles.barn__title}>Anbardar: {username}</h1>
-      </div>
-
-      <div className={styles.barn__wrapper_table}>
-        <BarnTable barn={barn} />
-      </div>
-    </Layout>
+    <>
+      {shouldLoadContent && (
+        <Layout title={'Anbar'}>
+          <h1 className={styles.barn__title}>Anbardar: {username}</h1>
+          {+userId && barn ? (
+            <BarnTable barn={barn} />
+          ) : (
+            <div
+              style={{
+                margin: '10px auto',
+                width: 300,
+                height: 100,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}
+            >
+              <h1>Анбар не найден</h1>
+              <Link href={'/my'}>
+                <button>Вернитесь в свой анбар</button>
+              </Link>
+            </div>
+          )}
+        </Layout>
+      )}
+    </>
   )
 }
 
-export default MyBarn
+export default BanrnUserIdPage

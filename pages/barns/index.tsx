@@ -1,13 +1,13 @@
 import Layout from '@/components/layout/Layout'
-import AnbarPage from '@/components/templates/AnbarPage'
+import BarnsPage from '@/components/templates/BarnsPage'
 import '@/styles/globals.css'
 
-function Anbar() {
+function Barns() {
   return (
     <Layout title={'Anbarlar'}>
-      <AnbarPage />
+      <BarnsPage />
     </Layout>
   )
 }
 
-export default Anbar
+export default Barns

@@ -10,16 +10,25 @@ import { IBarnItem, IBarnResponse } from '@/types/barn'
 import BarnTableHead from './BarnTableHead'
 import styles from '@/styles/barn/table/index.module.scss'
 import '@/styles/globals.css'
-import Link from 'next/link'
 
-const BarnTable = ({ barn }: { barn: IBarnResponse }) => {
+const LostBarnTable = ({
+  barn,
+  isLost,
+}: {
+  barn: IBarnResponse
+  isLost: boolean
+}) => {
   const [image, setImage] = useState<boolean>(false)
 
   const toggleImage = () => setImage(!image)
 
   return (
     <div>
-      <h1 className={styles.table_title}>Anbar materiallari</h1>
+      {
+        <h1 className={styles.table_title}>
+          {isLost ? 'Itirilmiş materiallar' : 'Anbar materiallari'}
+        </h1>
+      }
       <table className={styles.table}>
         <BarnTableHead />
 
@@ -28,12 +37,10 @@ const BarnTable = ({ barn }: { barn: IBarnResponse }) => {
             <tr key={index}>
               {/* Əsas */}
               <td style={{ padding: '5px 31px' }}>
-                <Link href={`/my/barn/add/${+el?.id}`} passHref legacyBehavior>
-                  <IoIosAddCircle
-                    className={styles.icon__plus}
-                    onClick={(e) => console.log(e.target)}
-                  />
-                </Link>
+                <IoIosAddCircle
+                  className={styles.icon__plus}
+                  onClick={(e) => console.log(e.target)}
+                />
               </td>
 
               <td style={{ padding: '5px 36px' }}>
@@ -57,16 +64,16 @@ const BarnTable = ({ barn }: { barn: IBarnResponse }) => {
               <td className={styles.name}>{+el.price}</td>
 
               {/* Əsas miqdar */}
-              <td>{+el.newStock}</td>
-              <td>{+el.usedStock}</td>
-              <td>{+el.brokenStock}</td>
-              <td className={styles.name}>{+el.totalStock}</td>
+              <td>{+el.lostNewStock}</td>
+              <td>{+el.lostUsedStock}</td>
+              <td>{+el.lostBrokenStock}</td>
+              <td className={styles.name}>{+el.lostTotalStock}</td>
 
               {/* Əsas məbləğ */}
-              <td>{+el.newTotalPrice}</td>
-              <td>{+el.usedTotalPrice}</td>
-              <td>{+el.brokenTotalPrice}</td>
-              <td className={styles.name}>{+el.totalPrice}</td>
+              <td>{+el.lostNewTotalPrice}</td>
+              <td>{+el.lostUsedTotalPrice}</td>
+              <td>{+el.lostBrokenTotalPrice}</td>
+              <td className={styles.name}>{+el.lostTotalPrice}</td>
 
               {/* Əlavə */}
               <td>{el.type}</td>
@@ -113,4 +120,4 @@ const BarnTable = ({ barn }: { barn: IBarnResponse }) => {
   )
 }
 
-export default BarnTable
+export default LostBarnTable

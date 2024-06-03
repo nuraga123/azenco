@@ -24,7 +24,7 @@ export const navbarArray: INavbarElement[] = [
     icon: <AiOutlineFileText />,
   },
   {
-    href: '/anbars',
+    href: '/barns',
     title: 'Anbarlar',
     icon: <AiOutlineDatabase />,
   },

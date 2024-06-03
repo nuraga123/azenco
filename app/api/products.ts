@@ -38,12 +38,12 @@ export const addProductFx = createEffect(
 )
 
 export const getSearchNameWordProductFx = createEffect(
-  async ({ search_word }: IGetSearchNameWordProduct) => {
+  async ({ part_name }: IGetSearchNameWordProduct) => {
     try {
       const { tokenStorage } = getLocalStorageUser()
       const { data } = await api.post(
-        '/products/search-name-word',
-        { search_word },
+        '/products/search-part-name',
+        { part_name },
         {
           headers: {
             Authorization: `Bearer ${tokenStorage}`,
