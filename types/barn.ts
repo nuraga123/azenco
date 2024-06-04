@@ -58,3 +58,19 @@ export interface IStocksLostBarn {
   lostUsedStock: number
   lostBrokenStock: number
 }
+
+export interface MaterialProps {
+  productName: string
+  type: string
+  unit: string
+  img: string
+  newStock: string
+  usedStock: string
+  brokenStock: string
+  price: string
+  totalPrice: string
+  createdAt: string
+  updatedAt: string
+  location: string
+  username: string
+}

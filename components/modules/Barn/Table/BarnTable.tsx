@@ -1,24 +1,31 @@
-/* eslint-disable @next/next/no-img-element */
 import { useState } from 'react'
 import { IoIosAddCircle } from 'react-icons/io'
 import { GrSubtractCircle } from 'react-icons/gr'
 import { MdDeleteForever } from 'react-icons/md'
 import { AiFillPicture } from 'react-icons/ai'
 import { IoMdCloseCircleOutline } from 'react-icons/io'
+import Link from 'next/link'
 
 import { IBarnItem, IBarnResponse } from '@/types/barn'
 import BarnTableHead from './BarnTableHead'
 import styles from '@/styles/barn/table/index.module.scss'
-import '@/styles/globals.css'
-import Link from 'next/link'
+import Image from 'next/image'
+import { NO_IMAGE } from '@/constans'
 
 const BarnTable = ({ barn }: { barn: IBarnResponse }) => {
-  const [image, setImage] = useState<boolean>(false)
+  const [isImage, setIsImage] = useState<boolean>(false)
+  const [image, setImage] = useState<string>(NO_IMAGE)
 
-  const toggleImage = () => setImage(!image)
+  const toggleImage = (find: number = 0) => {
+    console.log(find)
+    console.log(document.getElementsByTagName('html'))
+    setIsImage(!isImage)
+    const findBarn = barn.barns.find((item) => item.id === find)?.img
+    setImage(findBarn ? findBarn : NO_IMAGE)
+  }
 
   return (
-    <div>
+    <div className={isImage ? styles.black__fon : ''}>
       <h1 className={styles.table_title}>Anbar materiallari</h1>
       <table className={styles.table}>
         <BarnTableHead />
@@ -50,6 +57,7 @@ const BarnTable = ({ barn }: { barn: IBarnResponse }) => {
                 />
               </td>
 
+              {/* Əsas */}
               <td>{el.id}</td>
               <td>{el.azencoCode}</td>
               <td className={styles.name}>{el.productName}</td>
@@ -74,24 +82,27 @@ const BarnTable = ({ barn }: { barn: IBarnResponse }) => {
               <td>{el.location}</td>
 
               <td>
-                {!image && (
+                {!isImage && (
                   <AiFillPicture
                     className={styles.icon__image}
-                    onClick={toggleImage}
+                    onClick={() => toggleImage(+el.id)}
                   />
                 )}
 
-                {image && (
+                {isImage && (
                   <div className={styles.wrapper__image}>
-                    <img
+                    <Image
                       className={styles.image}
-                      src={el.img}
+                      src={image}
                       alt={el.productName}
+                      width={250}
+                      height={250}
                     />
-                    {image && (
+
+                    {isImage && (
                       <IoMdCloseCircleOutline
                         className={styles.icon__close}
-                        onClick={toggleImage}
+                        onClick={() => toggleImage(+el.id)}
                       />
                     )}
                   </div>

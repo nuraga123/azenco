@@ -1,7 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['loremflickr.com'],
+    domains: [
+      'loremflickr.com',
+      'www.boyaevi.az',
+      'homeconcept.ru',
+      'as2.ftcdn.net',
+    ],
   },
 }
 
