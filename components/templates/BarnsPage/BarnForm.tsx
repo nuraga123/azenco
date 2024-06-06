@@ -1,136 +1,135 @@
-import { useForm, Controller } from 'react-hook-form'
-import * as yup from 'yup'
-import { yupResolver } from '@hookform/resolvers/yup'
+import React, { useState } from 'react'
 import styles from '@/styles/barn/form/index.module.scss'
+import { postAddStocksBarn } from '@/app/api/barn'
+import { IStocksBarn } from '@/types/barn'
 
-const schema = yup.object().shape({
-  barnId: yup.number().required('Barn ID is required'),
-  movementType: yup.string().required('Movement Type is required'),
-  userSelectedDate: yup
-    .date()
-    .required('Date is required')
-    .typeError('Invalid date format'),
-  fromLocation: yup.string().required('From Location is required'),
-  toLocation: yup.string().required('To Location is required'),
-  newStock: yup
-    .number()
-    .required('New Stock is required')
-    .min(0, 'Cannot be negative'),
-  usedStock: yup
-    .number()
-    .required('Used Stock is required')
-    .min(0, 'Cannot be negative'),
-  brokenStock: yup
-    .number()
-    .required('Broken Stock is required')
-    .min(0, 'Cannot be negative'),
-})
+interface IBarnFormData {
+  userSelectedDate: string
+  fromLocation: string
+  toLocation: string
+  newStock: number
+  usedStock: number
+  brokenStock: number
+}
 
-const BarnForm = () => {
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    resolver: yupResolver(schema),
+const BarnForm: React.FC<{ barnId: number }> = ({
+  barnId,
+}: {
+  barnId: number
+}) => {
+  // Состояние для полей формы
+  const [formData, setFormData] = useState<IBarnFormData>({
+    userSelectedDate: '',
+    fromLocation: '',
+    toLocation: '',
+    newStock: 0,
+    usedStock: 0,
+    brokenStock: 0,
   })
 
-  const onSubmit = (data) => {
-    console.log(data)
+  // Обработчик изменения полей формы
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    setFormData({
+      ...formData,
+      [name]: name === 'userSelectedDate' ? value.toString() : value,
+    })
+  }
+
+  // Обработчик отправки формы
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+
+    const stocks: IStocksBarn = {
+      userSelectedDate: formData.userSelectedDate,
+      fromLocation: formData.fromLocation,
+      toLocation: formData.toLocation,
+      newStock: formData.newStock,
+      usedStock: formData.usedStock,
+      brokenStock: formData.brokenStock,
+      barnId,
+    }
+
+    await postAddStocksBarn(stocks)
   }
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+    <form className={styles.form} onSubmit={onSubmit}>
       <div className={styles.form_group}>
-        <label />
+        <label>Hərəkət növü</label>
+        <h3>{'GƏLİR (materialın miqdarını artıran hərəkət - ПРИХОД)'}</h3>
       </div>
 
-      <div className={styles.form_group}>
-        <label>Movement Type</label>
-        <Controller
-          name="movementType"
-          control={control}
-          render={({ field }) => <input type="text" {...field} />}
-        />
-        {errors.movementType && (
-          <p className={styles.error}>{errors.movementType.message}</p>
-        )}
-      </div>
+      <label htmlFor="userSelectedDate">Tarix:</label>
+      <input
+        type="datetime-local"
+        id="userSelectedDate"
+        name="userSelectedDate"
+        value={formData.userSelectedDate}
+        onChange={handleInputChange}
+        required
+      />
 
       <div className={styles.form_group}>
-        <label>Date</label>
-        <Controller
-          name="userSelectedDate"
-          control={control}
-          render={({ field }) => <input type="date" {...field} />}
-        />
-        {errors.userSelectedDate && (
-          <p className={styles.error}>{errors.userSelectedDate.message}</p>
-        )}
-      </div>
-
-      <div className={styles.form_group}>
-        <label>From Location</label>
-        <Controller
+        <label>Məkan "Haradan"</label>
+        <input
+          type="text"
           name="fromLocation"
-          control={control}
-          render={({ field }) => <input type="text" {...field} />}
+          value={formData.fromLocation}
+          onChange={handleInputChange}
+          required
         />
-        {errors.fromLocation && (
-          <p className={styles.error}>{errors.fromLocation.message}</p>
-        )}
       </div>
 
       <div className={styles.form_group}>
-        <label>To Location</label>
-        <Controller
+        <label>Məkan "Haraya"</label>
+        <input
+          type="text"
           name="toLocation"
-          control={control}
-          render={({ field }) => <input type="text" {...field} />}
+          value={formData.toLocation}
+          onChange={handleInputChange}
+          required
         />
-        {errors.toLocation && (
-          <p className={styles.error}>{errors.toLocation.message}</p>
-        )}
       </div>
 
       <div className={styles.form_group}>
-        <label>New Stock</label>
-        <Controller
+        <label>Yeni material miqdarı</label>
+        <input
+          type="number"
           name="newStock"
-          control={control}
-          render={({ field }) => <input type="number" {...field} />}
+          value={formData.newStock}
+          onChange={handleInputChange}
+          min="0"
+          required
         />
-        {errors.newStock && (
-          <p className={styles.error}>{errors.newStock.message}</p>
-        )}
       </div>
 
       <div className={styles.form_group}>
-        <label>Used Stock</label>
-        <Controller
+        <label>İstifadə olunmuş materialın miqdarı</label>
+        <input
+          type="number"
           name="usedStock"
-          control={control}
-          render={({ field }) => <input type="number" {...field} />}
+          value={formData.usedStock}
+          onChange={handleInputChange}
+          min="0"
+          required
         />
-        {errors.usedStock && (
-          <p className={styles.error}>{errors.usedStock.message}</p>
-        )}
       </div>
 
       <div className={styles.form_group}>
-        <label>Broken Stock</label>
-        <Controller
+        <label>Zədələnmiş materialın miqdarı</label>
+        <input
+          type="number"
           name="brokenStock"
-          control={control}
-          render={({ field }) => <input type="number" {...field} />}
+          value={formData.brokenStock}
+          onChange={handleInputChange}
+          min="0"
+          required
         />
-        {errors.brokenStock && (
-          <p className={styles.error}>{errors.brokenStock.message}</p>
-        )}
       </div>
 
       <button type="submit" className={styles.submit_button}>
-        Submit
+        Göndər
       </button>
     </form>
   )

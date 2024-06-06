@@ -5,6 +5,13 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   text-align: center;
 
+  &__container {
+    display: flex;
+    justify-content: space-between;
+    overflow-y: scroll;
+    height: 500px;
+  }
+
   &__wrapper_table {
     width: 100%;
     overflow-x: auto;
@@ -46,7 +53,9 @@
     text-transform: uppercase;
     letter-spacing: 2px;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
+    transition:
+      background-color 0.3s ease,
+      transform 0.3s ease;
 
     &:hover {
       background-color: #0070f3;
@@ -75,7 +84,7 @@
 
   &__btn_back {
     padding: 5px;
-    background-color: #4CAF50;
+    background-color: #4caf50;
     color: white;
     font-size: 20px;
     border-radius: 10px;

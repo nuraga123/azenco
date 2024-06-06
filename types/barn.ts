@@ -39,7 +39,6 @@ export interface IBarnResponse {
 
 export interface IStocksBarn {
   barnId: number
-  movementType: string
   userSelectedDate: string
   fromLocation: string
   toLocation: string
@@ -50,7 +49,6 @@ export interface IStocksBarn {
 
 export interface IStocksLostBarn {
   barnId: number
-  movementType: string
   userSelectedDate: string
   fromLocation: string
   toLocation: string
