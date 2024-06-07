@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import styles from '@/styles/barn/form/index.module.scss'
 import { postAddStocksBarn } from '@/app/api/barn'
 import { IStocksBarn } from '@/types/barn'
+import styles from '@/styles/barn/form/index.module.scss'
 
 interface IBarnFormData {
   userSelectedDate: string
@@ -12,11 +12,7 @@ interface IBarnFormData {
   brokenStock: number
 }
 
-const BarnForm: React.FC<{ barnId: number }> = ({
-  barnId,
-}: {
-  barnId: number
-}) => {
+const BarnForm: React.FC<{ barnId: number }> = ({ barnId }) => {
   // Состояние для полей формы
   const [formData, setFormData] = useState<IBarnFormData>({
     userSelectedDate: '',
@@ -55,81 +51,89 @@ const BarnForm: React.FC<{ barnId: number }> = ({
 
   return (
     <form className={styles.form} onSubmit={onSubmit}>
-      <div className={styles.form_group}>
-        <label>Hərəkət növü</label>
-        <h3>{'GƏLİR (materialın miqdarını artıran hərəkət - ПРИХОД)'}</h3>
+      <div className={styles.form__locations}>
+        <div className={styles.form_group}>
+          <label>Hansi ünvanından gəldi?</label>
+          <input
+            type="text"
+            name="fromLocation"
+            value={formData.fromLocation}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
+
+        <div className={styles.form_group}>
+          <label>Hansı ünvana çatdırılıb ?</label>
+          <input
+            type="text"
+            name="toLocation"
+            value={formData.toLocation}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
       </div>
 
-      <label htmlFor="userSelectedDate">Tarix:</label>
-      <input
-        type="datetime-local"
-        id="userSelectedDate"
-        name="userSelectedDate"
-        value={formData.userSelectedDate}
-        onChange={handleInputChange}
-        required
-      />
+      <div className={styles.form__stocks_header}>
+        <label>Material miqdarı</label>
+      </div>
 
-      <div className={styles.form_group}>
-        <label>Məkan "Haradan"</label>
-        <input
-          type="text"
-          name="fromLocation"
-          value={formData.fromLocation}
-          onChange={handleInputChange}
-          required
-        />
+      <div className={styles.form__stocks}>
+        <div className={styles.form_group}>
+          <label>Yeni</label>
+          <input
+            className={styles.form_group__stocks}
+            type="number"
+            name="newStock"
+            value={formData.newStock}
+            onChange={handleInputChange}
+            min="0"
+            required
+          />
+        </div>
+
+        <div className={styles.form_group}>
+          <label>İstifadə olunmuş</label>
+          <input
+            className={styles.form_group__stocks}
+            type="number"
+            name="usedStock"
+            value={formData.usedStock}
+            onChange={handleInputChange}
+            min="0"
+            required
+          />
+        </div>
+
+        <div className={styles.form_group}>
+          <label>Zədələnmiş</label>
+          <input
+            className={styles.form_group__stocks}
+            type="number"
+            name="brokenStock"
+            value={formData.brokenStock}
+            onChange={handleInputChange}
+            min="0"
+            required
+          />
+        </div>
       </div>
 
       <div className={styles.form_group}>
-        <label>Məkan "Haraya"</label>
+        <label htmlFor="userSelectedDate">Tarix:</label>
         <input
-          type="text"
-          name="toLocation"
-          value={formData.toLocation}
+          type="datetime-local"
+          id="userSelectedDate"
+          name="userSelectedDate"
+          value={formData.userSelectedDate}
           onChange={handleInputChange}
-          required
-        />
-      </div>
-
-      <div className={styles.form_group}>
-        <label>Yeni material miqdarı</label>
-        <input
-          type="number"
-          name="newStock"
-          value={formData.newStock}
-          onChange={handleInputChange}
-          min="0"
-          required
-        />
-      </div>
-
-      <div className={styles.form_group}>
-        <label>İstifadə olunmuş materialın miqdarı</label>
-        <input
-          type="number"
-          name="usedStock"
-          value={formData.usedStock}
-          onChange={handleInputChange}
-          min="0"
-          required
-        />
-      </div>
-
-      <div className={styles.form_group}>
-        <label>Zədələnmiş materialın miqdarı</label>
-        <input
-          type="number"
-          name="brokenStock"
-          value={formData.brokenStock}
-          onChange={handleInputChange}
-          min="0"
           required
         />
       </div>
 
       <button type="submit" className={styles.submit_button}>
-        Göndər
+        artırmaq
       </button>
     </form>
   )

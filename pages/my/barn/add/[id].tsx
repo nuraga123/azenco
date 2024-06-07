@@ -9,7 +9,7 @@ import { IBarnItem } from '@/types/barn'
 import useRedirectByUserCheck from '@/hooks/useRedirectByUserCheck'
 import Layout from '@/components/layout/Layout'
 import BarnForm from '@/components/templates/BarnsPage/BarnForm'
-import MaterialComponent from '@/components/templates/BarnsPage/MaterialComponent'
+//import MaterialComponent from '@/components/templates/BarnsPage/MaterialComponent'
 
 import spinnerStyles from '@/styles/spinner/index.module.scss'
 import styles from '@/styles/barn/index.module.scss'
@@ -21,9 +21,9 @@ const AddStocksBarn = () => {
   console.log(asPath, query)
   const [barnData, setBarnData] = useState({} as IBarnItem)
 
+  const barnId = Number(query?.id)
   useEffect(() => {
     const installBarn = async () => {
-      const barnId = Number(query?.id)
       if (barnId) {
         const { barn } = await getBarnById(barnId)
         const zz = await getBarnById(barnId)
@@ -34,7 +34,7 @@ const AddStocksBarn = () => {
     }
 
     installBarn()
-  }, [asPath, query])
+  }, [asPath, barnId, query])
 
   // Отображаем спиннер, если происходит загрузка или контент не должен загружаться
   if (!shouldLoadContent) {
@@ -55,22 +55,21 @@ const AddStocksBarn = () => {
   return (
     <Layout title={`Anbara material əlavə edin`}>
       <div>
-        <button className={styles.barn__btn_back}>
-          <Link href="/my/barn" className={styles.barn__btn_back}>
-            <IoMdArrowRoundBack />
-          </Link>
-        </button>
-
-        <h1 style={{ margin: '10px 0px', textAlign: 'center' }}>
-          Anbara material əlavə edin {barnData.username}
-        </h1>
-        <h4 style={{ margin: '10px 0px', textAlign: 'center' }}>
-          Anbardar: {barnData.username}
-        </h4>
+        <div className={styles.barn__header}>
+          <button className={styles.barn__btn_back}>
+            <Link href="/my/barn" className={styles.barn__btn_back}>
+              <IoMdArrowRoundBack />
+            </Link>
+          </button>
+          <h2 style={{ textAlign: 'center' }}>
+            Anbarda materialın miqdarının artırılması formasının uçotu
+          </h2>
+          <h2 style={{ marginRight: 10 }}>Anbardar: {barnData.username}</h2>
+        </div>
 
         <div className={styles.barn__container}>
-          <MaterialComponent barn={barnData} />
-          <BarnForm />
+          <BarnForm barnId={barnId} />
+          {/* <MaterialComponent barn={barnData} /> */}
         </div>
       </div>
     </Layout>
