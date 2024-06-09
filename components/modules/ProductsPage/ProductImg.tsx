@@ -8,7 +8,7 @@ const ProductImg = ({ data, id }: { data: IProduct[]; id: number }) => {
   const showPicture = () => setOpen(true)
   const closePicture = () => setOpen(false)
 
-  const urlImg = data.find((el) => el.id === id)?.images || ''
+  const urlImg = data.find((el) => el.id === id)?.img || ''
 
   return (
     <>
