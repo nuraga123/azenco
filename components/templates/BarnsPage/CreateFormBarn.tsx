@@ -17,7 +17,6 @@ const CreateFormBarn = () => {
 
   const [spinner, setSpinner] = useState<boolean>(false)
 
-  const [searchProductName, setSearchProductName] = useState<string>('')
   const [error, setError] = useState<string>('')
 
   const [modalOpen, setModalOpen] = useState<boolean>(false)
@@ -38,6 +37,7 @@ const CreateFormBarn = () => {
   const [quantity, setQuantity] = useState<string>('')
 
   const handleModalSubmit = async () => {
+    setSpinner(true)
     console.log('Имя пользователя:', username)
     console.log('ID продукта:', selectedProduct.id)
     console.log('Количество товара:', quantity)
@@ -66,6 +66,8 @@ const CreateFormBarn = () => {
       }
 
       console.log(result)
+
+      setError(result.error_message)
     }
   }
 

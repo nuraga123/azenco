@@ -24,7 +24,6 @@ const MaterialComponent = ({ barn }: { barn: IBarnItem }) => {
     totalPrice,
     createdAt,
     updatedAt,
-    username,
     azencoCode,
   } = barn
 
