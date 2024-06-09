@@ -64,7 +64,7 @@ const AddStocksBarn = () => {
           <h2 style={{ textAlign: 'center' }}>
             Anbarda materialın miqdarının artırılması formasının uçotu
           </h2>
-          <h2 style={{ marginRight: 10 }}>Anbardar: {barnData.username}</h2>
+          <p style={{ marginRight: 10 }}>Anbardar: {barnData.username}</p>
         </div>
 
         <div className={styles.barn__container}>

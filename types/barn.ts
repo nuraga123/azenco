@@ -72,3 +72,12 @@ export interface MaterialProps {
   location: string
   username: string
 }
+
+export interface IBarnFormData {
+  userSelectedDate: string
+  fromLocation: string
+  toLocation: string
+  newStock: string
+  usedStock: string
+  brokenStock: string
+}

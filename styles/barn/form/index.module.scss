@@ -7,7 +7,7 @@
   border: 1px solid #ddd;
   border-radius: 8px;
   background-color: #f9f9f9;
-  max-width: 500px;
+  max-width: 600px;
 }
 
 .form__header,
@@ -20,9 +20,19 @@
   flex-direction: column;
   margin: 0 10px;
 
-  &__stocks  {
-    width: 160px;
-    font-size: 20px;
+  &__adress {
+    width: 200px;
+    font-size: 18px;
+  }
+
+  &__stocks {
+    width: 130px;
+    font-size: 18px;
+  }
+
+  &__date {
+    width: 220px;
+    font-size: 18px;
   }
 }
 
@@ -62,4 +72,8 @@
 
 .submit_button:hover {
   background-color: #45a049;
+}
+
+.submit_button:disabled {
+  background-color: #989898;
 }
