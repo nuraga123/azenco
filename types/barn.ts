@@ -80,4 +80,5 @@ export interface IBarnFormData {
   newStock: string
   usedStock: string
   brokenStock: string
+  movementType: string
 }

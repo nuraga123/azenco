@@ -13,6 +13,7 @@ import BarnForm from '@/components/templates/BarnsPage/BarnForm'
 
 import spinnerStyles from '@/styles/spinner/index.module.scss'
 import styles from '@/styles/barn/index.module.scss'
+// import MaterialComponent from '@/components/templates/BarnsPage/MaterialComponent'
 
 const AddStocksBarn = () => {
   const { asPath, query } = useRouter()

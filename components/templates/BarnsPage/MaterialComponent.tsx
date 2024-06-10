@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { IBarnItem } from '@/types/barn'
-//import Image from 'next/image'
 
 import styles from '@/styles/barn/material/index.module.scss'
 
@@ -10,7 +9,6 @@ const MaterialComponent = ({ barn }: { barn: IBarnItem }) => {
   const {
     id,
     productName,
-    type,
     unit,
     location,
     newStock,
@@ -22,8 +20,6 @@ const MaterialComponent = ({ barn }: { barn: IBarnItem }) => {
     usedTotalPrice,
     brokenTotalPrice,
     totalPrice,
-    createdAt,
-    updatedAt,
     azencoCode,
   } = barn
 
@@ -71,14 +67,7 @@ const MaterialComponent = ({ barn }: { barn: IBarnItem }) => {
                   </b>
                 </td>
               </tr>
-              <tr>
-                <th>Növü</th>
-                <td>
-                  <b>
-                    <i>{type}</i>
-                  </b>
-                </td>
-              </tr>
+
               <tr>
                 <th>Ölçü vahidi</th>
                 <td>
@@ -95,22 +84,7 @@ const MaterialComponent = ({ barn }: { barn: IBarnItem }) => {
                   </b>
                 </td>
               </tr>
-              <tr>
-                <th>Yaradılma tarixi</th>
-                <td>
-                  <b>
-                    <i>{createdAt}</i>
-                  </b>
-                </td>
-              </tr>
-              <tr>
-                <th>Yenilənmə tarixi</th>
-                <td>
-                  <b>
-                    <i>{updatedAt}</i>
-                  </b>
-                </td>
-              </tr>
+
               <tr>
                 <th>Yer</th>
                 <td>
@@ -121,10 +95,6 @@ const MaterialComponent = ({ barn }: { barn: IBarnItem }) => {
               </tr>
             </tbody>
           </table>
-
-          {/* <div className={styles.material__image}>
-            <Image src={img} alt={productName} width={200} height={200} />
-          </div> */}
         </div>
       ) : (
         <div className={styles.material__calculations}>
