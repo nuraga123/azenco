@@ -282,7 +282,12 @@ const BarnForm: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
         )}
       </form>
 
-      <MaterialComponent barn={barnData} />
+      <MaterialComponent
+        barn={barnData}
+        newStockDynamic={+newStock}
+        usedStockDynamic={+usedStock}
+        brokenStockDynamic={+brokenStock}
+      />
     </div>
   )
 }
