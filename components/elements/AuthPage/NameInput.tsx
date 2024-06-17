@@ -10,9 +10,6 @@ const NameInput = ({ register, errors }: IAuthPageInput) => {
 
   return (
     <label className={styles.form__label}>
-      <span style={{ textAlign: 'center', marginBottom: '10px' }}>
-        Məsələn: Nurağa Yusifli Yusif
-      </span>
       <input
         {...register('name', {
           required: 'adınızı yazın',

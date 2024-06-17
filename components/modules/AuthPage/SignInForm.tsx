@@ -1,18 +1,16 @@
-import { useForm } from 'react-hook-form'
-import { useState } from 'react'
-import { useStore } from 'effector-react'
 import { useRouter } from 'next/router'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+
 import { IInputs } from '@/types/auth'
 import { singInFx } from '@/app/api/auth'
 import { showAuthError } from '@/utils/errors'
-import { $mode } from '@/context/mode'
-
+import { setUser } from '@/context/user'
 import NameInput from '@/components/elements/AuthPage/NameInput'
 import PasswordInput from '@/components/elements/AuthPage/PasswordInput'
 
 import styles from '@/styles/auth/index.module.scss'
 import spinnerStyles from '@/styles/spinner/index.module.scss'
-import { setUser } from '@/context/user'
 
 const SignInForm = () => {
   const [spinner, setSpinner] = useState(false)
@@ -22,8 +20,8 @@ const SignInForm = () => {
     handleSubmit,
     resetField,
   } = useForm<IInputs>()
-  const mode = useStore($mode)
-  const darkModeClass = mode === 'dark' ? `${styles.dark_mode}` : ''
+  console.log(register)
+
   const router = useRouter()
 
   const onSubmit = async (data: IInputs) => {
@@ -64,17 +62,14 @@ const SignInForm = () => {
   }
 
   return (
-    <form
-      className={`${styles.form} ${darkModeClass}`}
-      onSubmit={handleSubmit(onSubmit)}
-    >
-      <h2 className={`${styles.form__title} ${styles.title} ${darkModeClass}`}>
+    <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+      <h2 className={`${styles.form__title} ${styles.title}`}>
         {'AZENCO ASC '}
       </h2>
       <NameInput register={register} errors={errors} />
       <PasswordInput register={register} errors={errors} />
       <button
-        className={`${styles.form__button} ${styles.button} ${styles.submit} ${darkModeClass}`}
+        className={`${styles.form__button} ${styles.button} ${styles.submit}`}
       >
         {spinner ? (
           <div className={spinnerStyles.spinner} />

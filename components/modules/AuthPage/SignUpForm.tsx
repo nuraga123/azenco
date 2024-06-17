@@ -13,8 +13,9 @@ import PasswordInput from '@/components/elements/AuthPage/PasswordInput'
 
 import styles from '@/styles/auth/index.module.scss'
 import spinnerStyles from '@/styles/spinner/index.module.scss'
+import { useRouter } from 'next/router'
 
-const SignUpForm = ({ switchForm }: { switchForm: () => void }) => {
+const SignUpForm = () => {
   const [spinner, setSpinner] = useState(false)
   const {
     register,
@@ -22,6 +23,7 @@ const SignUpForm = ({ switchForm }: { switchForm: () => void }) => {
     handleSubmit,
     resetField,
   } = useForm<IInputs>()
+  const router = useRouter()
   const mode = useStore($mode)
   const darkModeClass = mode === 'dark' ? `${styles.dark_mode}` : ''
 
@@ -42,8 +44,7 @@ const SignUpForm = ({ switchForm }: { switchForm: () => void }) => {
       resetField('email')
       resetField('name')
       resetField('password')
-      switchForm()
-      console.log(userData)
+      if (userData?.id) router.push(`/`)
     } catch (error) {
       showAuthError(error)
     } finally {
