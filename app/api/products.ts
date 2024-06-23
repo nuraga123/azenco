@@ -3,6 +3,32 @@ import api from '@/app/axiosClient'
 import { IGetSearchNameWordProduct, addProductFxProps } from '@/types/products'
 import { getLocalStorageUser } from '@/localStorageUser'
 
+export const postImportProductsFx = createEffect(
+  async ({ admin, str }: { admin: string; str: string }) => {
+    try {
+      if (process.env.NEXT_PUBLIC_ADMIN_NAME === admin) {
+        const { tokenStorage } = getLocalStorageUser()
+        const { data } = await api.post(
+          '/products/import',
+          {
+            products: str,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${tokenStorage}`,
+            },
+          }
+        )
+        return data
+      } else {
+        alert('Admin name does not match')
+      }
+    } catch (error) {
+      console.log('Error during product import:', error)
+    }
+  }
+)
+
 export const getProductsFx = createEffect(async (url: string) => {
   try {
     const { tokenStorage } = getLocalStorageUser()

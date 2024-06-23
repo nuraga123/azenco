@@ -34,7 +34,7 @@ const ProductTable = ({ data }: { data: IProductsResponse }) => {
           {products.map((product: IProduct, index: number) => (
             <tr key={product.id} className={styles.tr}>
               <td className={styles.td}>{`${index + 1})`}</td>
-              <td className={styles.td}>{product.azencoСode}</td>
+              <td className={styles.td}>{product.azencoCode}</td>
               <td className={styles.td}>{product.name}</td>
               <td className={styles.td}>{product.type}</td>
               <td className={styles.td}>{product.unit}</td>

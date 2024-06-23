@@ -11,7 +11,8 @@ const CopyElement = ({ str }: { str: string }) => {
       setCopy(true)
       setTimeout(() => setCopy(false), 1000)
     } catch (err) {
-      console.error('Ошибка при копировании в буфер обмена', err)
+      alert('Ошибка при копировании в буфер обмена')
+      console.log(err)
     }
   }
 

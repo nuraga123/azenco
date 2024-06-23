@@ -4,7 +4,7 @@ import NavbarItem from './NavbarItem'
 import styles from '@/styles/layout/index.module.scss'
 
 const Navbar: React.FC = () => {
-  const [isNavVisible, setIsNavVisible] = useState<boolean>(true)
+  const [isNavVisible, setIsNavVisible] = useState<boolean>(false)
   const [isOpen, setIsOpen] = useState<boolean>(true)
 
   const toggleNavVisibility = () => setIsNavVisible((prev) => !prev)

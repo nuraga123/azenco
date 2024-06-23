@@ -4,6 +4,7 @@ import {
   AiOutlineFileText,
   AiOutlineHistory,
   AiOutlinePhone,
+  AiOutlineFieldString,
 } from 'react-icons/ai'
 
 interface INavbarElement {
@@ -37,5 +38,10 @@ export const navbarArray: INavbarElement[] = [
     href: '/contacts',
     title: 'Kontaktlar',
     icon: <AiOutlinePhone style={{ transform: 'rotate(90deg)' }} />,
+  },
+  {
+    href: '/form__string',
+    title: 'form__string',
+    icon: <AiOutlineFieldString />,
   },
 ]

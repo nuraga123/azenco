@@ -4,7 +4,7 @@ export interface IProduct {
   type: string
   price: string
   unit: string
-  azencoСode: string
+  azencoCode: string
   img: string
   createdAt: string
   updatedAt: string
