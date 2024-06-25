@@ -8,6 +8,7 @@ const PasswordInput = ({ register, errors }: IAuthPageInput) => {
   const darkModeClass = mode === 'dark' ? `${styles.dark_mode}` : ''
   return (
     <label className={styles.form__label}>
+      <p>Parolu yazın</p>
       <input
         {...register('password', {
           required: 'parolu yazın',

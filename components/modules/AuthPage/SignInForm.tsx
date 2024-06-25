@@ -1,30 +1,32 @@
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { IInputs } from '@/types/auth'
-import { singInFx } from '@/app/api/auth'
+import { getUsersNamesServer, singInFx } from '@/app/api/auth'
 import { showAuthError } from '@/utils/errors'
 import { setUser } from '@/context/user'
-import NameInput from '@/components/elements/AuthPage/NameInput'
 import PasswordInput from '@/components/elements/AuthPage/PasswordInput'
 
 import styles from '@/styles/auth/index.module.scss'
 import spinnerStyles from '@/styles/spinner/index.module.scss'
+import NameInputLogin from '@/components/elements/AuthPage/NameInputLogin'
 
 const SignInForm = () => {
   const [spinner, setSpinner] = useState(false)
+  const [names, setNames] = useState<string[]>([])
   const {
     register,
     formState: { errors },
     handleSubmit,
     resetField,
   } = useForm<IInputs>()
-  console.log(register)
 
   const router = useRouter()
 
   const onSubmit = async (data: IInputs) => {
+    console.log('data')
+    console.log(data)
     try {
       setSpinner(true)
       const userData = await singInFx({
@@ -61,12 +63,23 @@ const SignInForm = () => {
     }
   }
 
+  useEffect(() => {
+    const setUsersNames = async () => {
+      const result = await getUsersNamesServer()
+      console.log(result)
+      if (result?.length) setNames(result)
+    }
+
+    setUsersNames()
+  }, [])
+
   return (
     <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
       <h2 className={`${styles.form__title} ${styles.title}`}>
         {'AZENCO ASC '}
       </h2>
-      <NameInput register={register} errors={errors} />
+      <NameInputLogin register={register} errors={errors} usernames={names} />
+      <br />
       <PasswordInput register={register} errors={errors} />
       <button
         className={`${styles.form__button} ${styles.button} ${styles.submit}`}

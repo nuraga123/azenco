@@ -11,6 +11,10 @@ export interface IAuthPageInput {
   errors: FieldErrors<IInputs>
 }
 
+export interface IAuthPageInputLogin extends IAuthPageInput {
+  usernames: string[]
+}
+
 export interface ISingUpFx {
   username: string
   url: string

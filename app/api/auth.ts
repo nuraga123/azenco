@@ -1,8 +1,9 @@
 import { createEffect } from 'effector-next'
 import { toast } from 'react-toastify'
+import { AxiosError } from 'axios'
+
 import { ISingUpFx, ISignInFx } from '@/types/auth'
 import api from '../axiosClient'
-import { AxiosError } from 'axios'
 import { HTTPStatus } from '@/constans'
 
 export const singUpFx = createEffect(
@@ -44,7 +45,6 @@ export const checkUserAuthFx = createEffect(async (url: string) => {
         return false
       }
     }
-
     toast.error((error as Error).message)
   }
 })
@@ -83,6 +83,17 @@ export const getWorkingServer = createEffect(async () => {
     console.log(data)
     return data
   } catch (error) {
+    toast.error((error as Error).message)
+  }
+})
+
+export const getUsersNamesServer = createEffect(async () => {
+  try {
+    const { data } = await api.get('/users/names')
+    console.log(data)
+    return data
+  } catch (error) {
+    console.log(error)
     toast.error((error as Error).message)
   }
 })

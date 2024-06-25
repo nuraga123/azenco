@@ -19,15 +19,11 @@ function Login() {
       try {
         const response: boolean = await getWorkingServer()
         console.log(response)
-
         setMessage(response)
       } catch (error) {
-        console.error('Error:', error)
+        console.log('Error:', error)
       }
     }
-
-    // Вызываем fetchData при монтировании компонента
-    workingServer()
 
     // Устанавливаем интервал для регулярных запросов
     // Здесь 5000 - интервал в миллисекундах (например, каждые 5 секунд)

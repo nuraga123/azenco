@@ -87,7 +87,6 @@ $transition: 1.25s;
     letter-spacing: 0.15px;
     border: none;
     outline: none;
-    background-color: $neu-1;
     transition: 0.25s ease;
     border-radius: 8px;
     box-shadow:
@@ -107,14 +106,6 @@ $transition: 1.25s;
     @media (max-width: 400px) {
       width: 210px;
     }
-  }
-
-  &.dark_mode &__input {
-    background-color: #2d2d2d;
-    color: #f2f2f2;
-    box-shadow:
-      inset 2px 2px 4px $black,
-      inset -2px -2px 4px $black;
   }
 
   &__span {
@@ -137,10 +128,6 @@ $transition: 1.25s;
   font-weight: 700;
   margin-bottom: 20px;
   color: $black;
-
-  &.dark_mode {
-    color: #f2f2f2;
-  }
 
   @media (max-width: 430px) {
     font-size: 26px;
@@ -185,42 +172,6 @@ $transition: 1.25s;
 
   @media (max-width: 600px) {
     font-size: 14px;
-  }
-}
-
-/**/
-
-.a_container {
-  z-index: 100;
-  left: calc(100% - 42%);
-
-  @media (max-width: 800px) {
-    left: 32%;
-  }
-
-  @media (max-width: 630px) {
-    left: 25%;
-  }
-
-  @media (max-width: 530px) {
-    left: 25%;
-  }
-}
-
-.b_container {
-  left: calc(100% - 42%);
-  z-index: 0;
-
-  @media (max-width: 1000px) {
-    left: 50%;
-  }
-
-  @media (max-width: 800px) {
-    left: 32%;
-  }
-
-  @media (max-width: 630px) {
-    left: 25%;
   }
 }
 
