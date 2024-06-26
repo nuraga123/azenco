@@ -14,6 +14,7 @@ const NameInput = ({ register, errors }: IAuthPageInput) => (
       })}
       className={styles.form__input}
       type="text"
+      autoComplete="off"
       placeholder={'Ad, soyad və ata adı yazin'}
     />
     {errors.name && (

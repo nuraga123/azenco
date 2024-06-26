@@ -29,11 +29,7 @@ $transition: 1.25s;
   transition:
     $transition,
     background-color 0s;
-
-  &.dark_mode {
-    background-color: #2d2d2d;
-  }
-
+    
   @media (max-width: 430px) {
     padding: 10px;
   }
