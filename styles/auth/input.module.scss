@@ -30,21 +30,43 @@
 }
 
 .list {
+  position: relative;
+  top: -20px;
+  left: 0;
   width: 100%;
   border: 1px solid #ccc;
   background-color: white;
-  max-height: 150px;
+  max-height: 180px;
   overflow-y: auto;
   list-style: none;
   padding: 0;
-  margin: 5px 0 0 0;
   box-sizing: border-box;
   z-index: 1000;
   opacity: 0;
   transform: translateY(-10px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
-  border-radius: 4px;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+  border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  &__title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 15px;
+    position: sticky;
+    top: 0;
+    background-color: white; /* Цвет фона заголовка */
+    z-index: 1; /* Обеспечивает, что заголовок будет сверху */
+    padding: 10px;
+    border-bottom: 5px solid #ccc;
+
+    &__icon {
+      color: red;
+      font-size: 30px;    
+    }
+  }
 }
 
 .list.show {
@@ -54,12 +76,15 @@
 
 .listItem {
   padding: 10px 15px;
+  font-size: 18px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease-in-out;
+  border-bottom: 2px solid #ccc;
 }
 
 .listItem:hover {
-  background-color: #f0f0f0;
+  background-color: #007bff;
+  color: #fff;
 }
 
 .error {
@@ -67,4 +92,17 @@
   margin-top: 8px;
   color: red;
   font-size: 14px;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.icon {
+  margin: 5px 0px 0 -40px;
+  cursor: pointer;
+  color: #007bff;
+  font-size: 25px;
 }

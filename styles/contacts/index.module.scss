@@ -1,5 +1,12 @@
 .contacts {
-  padding-bottom: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px auto;
+  width: 100%;
+  max-width: 500px;
+
 
   @media (max-width: 900px) {
     padding-bottom: 32px;
@@ -11,10 +18,6 @@
     font-weight: 500;
     font-size: 36px;
     color: #2d2d2d;
-
-    &.dark_mode {
-      color: #f2f2f2;
-    }
   }
 
   &__inner {

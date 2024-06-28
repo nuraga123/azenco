@@ -1,6 +1,8 @@
 .footer {
-  padding: 15px 0;
+  padding: 50px;
+  margin: 50px;
   background-color: #2d2d2d;
+  border-radius: 20px;
 
   @media (max-width: 500px) {
     padding-top: 24px;
@@ -118,7 +120,6 @@
       &__title {
         width: 100%;
         text-align: start;
-        cursor: pointer;
         border: none;
         background-color: transparent;
         display: block;

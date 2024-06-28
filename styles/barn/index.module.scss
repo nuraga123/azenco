@@ -88,11 +88,15 @@
   }
 
   &__btn_back {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 5px;
     background-color: #4caf50;
     color: white;
     font-size: 20px;
     border-radius: 10px;
+    width: max-content;
 
     &:hover {
       background-color: #45a049;

@@ -1,65 +1,62 @@
-import styles from '@/styles/footer/index.module.scss'
-import Link from 'next/link'
-
+import React from 'react'
 import MarkerSvg from '@/components/elements/MarkerSvg/MarkerSvg'
 import PhoneSvg from '@/components/elements/PhoneSvg/PhoneSvg'
 import MailSvg from '@/components/elements/MailSvg/MailSvg'
+import BackBtn from '@/components/elements/btn/BackBtn'
 
-const Footer = () => {
-  const screenHeight: number = 300
+import styles from '@/styles/footer/index.module.scss'
 
-  return (
-    <footer
-      className={styles.footer}
-      style={{ height: screenHeight, borderRadius: 10 }}
-    >
-      <div className={styles.footer__container}>
-        <div className={styles.footer__bottom}>
-          <div className={styles.footer__top__item}>
-            <ul
-              className={`${styles.footer__top__item__list} ${styles.footer__top__item__contacts}`}
-            >
-              <li className={styles.footer__top__item__list__item}>
-                <Link href="/contacts" passHref legacyBehavior>
-                  <a className={styles.footer__top__item__list__item__link}>
-                    <span>Ünvanımız:</span>
-                    <span>Mexkalon</span>
-                    <span>
-                      <MarkerSvg />
-                    </span>
-                  </a>
-                </Link>
-              </li>
-              <li className={styles.footer__top__item__list__item}>
-                <a
-                  href="tel:+994503416736"
-                  className={styles.footer__top__item__list__item__link}
-                >
-                  <span>Əlaqə telefonumuz:</span>
-                  <span>+994 (50) 341-67-36</span>
-                  <span>
-                    <PhoneSvg />
-                  </span>
-                </a>
-              </li>
-              <li className={styles.footer__top__item__list__item}>
-                <a
-                  href="mailto:azenco@gmail.com"
-                  className={styles.footer__top__item__list__item__link}
-                >
-                  <span>E-mail:</span>
-                  <span>azenco@gmail.com</span>
-                  <span>
-                    <MailSvg />
-                  </span>
-                </a>
-              </li>
-            </ul>
-          </div>
+const Footer = () => (
+  <footer className={styles.footer}>
+    <div className={styles.footer__container}>
+      <h2 className={styles.footer__top__item__title}>
+        Proqramla bağlı sualınız olarsa əlaqə saxlaya bilərsiniz
+      </h2>
+      <h3 className={styles.footer__top__item__title}>Kontaktlar</h3>
+      <div className={styles.footer__bottom}>
+        <div className={styles.footer__top__item}>
+          <ul
+            className={`${styles.footer__top__item__list} ${styles.footer__top__item__contacts}`}
+          >
+            <li className={styles.footer__top__item__list__item}>
+              <div className={styles.footer__top__item__list__item__link}>
+                <div>Ünvanımız:</div>
+                <br />
+                <div>Mexkalon</div>
+                <span>
+                  <MarkerSvg />
+                </span>
+              </div>
+            </li>
+
+            <li className={styles.footer__top__item__list__item}>
+              <div className={styles.footer__top__item__list__item__link}>
+                <div>Əlaqə telefonumuz:</div>
+                <br />
+                <h3>+994 (50) 341-67-36</h3>
+                <span>
+                  <PhoneSvg />
+                </span>
+              </div>
+            </li>
+
+            <li className={styles.footer__top__item__list__item}>
+              <div className={styles.footer__top__item__list__item__link}>
+                <div>E-mail:</div>
+                <br />
+                <h3>nuragayusifli@gmail.com</h3>
+                <span>
+                  <MailSvg />
+                </span>
+              </div>
+            </li>
+          </ul>
+
+          <BackBtn href="login" text="proqrama qayıtmaq" />
         </div>
       </div>
-    </footer>
-  )
-}
+    </div>
+  </footer>
+)
 
 export default Footer

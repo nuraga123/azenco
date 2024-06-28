@@ -1,14 +1,17 @@
+import Link from 'next/link'
+import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
-import { useRouter } from 'next/router'
+
 import { IInputs } from '@/types/auth'
 import { getUsersNamesServer, singInFx } from '@/app/api/auth'
 import { showAuthError } from '@/utils/errors'
 import { setUser } from '@/context/user'
+import NameInputLogin from '@/components/elements/AuthPage/NameInputLogin'
 import PasswordInput from '@/components/elements/AuthPage/PasswordInput'
+
 import styles from '@/styles/auth/index.module.scss'
 import spinnerStyles from '@/styles/spinner/index.module.scss'
-import NameInputLogin from '@/components/elements/AuthPage/NameInputLogin'
 
 const SignInForm = () => {
   const [spinner, setSpinner] = useState(false)
@@ -63,7 +66,6 @@ const SignInForm = () => {
     const setUsersNames = async () => {
       const result = await getUsersNamesServer()
       if (result?.length) setNames(result)
-      else setNames(['sdfsdfs', 'ffsdfsd'])
     }
 
     setUsersNames()
@@ -74,6 +76,7 @@ const SignInForm = () => {
       <h2 className={`${styles.form__title} ${styles.title}`}>
         {'AZENCO ASC '}
       </h2>
+
       <NameInputLogin
         register={register}
         errors={errors}
@@ -82,16 +85,23 @@ const SignInForm = () => {
       />
       <br />
       <PasswordInput register={register} errors={errors} />
-      <button
-        className={`${styles.form__button} ${styles.button} ${styles.submit}`}
-        type="submit"
-      >
-        {spinner ? (
-          <div className={spinnerStyles.spinner} />
-        ) : (
-          'giriş'.toUpperCase()
-        )}
-      </button>
+      <div>
+        <button
+          className={`${styles.form__button} ${styles.button} ${styles.submit}`}
+          type="submit"
+        >
+          {spinner ? (
+            <div className={spinnerStyles.spinner} />
+          ) : (
+            'daxil olun'.toUpperCase()
+          )}
+        </button>
+        <Link href={'/help'} passHref legacyBehavior>
+          <a className={styles.link}>
+            <span>Şifrəni unutmusunuz ?</span>
+          </a>
+        </Link>
+      </div>
     </form>
   )
 }

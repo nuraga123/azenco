@@ -1,8 +1,6 @@
-import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { useStore } from 'effector-react'
 import { toast } from 'react-toastify'
-import { IoMdArrowRoundBack } from 'react-icons/io'
 
 import { getBarnByUserId } from '@/app/api/barn'
 import Layout from '@/components/layout/Layout'
@@ -15,6 +13,7 @@ import { IBarnResponse } from '@/types/barn'
 import spinnerStyles from '@/styles/spinner/index.module.scss'
 import styles from '@/styles/barn/index.module.scss'
 import '@/styles/globals.css'
+import BackBtn from '@/components/elements/btn/BackBtn'
 
 const MyBarn = () => {
   const { shouldLoadContent } = useRedirectByUserCheck()
@@ -65,12 +64,7 @@ const MyBarn = () => {
   return (
     <Layout title={`Anbar | ${username}`}>
       <div className={styles.barn__table}>
-        <button className={styles.barn__btn_back}>
-          <Link href="/my" className={styles.barn__btn_back}>
-            <IoMdArrowRoundBack />
-          </Link>
-        </button>
-
+        <BackBtn href="my" />
         <h1 className={styles.barn__title}>Anbardar: {username}</h1>
       </div>
 

@@ -29,7 +29,7 @@ $transition: 1.25s;
   transition:
     $transition,
     background-color 0s;
-    
+
   @media (max-width: 430px) {
     padding: 10px;
   }
@@ -47,8 +47,6 @@ $transition: 1.25s;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  height: 100vh;
-  max-height: 450px;
 
   &__icon {
     object-fit: contain;
@@ -79,12 +77,12 @@ $transition: 1.25s;
     height: 40px;
     margin: 4px 0;
     padding-left: 25px;
-    font-size: 13px;
+    font-size: 18px;
     letter-spacing: 0.15px;
     border: none;
     outline: none;
-    transition: 0.25s ease;
-    border-radius: 8px;
+    transition: 0.25s ease-in-out;
+    border-radius: 10px;
     box-shadow:
       inset 2px 2px 4px $neu-2,
       inset -2px -2px 4px $white;
@@ -156,13 +154,13 @@ $transition: 1.25s;
     8px 8px 16px $neu-2,
     -8px -8px 16px $white;
 
-  border: none;
+  border: 1px solid;
   outline: none;
 
   transition: 0.3s ease-in-out;
 
   &:hover {
-    background-color: $black;
+    background-color: #fff;
     color: $purple;
   }
 
@@ -380,8 +378,6 @@ $transition: 1.25s;
 .error_alert {
   font-size: 16px;
   color: red;
-  position: absolute;
-  left: 25px;
   bottom: -22px;
   margin: 5px 0;
   height: 16px;
@@ -401,5 +397,47 @@ $transition: 1.25s;
   @media (max-width: 950px) {
     top: 5px;
     right: 5px;
+  }
+}
+
+.link {
+  display: inline-block;
+  margin-left: 60px;
+  font-size: 16px;
+  color: #0070f3; /* Основной цвет ссылки */
+  text-decoration: none;
+  position: relative;
+  transition:
+    color 0.3s ease,
+    transform 0.3s ease;
+
+  &:hover,
+  &:focus {
+    color: #0056b3; /* Цвет при наведении */
+    transform: translateY(-2px); /* Легкий подъем при наведении */
+  }
+
+  &:after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background-color: #0070f3;
+    left: 0;
+    bottom: -2px;
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform 0.3s ease;
+  }
+
+  &:hover::after,
+  &:focus::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+  }
+
+  span {
+    display: inline-block;
+    padding: 2px 0;
   }
 }

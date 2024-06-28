@@ -97,3 +97,25 @@ export const getUsersNamesServer = createEffect(async () => {
     toast.error((error as Error).message)
   }
 })
+
+export interface IUpdateUserPassword {
+  secret: string
+  id: number
+  newPassword: string
+}
+
+export const updateUserPasswordServer = createEffect(
+  async ({ secret, id, newPassword }: IUpdateUserPassword) => {
+    try {
+      const { data } = await api.post('users/secret-word', {
+        secret,
+        id,
+        newPassword,
+      })
+
+      console.log(data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+)

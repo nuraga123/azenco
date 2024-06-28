@@ -1,4 +1,4 @@
-import { FieldErrors, UseFormRegister } from 'react-hook-form'
+import { FieldErrors, UseFormRegister, UseFormSetValue } from 'react-hook-form'
 
 export interface IInputs {
   name: string
@@ -13,6 +13,7 @@ export interface IAuthPageInput {
 
 export interface IAuthPageInputLogin extends IAuthPageInput {
   usernames: string[]
+  setValue: UseFormSetValue<IInputs>
 }
 
 export interface ISingUpFx {
