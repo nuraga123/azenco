@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { FormEvent, useState, useEffect } from 'react'
+import { FormEvent, useState, useEffect, ChangeEvent, useCallback } from 'react'
 import { toast } from 'react-toastify'
 import { addProductFx } from '@/app/api/products'
 import { DataNewProduct } from '@/types/products'
@@ -12,8 +12,8 @@ const FormProductPage: React.FC = () => {
   const [btnDisabled, setBtnDisabled] = useState<boolean>(true)
 
   // Состояния для полей формы
-  const [azenco__code, setAzenco__code] = useState<string>('')
-  const [azenco__codeErrorMessage, setAzenco__codeErrorMessage] =
+  const [azencoCode, setAzencoCode] = useState<string>('')
+  const [azencoCodeErrorMessage, setAzencoCodeErrorMessage] =
     useState<string>('')
 
   const [name, setName] = useState<string>('')
@@ -30,125 +30,143 @@ const FormProductPage: React.FC = () => {
 
   const [images, setImages] = useState<string>('')
 
+  const handleChangeAzencoCode = (e: ChangeEvent<HTMLInputElement>) => {
+    const addDefis = (value: string) =>
+      value.replace(/-/g, '').replace(/(.{3})(?=.)/g, '$1-')
+
+    const rawValue = e.target.value
+    const formattedValue = addDefis(rawValue)
+    setAzencoCode(formattedValue)
+  }
+
   // Функции для валидации полей
-  const validateAzencoCode = () => {
-    if (azenco__code.length < 2 || azenco__code.length > 15) {
-      setAzenco__codeErrorMessage(
-        'Azenco code должен содержать от 2 до 15 символов'
+  const validateAzencoCode = useCallback(() => {
+    if (azencoCode.replace(/-/g, '').length !== 9) {
+      setAzencoCodeErrorMessage('Azenco kodu 9 simvoldan ibarət olmalıdır')
+      return false
+    }
+    setAzencoCodeErrorMessage('ok')
+    return true
+  }, [azencoCode])
+
+  const validateName = useCallback(() => {
+    if (name.length < 3 || name.length > 100) {
+      setNameErrorMessage(
+        'Material adı 3 hərfdən çox olmalıdır və 100 hərfdən az olmalıdır!'
       )
       return false
     }
-    setAzenco__codeErrorMessage('')
+    setNameErrorMessage('ok')
     return true
-  }
+  }, [name])
 
-  const validateName = () => {
-    if (name.length < 3 || name.length > 100) {
-      setNameErrorMessage('Name должно содержать от 3 до 100 символов')
-      return false
-    }
-    setNameErrorMessage('')
-    return true
-  }
-
-  const validatePrice = () => {
+  const validatePrice = useCallback(() => {
     const priceRegex = /^\d+(\.\d{1,2})?$/
     if (!priceRegex.test(price)) {
       setPriceErrorMessage(
-        'Цена должна быть числом с не более чем двумя десятичными знаками'
+        'Qəpiklər 2 rəqəmdən çox göstərilə bilməz! Məsələn: 9.99 ola bilər, amma 9.999 ola bilməz'
       )
       return false
     }
-    setPriceErrorMessage('')
+    setPriceErrorMessage('ok')
     return true
-  }
+  }, [price])
 
-  const validateTypeAndUnit = () => {
+  const validateType = useCallback(() => {
     const minLength = 3
     const maxLength = 35
 
     if (type.length < minLength || type.length > maxLength) {
       setTypeErrorMessage(
-        `Type должно содержать от ${minLength} до ${maxLength} символов`
+        'Növü 3 hərfdən çox olmalıdır və 35 hərfdən az olmalıdır!'
       )
       return false
     }
+
+    setTypeErrorMessage('ok')
+    return true
+  }, [type])
+
+  const validateUnit = useCallback(() => {
+    const minLength = 3
+    const maxLength = 35
 
     if (unit.length < minLength || unit.length > maxLength) {
       setUnitErrorMessage(
-        `Unit должно содержать от ${minLength} до ${maxLength} символов`
+        'Ölçü vahidi 3 hərfdən çox olmalıdır və 35 hərfdən az olmalıdır!'
       )
       return false
     }
-
-    setTypeErrorMessage('')
-    setUnitErrorMessage('')
+    setUnitErrorMessage('ok')
     return true
-  }
+  }, [unit])
 
   // Функция для отправки данных формы
-  const addProductAF = async (dataNewProduct: DataNewProduct) => {
+  const addProduct = async (new__product: DataNewProduct) => {
     try {
       setSpinner(true)
       const result = await addProductFx({
         url: '/products/add',
-        new__product: dataNewProduct,
+        new__product,
       })
 
-      console.log(result)
-
       if (result.success) {
-        toast.success('Material Əlavə Edildi !')
+        toast.success('Material Əlavə Edildi!')
         router.push('/products')
-        return result
       } else {
-        toast.warning(result.error)
+        toast.warning(result?.error)
       }
     } catch (error) {
       const err = (error as Error).message
-      console.log(err)
       toast.error(err)
     } finally {
       setSpinner(false)
     }
   }
 
-  // Функция валидации данных формы
-  const validateInput = () =>
-    validateAzencoCode() &&
-    validateName() &&
-    validatePrice() &&
-    validateTypeAndUnit()
-
-  // Объект с данными формы
-  const dataInputsProduct = {
-    azenco__code,
-    name,
-    type,
-    unit,
-    price,
-    images,
-  }
-
-  // Функция для обработки события отправки формы
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  // Обработка события отправки формы
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-
-    // Проверка валидации перед отправкой данных
-    if (validateInput()) {
-      setBtnDisabled(false)
-      addProductAF(dataInputsProduct)
-    } else {
-      toast.error('Пожалуйста, проверьте правильность введенных данных')
+    if (
+      validateAzencoCode() &&
+      validateName() &&
+      validateType() &&
+      validateUnit() &&
+      validatePrice()
+    ) {
+      const newProduct: DataNewProduct = {
+        azencoCode: azencoCode.replace(/-/g, ''),
+        name,
+        type,
+        unit,
+        price,
+        images,
+      }
+      addProduct(newProduct)
     }
   }
 
-  // Обновление состояния btnDisabled при изменении данных формы
   useEffect(() => {
-    setBtnDisabled(!validateInput())
+    const isFormValid =
+      validateAzencoCode() &&
+      validateName() &&
+      validateType() &&
+      validateUnit() &&
+      validatePrice()
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [azenco__code, name, type, unit, price, images])
+    setBtnDisabled(!isFormValid)
+  }, [
+    azencoCode,
+    name,
+    price,
+    type,
+    unit,
+    validateAzencoCode,
+    validateName,
+    validateType,
+    validateUnit,
+    validatePrice,
+  ])
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
@@ -157,23 +175,30 @@ const FormProductPage: React.FC = () => {
         <div className={styles.container}>
           <div>Azenco Kodu *</div>
           <input
+            style={{ letterSpacing: 2 }}
             type="text"
-            value={azenco__code}
-            onChange={(e) => setAzenco__code(e.target.value)}
+            placeholder="9 simvoldan ibarət olmalıdır"
+            autoComplete="off"
+            value={azencoCode}
+            onChange={handleChangeAzencoCode}
           />
-          {azenco__codeErrorMessage && (
-            <div className={styles.error}>{azenco__codeErrorMessage}</div>
+          {azencoCodeErrorMessage === 'ok' && '✅'}
+          {azencoCodeErrorMessage !== 'ok' && (
+            <div className={styles.error}>{azencoCodeErrorMessage}</div>
           )}
         </div>
 
         <div className={styles.container}>
           <div>Material Adi *</div>
           <input
-            value={name}
             type="text"
+            autoComplete="off"
+            placeholder="3 hərfdən çox olmalıdır"
+            value={name}
             onChange={(e) => setName(e.target.value)}
           />
-          {nameErrorMessage && (
+          {nameErrorMessage === 'ok' && '✅'}
+          {nameErrorMessage !== 'ok' && (
             <div className={styles.error}>{nameErrorMessage}</div>
           )}
         </div>
@@ -182,10 +207,13 @@ const FormProductPage: React.FC = () => {
           <div>Növü *</div>
           <input
             type="text"
+            autoComplete="off"
+            placeholder="Növü 3 hərfdən çox olmalıdır"
             value={type}
             onChange={(e) => setType(e.target.value)}
           />
-          {typeErrorMessage && (
+          {typeErrorMessage === 'ok' && '✅'}
+          {typeErrorMessage !== 'ok' && (
             <div className={styles.error}>{typeErrorMessage}</div>
           )}
         </div>
@@ -197,7 +225,9 @@ const FormProductPage: React.FC = () => {
             value={unit}
             onChange={(e) => setUnit(e.target.value)}
           />
-          {unitErrorMessage && (
+          {unitErrorMessage === 'ok' ? (
+            '✅'
+          ) : (
             <div className={styles.error}>{unitErrorMessage}</div>
           )}
         </div>
@@ -209,7 +239,8 @@ const FormProductPage: React.FC = () => {
             type="text"
             onChange={(e) => setPrice(e.target.value)}
           />
-          {priceErrorMessage && (
+          {priceErrorMessage === 'ok' && '✅'}
+          {priceErrorMessage !== 'ok' && (
             <div className={styles.error}>{priceErrorMessage}</div>
           )}
         </div>
@@ -218,6 +249,8 @@ const FormProductPage: React.FC = () => {
           <div>{`Şəkil (isteğe bağlı саhе)`}</div>
           <input
             type="text"
+            placeholder="istəsəniz şəkil əlavə edə bilərsiniz"
+            autoComplete="off"
             value={images}
             onChange={(e) => setImages(e.target.value)}
           />

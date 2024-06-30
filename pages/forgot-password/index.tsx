@@ -4,8 +4,11 @@ import { toast } from 'react-toastify'
 import styles from '@/styles/auth/index.module.scss'
 import HelpUser from '@/components/elements/HelpUser/HelpUser'
 import { updateUserPasswordServer } from '@/app/api/auth'
+import { getLocalStorageUser } from '@/localStorageUser'
+import BackBtn from '@/components/elements/btn/BackBtn'
+import { useRouter } from 'next/navigation'
 
-interface IForgotPassword {
+export interface IForgotPassword {
   id: number
   username: string
   password: string
@@ -16,6 +19,10 @@ interface IForgotPassword {
 }
 
 const ForgotPassword = () => {
+  const router = useRouter()
+  const { usernameStorage } = getLocalStorageUser()
+  const adminCheck = usernameStorage === `${process.env.NEXT_PUBLIC_ADMIN_NAME}`
+
   const [secret, setSecret] = useState('')
   const [id, setId] = useState('')
   const [newPassword, setNewPassword] = useState('')
@@ -25,18 +32,20 @@ const ForgotPassword = () => {
     e.preventDefault()
 
     try {
-      const response: IForgotPassword = await updateUserPasswordServer({
+      const response = await updateUserPasswordServer({
         secret,
         id: +id,
         newPassword,
       })
 
-      const message: string = response?.message
+      const message = response?.message
 
       setUser({ response })
 
       toast.success(message)
+      router.push('/login')
     } catch (error) {
+      toast.error(error as string)
     } finally {
     }
   }
@@ -52,38 +61,46 @@ const ForgotPassword = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="icon" type="image/svg" sizes="32x32" href="/img/logo.svg" />
       </Head>
-      <div className={styles.container}>
-        <h2>Şifrəni unutmusunuz</h2>
-        <form onSubmit={handleSubmit} className={styles.form}>
-          <label>secret:</label>
-          <input
-            type="text"
-            value={secret}
-            onChange={(e) => setSecret(e.target.value)}
-            required
-          />
-          <label>ID:</label>
-          <input
-            type="text"
-            value={id}
-            onChange={(e) => setId(+e.target.value)}
-            required
-          />
+      {adminCheck ? (
+        <div className={styles.container}>
+          <BackBtn href="/my" text="login menusina qayitmaq !" />
+          <h2>Şifrəni unutmusunuz</h2>
+          <form onSubmit={handleSubmit} className={styles.form}>
+            <label>secret:</label>
+            <input
+              type="text"
+              value={secret}
+              onChange={(e) => setSecret(e.target.value)}
+              required
+              autoComplete="off"
+            />
+            <label>ID:</label>
+            <input
+              type="text"
+              value={id}
+              onChange={(e) => setId(e.target.value)}
+              required
+              autoComplete="off"
+            />
 
-          <label>new Parol:</label>
-          <input
-            type="text"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            required
-          />
-          <button type="submit" className={styles.submitButton}>
-            Sıfırlama
-          </button>
+            <label>new Parol:</label>
+            <input
+              type="text"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              required
+              autoComplete="off"
+            />
+            <button type="submit" className={styles.submitButton}>
+              Sıfırlama
+            </button>
 
-          <HelpUser />
-        </form>
-      </div>
+            <HelpUser />
+          </form>
+        </div>
+      ) : (
+        <BackBtn href="/my" text="ancaq admin parolu deyise biler !" />
+      )}
     </>
   )
 }

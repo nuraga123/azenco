@@ -26,7 +26,7 @@ const AddForm = () => {
       <>
         {shouldLoadContent && (
           <Layout title={'əsas səhifəyə qayidin'}>
-            <Link href={'/dashboard'}>
+            <Link href={'/my'}>
               <span
                 style={{
                   display: 'flex',

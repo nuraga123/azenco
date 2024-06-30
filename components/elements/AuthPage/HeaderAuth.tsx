@@ -7,7 +7,7 @@ const HeaderAuth = ({ children }: { children: ReactNode }) => {
   const [isServerRunning, setIsServerRunning] = useState<boolean>(false)
 
   useEffect(() => {
-    const fetchServerStatus = async () => {
+    const getServerStatus = async () => {
       try {
         const response: boolean = await getWorkingServer()
         setIsServerRunning(response)
@@ -16,9 +16,9 @@ const HeaderAuth = ({ children }: { children: ReactNode }) => {
       }
     }
 
-    const intervalId = setInterval(fetchServerStatus, 5000)
+    const intervalId = setInterval(getServerStatus, 2000)
     return () => clearInterval(intervalId)
-  }, [])
+  }, [isServerRunning])
 
   return (
     <div className={styles.container}>

@@ -17,7 +17,7 @@ const WholesaleBuyers = () => {
     <>
       {shouldLoadContent && (
         <Layout title={'Topdan alıcılar üçün'}>
-          <ContactsPage isWholesaleBuyersPage={true} />
+          <ContactsPage />
           <button onClick={getLoginCheck}>GO</button>
         </Layout>
       )}

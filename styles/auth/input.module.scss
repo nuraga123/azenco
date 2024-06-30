@@ -64,7 +64,15 @@
 
     &__icon {
       color: red;
-      font-size: 30px;    
+      font-size: 30px;
+      border-radius: 50%;
+      transition: 0.3s ease-in-out;
+      cursor: pointer;
+
+      &:hover {
+        color: white;
+        background-color: red;
+      }
     }
   }
 }

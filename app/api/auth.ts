@@ -1,10 +1,11 @@
-import { createEffect } from 'effector-next'
+import { createEffect, Effect } from 'effector-next'
 import { toast } from 'react-toastify'
 import { AxiosError } from 'axios'
 
 import { ISingUpFx, ISignInFx } from '@/types/auth'
 import api from '../axiosClient'
 import { HTTPStatus } from '@/constans'
+import { IForgotPassword } from '@/pages/forgot-password'
 
 export const singUpFx = createEffect(
   async ({ url, username, password, email }: ISingUpFx) => {
@@ -14,9 +15,7 @@ export const singUpFx = createEffect(
       toast.warning(data.warningMessage)
       return
     }
-
     toast.success('Регистрация прощла успешно!')
-
     return data
   }
 )
@@ -104,18 +103,21 @@ export interface IUpdateUserPassword {
   newPassword: string
 }
 
-export const updateUserPasswordServer = createEffect(
-  async ({ secret, id, newPassword }: IUpdateUserPassword) => {
-    try {
-      const { data } = await api.post('users/secret-word', {
-        secret,
-        id,
-        newPassword,
-      })
+export const updateUserPasswordServer: Effect<
+  IUpdateUserPassword,
+  IForgotPassword | undefined,
+  Error
+> = createEffect(async ({ secret, id, newPassword }: IUpdateUserPassword) => {
+  try {
+    const { data } = await api.post('users/secret-word', {
+      secret,
+      id,
+      newPassword,
+    })
 
-      console.log(data)
-    } catch (error) {
-      console.log(error)
-    }
+    console.log(data)
+    return data
+  } catch (error) {
+    console.log(error)
   }
-)
+})

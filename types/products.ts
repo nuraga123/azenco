@@ -20,7 +20,7 @@ export interface IGetSearchNameWordProduct {
 }
 
 export interface DataNewProduct {
-  azenco__code: string
+  azencoCode: string
   name: string
   type: string
   unit: string
