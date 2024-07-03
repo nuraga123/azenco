@@ -1,12 +1,12 @@
 import Head from 'next/head'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'react-toastify'
-import styles from '@/styles/auth/index.module.scss'
 import HelpUser from '@/components/elements/HelpUser/HelpUser'
 import { updateUserPasswordServer } from '@/app/api/auth'
 import { getLocalStorageUser } from '@/localStorageUser'
 import BackBtn from '@/components/elements/btn/BackBtn'
-import { useRouter } from 'next/navigation'
+import styles from '@/styles/forgot__password/index.module.scss'
 
 export interface IForgotPassword {
   id: number
@@ -66,8 +66,9 @@ const ForgotPassword = () => {
           <BackBtn href="/my" text="login menusina qayitmaq !" />
           <h2>Şifrəni unutmusunuz</h2>
           <form onSubmit={handleSubmit} className={styles.form}>
-            <label>secret:</label>
+            <label>secret soz:</label>
             <input
+              className={styles.input}
               type="text"
               value={secret}
               onChange={(e) => setSecret(e.target.value)}
@@ -76,6 +77,7 @@ const ForgotPassword = () => {
             />
             <label>ID:</label>
             <input
+              className={styles.input}
               type="text"
               value={id}
               onChange={(e) => setId(e.target.value)}
@@ -83,13 +85,15 @@ const ForgotPassword = () => {
               autoComplete="off"
             />
 
-            <label>new Parol:</label>
+            <label>təzə Parol:</label>
             <input
+              className={styles.input}
               type="text"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
               required
               autoComplete="off"
+              style={{ marginBottom: 10 }}
             />
             <button type="submit" className={styles.submitButton}>
               Sıfırlama

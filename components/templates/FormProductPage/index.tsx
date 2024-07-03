@@ -73,7 +73,7 @@ const FormProductPage: React.FC = () => {
   }, [price])
 
   const validateType = useCallback(() => {
-    const minLength = 3
+    const minLength = 0
     const maxLength = 35
 
     if (type.length < minLength || type.length > maxLength) {
@@ -88,13 +88,11 @@ const FormProductPage: React.FC = () => {
   }, [type])
 
   const validateUnit = useCallback(() => {
-    const minLength = 3
+    const minLength = 1
     const maxLength = 35
 
     if (unit.length < minLength || unit.length > maxLength) {
-      setUnitErrorMessage(
-        'Ölçü vahidi 3 hərfdən çox olmalıdır və 35 hərfdən az olmalıdır!'
-      )
+      setUnitErrorMessage('Ölçü birini seçin olmalıdır!')
       return false
     }
     setUnitErrorMessage('ok')
@@ -168,6 +166,24 @@ const FormProductPage: React.FC = () => {
     validatePrice,
   ])
 
+  const units = ['metr', 'kilogramm', 'ədəd', 'litr']
+  const [showDropdown, setShowDropdown] = useState(false)
+
+  const handleUnitChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setUnit(e.target.value)
+    if (!e.target.value.length) {
+      setUnitErrorMessage('Ölçü birini seçin')
+    } else {
+      setUnitErrorMessage('ok')
+    }
+  }
+
+  const handleUnitSelect = (selectedUnit: string) => {
+    setUnit(selectedUnit)
+    setShowDropdown(false)
+    setUnitErrorMessage('ok')
+  }
+
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
       <h2 className={styles.title}>Yeni Material Forması</h2>
@@ -204,11 +220,57 @@ const FormProductPage: React.FC = () => {
         </div>
 
         <div className={styles.container}>
-          <div>Növü *</div>
+          <div>Ölçü Vahidi *</div>
           <input
             type="text"
             autoComplete="off"
-            placeholder="Növü 3 hərfdən çox olmalıdır"
+            placeholder={`${[...units]}`}
+            value={unit}
+            onChange={(e) => handleUnitChange(e)}
+            onFocus={() => setShowDropdown(true)}
+            onBlur={() => setTimeout(() => setShowDropdown(false), 200)}
+          />
+          {unitErrorMessage === 'ok' ? (
+            '✅'
+          ) : (
+            <div className={styles.error}>{unitErrorMessage}</div>
+          )}
+          {showDropdown && (
+            <ul className={styles.dropdown}>
+              <p className={styles.dropdown__title}>
+                <i>Siyahıdan birini seçin</i>
+              </p>
+              {units
+                .filter((u) => u.toLowerCase().includes(unit.toLowerCase()))
+                .map((u) => (
+                  <li key={u} onClick={() => handleUnitSelect(u)}>
+                    {u}
+                  </li>
+                ))}
+            </ul>
+          )}
+        </div>
+
+        <div className={styles.container}>
+          <div>{`Qiymət (manat) *`}</div>
+          <input
+            value={price}
+            type="text"
+            placeholder=""
+            onChange={(e) => setPrice(e.target.value)}
+          />
+          {priceErrorMessage === 'ok' && '✅'}
+          {priceErrorMessage !== 'ok' && (
+            <div className={styles.error}>{priceErrorMessage}</div>
+          )}
+        </div>
+
+        <div className={styles.container}>
+          <div>{`Növü (isteğe bağlı)`}</div>
+          <input
+            type="text"
+            autoComplete="off"
+            placeholder="Qəpiklər 2 rəqəmdən çox göstərilə bilməz!"
             value={type}
             onChange={(e) => setType(e.target.value)}
           />
@@ -219,34 +281,7 @@ const FormProductPage: React.FC = () => {
         </div>
 
         <div className={styles.container}>
-          <div>Ölçü Vahidi *</div>
-          <input
-            type="text"
-            value={unit}
-            onChange={(e) => setUnit(e.target.value)}
-          />
-          {unitErrorMessage === 'ok' ? (
-            '✅'
-          ) : (
-            <div className={styles.error}>{unitErrorMessage}</div>
-          )}
-        </div>
-
-        <div className={styles.container}>
-          <div>{`Qiymət (manat) *`}</div>
-          <input
-            value={price}
-            type="text"
-            onChange={(e) => setPrice(e.target.value)}
-          />
-          {priceErrorMessage === 'ok' && '✅'}
-          {priceErrorMessage !== 'ok' && (
-            <div className={styles.error}>{priceErrorMessage}</div>
-          )}
-        </div>
-
-        <div className={styles.container}>
-          <div>{`Şəkil (isteğe bağlı саhе)`}</div>
+          <div>{`Şəkil (isteğe bağlı)`}</div>
           <input
             type="text"
             placeholder="istəsəniz şəkil əlavə edə bilərsiniz"

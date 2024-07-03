@@ -40,8 +40,8 @@ export const navbarArray: INavbarElement[] = [
     icon: <AiOutlinePhone style={{ transform: 'rotate(90deg)' }} />,
   },
   {
-    href: '/form__string',
-    title: 'form__string',
+    href: '/install-products-excel',
+    title: 'install-products-excel',
     icon: <AiOutlineFieldString />,
   },
 ]

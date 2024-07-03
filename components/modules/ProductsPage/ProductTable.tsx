@@ -9,7 +9,9 @@ const ProductTable = ({ data }: { data: IProductsResponse }) => {
   const products = data.rows.length ? data.rows : []
 
   if (products.length === 0) {
-    return <p>Нет доступных продуктов.</p>
+    return (
+      <h1 style={{ textAlign: 'center' }}>Materialların siyahısı boşdur</h1>
+    )
   }
 
   return (

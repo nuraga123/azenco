@@ -70,7 +70,7 @@
     border: 1px solid red;
     border-radius: 50%;
   }
-  
+
   &__close:hover {
     background-color: red;
     color: white;
@@ -116,7 +116,8 @@
 
 // form
 .form {
-  width: 280px;
+  width: 100%;
+  max-width: 450px;
   margin: 0 auto;
 }
 
@@ -143,6 +144,39 @@
 
     &:focus {
       border-color: dodgerblue;
+    }
+  }
+}
+
+.dropdown {
+  background-color: white;
+  border: 1px solid #ccc;
+  max-height: 150px;
+  overflow-y: auto;
+  z-index: 1000;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+
+  &__title {
+    border: 1px solid rgb(0, 67, 99);
+    padding: 5px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: black;
+    color: white;
+  }
+
+  li {
+    padding: 8px;
+    cursor: pointer;
+    border-bottom: 1px solid blue;
+    transition: 0.3s ease-in-out;
+
+    &:hover {
+      background-color: #f0f0f0;
+      color: #4caf50;
     }
   }
 }

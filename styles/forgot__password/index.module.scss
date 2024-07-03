@@ -1,0 +1,76 @@
+$bg: #edf2f0;
+$neu-1: #ecf0f3;
+$neu-2: #d1d9e6;
+$white: #f9f9f9;
+$gray: #a0a5a8;
+$black: #181818;
+$purple: #4b70e2;
+$transition: 1.25s;
+
+.container {
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: column;
+  align-items: center;
+  padding: 25px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 10px auto;
+  border-radius: 20px;
+  background-color: #ecf0f3;
+  transition:
+    1.25s,
+    background-color 0s;
+  height: 80vh;
+
+  @media (max-width: 430px) {
+    padding: 10px;
+  }
+
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.input {
+  padding: 5px 10px;
+  margin: 5px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.submitButton {
+  cursor: pointer;
+  position: relative;
+  padding: 15px 25px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 2px;
+
+  background-color: $purple;
+  color: $white;
+  box-shadow:
+    8px 8px 16px $neu-2,
+    -8px -8px 16px $white;
+
+  border: 1px solid;
+  outline: none;
+
+  transition: 0.3s ease-in-out;
+
+  &:hover {
+    background-color: #fff;
+    color: $purple;
+  }
+
+  @media (max-width: 600px) {
+    font-size: 14px;
+  }
+}

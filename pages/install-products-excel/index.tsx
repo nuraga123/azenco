@@ -12,21 +12,21 @@ function FormString() {
   const [resultString, setResultString] = useState('')
 
   const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setDataString(e?.target?.value)
+    setDataString(e.target.value)
   }
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e?.preventDefault()
+    e.preventDefault()
 
     const parseDataToJSON = (input: string) => {
-      const lines = input?.trim()?.split('\n')
+      const lines = input.trim().split('\n')
 
       // Исправленная функция парсинга данных
-      const items = lines?.map((line) => {
+      const items = lines.map((line) => {
         const parts = line.split('\t')
         const azencoCode = parts[0]
         const name = parts[1]
-        const price = parseFloat(parts[2]?.replace(',', '.'))
+        const price = parseFloat(parts[2].replace(',', '.'))
         const unit = parts[3]
         const type = parts[4] || 'digər' // По умолчанию 'digər', если тип не указан
 
@@ -39,7 +39,7 @@ function FormString() {
           img: '',
         }
       })
-      return JSON.stringify(items, null, 0)?.replace(/"/g, '\\"')
+      return JSON.stringify(items, null, 0) // Удалил замену кавычек
     }
 
     const formattedString = parseDataToJSON(dataString)
@@ -52,6 +52,7 @@ function FormString() {
     if (!resultString.length) return alert('пустая строка')
     try {
       const result = await postImportProductsFx({ admin, str: resultString })
+      console.log(result)
       alert('Import successful:')
       console.log('Import successful:', result)
     } catch (error) {
@@ -89,7 +90,11 @@ M00011278	3200x12000x2800 iki otaqlı dəhlizli konteyner	10771,57	ədəd	Kontey
           <div className={styles['result-container']}>
             <h2>Nəticə:</h2>
 
-            <textarea value={resultString} className={styles.textarea} />
+            <textarea
+              value={resultString}
+              className={styles.textarea}
+              readOnly
+            />
           </div>
         )}
 
