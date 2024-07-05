@@ -13,6 +13,7 @@ import styles from '@/styles/products/index.module.scss'
 import spinnerStyles from '@/styles/spinner/index.module.scss'
 
 const FormProductPage = () => {
+  const height = window.innerHeight < 900 ? 1000 : 800
   //const router = useRouter()
   const [spinner, setSpinner] = useState<boolean>(false)
   const [btnDisabled, setBtnDisabled] = useState<boolean>(true)
@@ -25,15 +26,13 @@ const FormProductPage = () => {
   const [name, setName] = useState<string>('')
   const [nameErrorMessage, setNameErrorMessage] = useState<string>('')
 
-  const [type, setType] = useState<string>('')
-  const [typeErrorMessage, setTypeErrorMessage] = useState<string>('')
-
   const [unit, setUnit] = useState<string>('')
   const [unitErrorMessage, setUnitErrorMessage] = useState<string>('')
 
   const [price, setPrice] = useState<string>('')
   const [priceErrorMessage, setPriceErrorMessage] = useState<string>('')
 
+  const [type, setType] = useState<string>('')
   const [images, setImages] = useState<string>('')
 
   const handleChangeAzencoCode = (e: ChangeEvent<HTMLInputElement>) => {
@@ -77,21 +76,6 @@ const FormProductPage = () => {
     setPriceErrorMessage('ok')
     return true
   }, [price])
-
-  const validateType = useCallback(() => {
-    const minLength = 0
-    const maxLength = 35
-
-    if (type.length < minLength || type.length > maxLength) {
-      setTypeErrorMessage(
-        'Növü 3 hərfdən çox olmalıdır və 35 hərfdən az olmalıdır!'
-      )
-      return false
-    }
-
-    setTypeErrorMessage('ok')
-    return true
-  }, [type])
 
   const validateUnit = useCallback(() => {
     const minLength = 1
@@ -138,13 +122,14 @@ const FormProductPage = () => {
     }
   }
 
+  const formatPrice = Intl.NumberFormat('ru-RU').format(+price)
+
   // Обработка события отправки формы
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     if (
       validateAzencoCode() &&
       validateName() &&
-      validateType() &&
       validateUnit() &&
       validatePrice()
     ) {
@@ -165,7 +150,6 @@ const FormProductPage = () => {
     const isFormValid =
       validateAzencoCode() &&
       validateName() &&
-      validateType() &&
       validateUnit() &&
       validatePrice()
 
@@ -178,7 +162,6 @@ const FormProductPage = () => {
     unit,
     validateAzencoCode,
     validateName,
-    validateType,
     validateUnit,
     validatePrice,
   ])
@@ -202,7 +185,11 @@ const FormProductPage = () => {
   }
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
+    <form
+      className={styles.form}
+      onSubmit={handleSubmit}
+      style={{ height: `${height}px` }}
+    >
       <h2 className={styles.title}>Yeni Material Forması</h2>
       <div className={styles.form__container}>
         <div className={styles.container}>
@@ -269,7 +256,9 @@ const FormProductPage = () => {
         </div>
 
         <div className={styles.container}>
-          <div>{`Qiymət (manat) *`}</div>
+          <div>
+            Qiymət: <b>{`${formatPrice}`}</b> manat
+          </div>
           <input
             value={price}
             type="text"
@@ -291,10 +280,6 @@ const FormProductPage = () => {
             value={type}
             onChange={(e) => setType(e.target.value)}
           />
-          {typeErrorMessage === 'ok' && '✅'}
-          {typeErrorMessage !== 'ok' && (
-            <div className={styles.error}>{typeErrorMessage}</div>
-          )}
         </div>
 
         <div className={styles.container}>
