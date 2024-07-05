@@ -3,8 +3,6 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 100%;
-    max-width: 1200px;
     margin: 0 auto;
   }
 }
@@ -21,10 +19,11 @@
 
 .table {
   width: 100%;
-  max-width: 1480px;
+  max-width: 1000px;
   border-collapse: collapse;
   margin-bottom: 10px;
   margin: 0 auto;
+  font-size: 18px;
 
   img {
     border-radius: 10px;
@@ -37,11 +36,32 @@
   padding: 5px 10px;
   text-align: left;
   width: max-content;
+  white-space: nowrap;
+}
+
+.max {
+  white-space: nowrap;
+  max-width: 50px;
+  width: 100%;
+}
+
+.numList {
+  width: 25px;
+}
+
+.unit {
+  width: 130px;
+}
+
+.small {
+  width: 100px;
+  text-align: center;
 }
 
 .th {
   background-color: #4caf50;
   letter-spacing: 1px;
+  color: #fff;
 }
 
 .tr:nth-child(even) {

@@ -8,6 +8,7 @@
 .pagination button {
   padding: 10px;
   cursor: pointer;
+  border-radius: 5px;
 }
 
 .pagination button:disabled {
@@ -17,5 +18,5 @@
 
 .pagination .active {
   font-weight: bold;
-  text-decoration: underline;
+  background-color: skyblue;
 }

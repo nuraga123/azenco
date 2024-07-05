@@ -2,7 +2,7 @@ export interface IProduct {
   id: number
   name: string
   type: string
-  price: string
+  price: number
   unit: string
   azencoCode: string
   img: string
@@ -24,7 +24,7 @@ export interface DataNewProduct {
   name: string
   type: string
   unit: string
-  price: string
+  price: number
   images: string
 }
 

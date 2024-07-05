@@ -1,13 +1,19 @@
-import { useRouter } from 'next/router'
-import { FormEvent, useState, useEffect, ChangeEvent, useCallback } from 'react'
+// import { useRouter } from 'next/router'
+import React, {
+  FormEvent,
+  useState,
+  useEffect,
+  ChangeEvent,
+  useCallback,
+} from 'react'
 import { toast } from 'react-toastify'
 import { addProductFx } from '@/app/api/products'
 import { DataNewProduct } from '@/types/products'
 import styles from '@/styles/products/index.module.scss'
 import spinnerStyles from '@/styles/spinner/index.module.scss'
 
-const FormProductPage: React.FC = () => {
-  const router = useRouter()
+const FormProductPage = () => {
+  //const router = useRouter()
   const [spinner, setSpinner] = useState<boolean>(false)
   const [btnDisabled, setBtnDisabled] = useState<boolean>(true)
 
@@ -99,6 +105,15 @@ const FormProductPage: React.FC = () => {
     return true
   }, [unit])
 
+  const removeDataInput = () => {
+    setAzencoCode('')
+    setName('')
+    setUnit('')
+    setPrice('')
+    setType('')
+    setImages('')
+  }
+
   // Функция для отправки данных формы
   const addProduct = async (new__product: DataNewProduct) => {
     try {
@@ -109,10 +124,11 @@ const FormProductPage: React.FC = () => {
       })
 
       if (result.success) {
-        toast.success('Material Əlavə Edildi!')
-        router.push('/products')
+        toast.success(result.message)
+        //router.push('/products')
+        removeDataInput()
       } else {
-        toast.warning(result?.error)
+        toast.warning(result.error_message)
       }
     } catch (error) {
       const err = (error as Error).message
@@ -134,12 +150,13 @@ const FormProductPage: React.FC = () => {
     ) {
       const newProduct: DataNewProduct = {
         azencoCode: azencoCode.replace(/-/g, ''),
+        price: +price,
         name,
         type,
         unit,
-        price,
         images,
       }
+      console.log(newProduct)
       addProduct(newProduct)
     }
   }
@@ -166,7 +183,7 @@ const FormProductPage: React.FC = () => {
     validatePrice,
   ])
 
-  const units = ['metr', 'kilogramm', 'ədəd', 'litr']
+  const units = ['metr', 'kg', 'ədəd', 'litr']
   const [showDropdown, setShowDropdown] = useState(false)
 
   const handleUnitChange = (e: ChangeEvent<HTMLInputElement>) => {

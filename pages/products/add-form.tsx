@@ -1,22 +1,24 @@
 import Link from 'next/link'
 import Layout from '@/components/layout/Layout'
-import AddProductPage from '@/components/templates/FormProductPage'
+import FormProductPage from '@/components/templates/FormProductPage'
 import useRedirectByUserCheck from '@/hooks/useRedirectByUserCheck'
-import { getLocalStorageUser } from '@/localStorageUser'
+
+// import { getLocalStorageUser } from '@/localStorageUser'
 
 import '@/styles/globals.css'
 
 const AddForm = () => {
   const { shouldLoadContent } = useRedirectByUserCheck()
-  const { usernameStorage } = getLocalStorageUser()
-  const username = usernameStorage === `${process.env.NEXT_PUBLIC_ADMIN_NAME}`
+  //const { usernameStorage } = getLocalStorageUser()
+  //usernameStorage === `${process.env.NEXT_PUBLIC_ADMIN_NAME}`
+  const username = true
 
   if (username) {
     return (
       <>
         {shouldLoadContent && (
           <Layout title={'Yeni Materiallar Yarat'}>
-            <AddProductPage />
+            <FormProductPage />
           </Layout>
         )}
       </>
