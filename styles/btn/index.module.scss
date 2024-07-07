@@ -1,15 +1,19 @@
 .btn {
   display: flex;
   align-items: center;
-  padding: 10px 20px;
+  padding: 10px;
+  font-size: 18px;
   border-radius: 8px;
-  transition: background-color 0.3s ease, transform 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    transform 0.3s ease;
   text-decoration: none;
+  cursor: pointer;
 
   &__back {
     @extend .btn;
     max-width: min-content;
-    background-color: #4CAF50; // Приятный зеленый цвет
+    background-color: #4caf50; // Приятный зеленый цвет
     color: white;
 
     &:hover {

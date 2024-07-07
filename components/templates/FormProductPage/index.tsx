@@ -1,4 +1,3 @@
-// import { useRouter } from 'next/router'
 import React, {
   FormEvent,
   useState,
@@ -11,14 +10,12 @@ import { addProductFx } from '@/app/api/products'
 import { DataNewProduct } from '@/types/products'
 import styles from '@/styles/products/index.module.scss'
 import spinnerStyles from '@/styles/spinner/index.module.scss'
+import { numberMetricFormat } from '@/utils/anbar'
 
-const FormProductPage = () => {
-  const height = window.innerHeight < 900 ? 1000 : 800
-  //const router = useRouter()
+const FormProductPage: React.FC = () => {
   const [spinner, setSpinner] = useState<boolean>(false)
   const [btnDisabled, setBtnDisabled] = useState<boolean>(true)
 
-  // Состояния для полей формы
   const [azencoCode, setAzencoCode] = useState<string>('')
   const [azencoCodeErrorMessage, setAzencoCodeErrorMessage] =
     useState<string>('')
@@ -35,6 +32,9 @@ const FormProductPage = () => {
   const [type, setType] = useState<string>('')
   const [images, setImages] = useState<string>('')
 
+  const [showDropdown, setShowDropdown] = useState(false)
+  const [showAdditionalFields, setShowAdditionalFields] = useState(false)
+
   const handleChangeAzencoCode = (e: ChangeEvent<HTMLInputElement>) => {
     const addDefis = (value: string) =>
       value.replace(/-/g, '').replace(/(.{3})(?=.)/g, '$1-')
@@ -44,10 +44,9 @@ const FormProductPage = () => {
     setAzencoCode(formattedValue)
   }
 
-  // Функции для валидации полей
   const validateAzencoCode = useCallback(() => {
     if (azencoCode.replace(/-/g, '').length !== 9) {
-      setAzencoCodeErrorMessage('Azenco kodu 9 simvoldan ibarət olmalıdır')
+      setAzencoCodeErrorMessage('9 simvol olmalıdır !')
       return false
     }
     setAzencoCodeErrorMessage('ok')
@@ -56,9 +55,7 @@ const FormProductPage = () => {
 
   const validateName = useCallback(() => {
     if (name.length < 3 || name.length > 100) {
-      setNameErrorMessage(
-        'Material adı 3 hərfdən çox olmalıdır və 100 hərfdən az olmalıdır!'
-      )
+      setNameErrorMessage('3 çox və 100 hərfdən az olmalıdır!')
       return false
     }
     setNameErrorMessage('ok')
@@ -66,6 +63,15 @@ const FormProductPage = () => {
   }, [name])
 
   const validatePrice = useCallback(() => {
+    if (+price === 0) {
+      setPriceErrorMessage('Qiymət = 0 ola bilmez')
+      return false
+    }
+
+    if (price.includes(',')) {
+      setPriceErrorMessage('Vergül əvəzinə nöqtə qoyun')
+      return false
+    }
     const priceRegex = /^\d+(\.\d{1,2})?$/
     if (!priceRegex.test(price)) {
       setPriceErrorMessage(
@@ -89,16 +95,24 @@ const FormProductPage = () => {
     return true
   }, [unit])
 
+  const validate = useCallback(
+    () =>
+      validateName() &&
+      validateAzencoCode() &&
+      validateUnit() &&
+      validatePrice(),
+    [validateAzencoCode, validateName, validatePrice, validateUnit]
+  )
+
   const removeDataInput = () => {
-    setAzencoCode('')
     setName('')
+    setAzencoCode('')
     setUnit('')
     setPrice('')
     setType('')
     setImages('')
   }
 
-  // Функция для отправки данных формы
   const addProduct = async (new__product: DataNewProduct) => {
     try {
       setSpinner(true)
@@ -109,7 +123,6 @@ const FormProductPage = () => {
 
       if (result.success) {
         toast.success(result.message)
-        //router.push('/products')
         removeDataInput()
       } else {
         toast.warning(result.error_message)
@@ -122,17 +135,9 @@ const FormProductPage = () => {
     }
   }
 
-  const formatPrice = Intl.NumberFormat('ru-RU').format(+price)
-
-  // Обработка события отправки формы
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    if (
-      validateAzencoCode() &&
-      validateName() &&
-      validateUnit() &&
-      validatePrice()
-    ) {
+    if (validate()) {
       const newProduct: DataNewProduct = {
         azencoCode: azencoCode.replace(/-/g, ''),
         price: +price,
@@ -147,27 +152,10 @@ const FormProductPage = () => {
   }
 
   useEffect(() => {
-    const isFormValid =
-      validateAzencoCode() &&
-      validateName() &&
-      validateUnit() &&
-      validatePrice()
+    setBtnDisabled(!validate())
+  }, [validate])
 
-    setBtnDisabled(!isFormValid)
-  }, [
-    azencoCode,
-    name,
-    price,
-    type,
-    unit,
-    validateAzencoCode,
-    validateName,
-    validateUnit,
-    validatePrice,
-  ])
-
-  const units = ['metr', 'kg', 'ədəd', 'litr']
-  const [showDropdown, setShowDropdown] = useState(false)
+  const units = ['ədəd', 'metr', 'kg', 'litr']
 
   const handleUnitChange = (e: ChangeEvent<HTMLInputElement>) => {
     setUnit(e.target.value)
@@ -184,128 +172,159 @@ const FormProductPage = () => {
     setUnitErrorMessage('ok')
   }
 
-  return (
-    <form
-      className={styles.form}
-      onSubmit={handleSubmit}
-      style={{ height: `${height}px` }}
-    >
-      <h2 className={styles.title}>Yeni Material Forması</h2>
-      <div className={styles.form__container}>
-        <div className={styles.container}>
-          <div>Azenco Kodu *</div>
-          <input
-            style={{ letterSpacing: 2 }}
-            type="text"
-            placeholder="9 simvoldan ibarət olmalıdır"
-            autoComplete="off"
-            value={azencoCode}
-            onChange={handleChangeAzencoCode}
-          />
-          {azencoCodeErrorMessage === 'ok' && '✅'}
-          {azencoCodeErrorMessage !== 'ok' && (
-            <div className={styles.error}>{azencoCodeErrorMessage}</div>
-          )}
-        </div>
+  console.log(
+    nameErrorMessage,
+    azencoCodeErrorMessage,
+    unitErrorMessage,
+    priceErrorMessage
+  )
 
+  return (
+    <form className={styles.form} onSubmit={handleSubmit}>
+      <h3 className={styles.title}>Yeni Material Forması</h3>
+      <div>
         <div className={styles.container}>
-          <div>Material Adi *</div>
+          <div>
+            {'1) Material Adı'} {nameErrorMessage === 'ok' && ' ✅'}
+          </div>
           <input
+            className={styles.name}
             type="text"
             autoComplete="off"
             placeholder="3 hərfdən çox olmalıdır"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
-          {nameErrorMessage === 'ok' && '✅'}
           {nameErrorMessage !== 'ok' && (
             <div className={styles.error}>{nameErrorMessage}</div>
           )}
         </div>
+        <div className={styles.form__wrapper}>
+          <div className={styles.form__container}>
+            <div className={styles.container}>
+              <div>
+                {'2) Azenco Kodu'} {azencoCodeErrorMessage === 'ok' && ' ✅'}
+              </div>
+              <input
+                className={styles.azencoCode}
+                type="text"
+                placeholder="9 simvol olmalıdır !"
+                autoComplete="off"
+                value={azencoCode}
+                onChange={handleChangeAzencoCode}
+              />
+              {azencoCodeErrorMessage !== 'ok' && (
+                <div className={styles.error}>{azencoCodeErrorMessage}</div>
+              )}
+            </div>
 
-        <div className={styles.container}>
-          <div>Ölçü Vahidi *</div>
-          <input
-            type="text"
-            autoComplete="off"
-            placeholder={`${[...units]}`}
-            value={unit}
-            onChange={(e) => handleUnitChange(e)}
-            onFocus={() => setShowDropdown(true)}
-            onBlur={() => setTimeout(() => setShowDropdown(false), 200)}
-          />
-          {unitErrorMessage === 'ok' ? (
-            '✅'
-          ) : (
-            <div className={styles.error}>{unitErrorMessage}</div>
-          )}
-          {showDropdown && (
-            <ul className={styles.dropdown}>
-              <p className={styles.dropdown__title}>
-                <i>Siyahıdan birini seçin</i>
-              </p>
-              {units
-                .filter((u) => u.toLowerCase().includes(unit.toLowerCase()))
-                .map((u) => (
-                  <li key={u} onClick={() => handleUnitSelect(u)}>
-                    {u}
-                  </li>
-                ))}
-            </ul>
-          )}
-        </div>
-
-        <div className={styles.container}>
-          <div>
-            Qiymət: <b>{`${formatPrice}`}</b> manat
+            <div className={styles.row}>
+              <div className={styles.container}>
+                <div>
+                  {'4)'} Qiymət: <b>{`${numberMetricFormat(+price)}`}</b> manat
+                  {priceErrorMessage === 'ok' && ' ✅'}
+                </div>
+                <input
+                  value={price}
+                  type="text"
+                  placeholder="0.01"
+                  onChange={(e) => setPrice(e.target.value)}
+                />
+                {priceErrorMessage !== 'ok' && (
+                  <div className={styles.error}>{priceErrorMessage}</div>
+                )}
+              </div>
+            </div>
           </div>
-          <input
-            value={price}
-            type="text"
-            placeholder=""
-            onChange={(e) => setPrice(e.target.value)}
-          />
-          {priceErrorMessage === 'ok' && '✅'}
-          {priceErrorMessage !== 'ok' && (
-            <div className={styles.error}>{priceErrorMessage}</div>
-          )}
+
+          <div>
+            <div className={styles.container}>
+              <div>
+                {'3) '}Ölçü Vahidi {unitErrorMessage === 'ok' && ' ✅'}
+              </div>
+              <input
+                className={styles.form__wrapper__unit}
+                type="text"
+                autoComplete="off"
+                placeholder={`${[...units]}`}
+                value={unit}
+                onChange={handleUnitChange}
+                onFocus={() => setShowDropdown(true)}
+                onBlur={() => setTimeout(() => setShowDropdown(false), 200)}
+              />
+              {unitErrorMessage !== 'ok' && (
+                <div className={styles.error}>{unitErrorMessage}</div>
+              )}
+              {showDropdown && (
+                <ul className={styles.dropdown}>
+                  <p className={styles.dropdown__title}>
+                    <i>Birini seçin</i>
+                  </p>
+                  {units
+                    .filter((u) => u.toLowerCase().includes(unit.toLowerCase()))
+                    .map((u) => (
+                      <li key={u} onClick={() => handleUnitSelect(u)}>
+                        {u}
+                      </li>
+                    ))}
+                </ul>
+              )}
+            </div>
+          </div>
         </div>
 
-        <div className={styles.container}>
-          <div>{`Növü (isteğe bağlı)`}</div>
-          <input
-            type="text"
-            autoComplete="off"
-            placeholder="Qəpiklər 2 rəqəmdən çox göstərilə bilməz!"
-            value={type}
-            onChange={(e) => setType(e.target.value)}
-          />
-        </div>
-
-        <div className={styles.container}>
-          <div>{`Şəkil (isteğe bağlı)`}</div>
-          <input
-            type="text"
-            placeholder="istəsəniz şəkil əlavə edə bilərsiniz"
-            autoComplete="off"
-            value={images}
-            onChange={(e) => setImages(e.target.value)}
-          />
-        </div>
-      </div>
-
-      <div className={styles.container}>
-        <button
-          type="submit"
-          className={btnDisabled ? styles.btnDisabled : styles.add__button}
-          disabled={btnDisabled}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'baseline',
+            justifyContent: 'space-between',
+          }}
         >
-          {spinner ? (
-            <div className={spinnerStyles.spinner} />
-          ) : (
-            'Material Əlavə Etmək'
-          )}
-        </button>
+          <div className={styles.container}>
+            <button
+              type="button"
+              className={styles.additionalButton}
+              onClick={() => setShowAdditionalFields(!showAdditionalFields)}
+            >
+              {showAdditionalFields ? 'Gizlət' : 'Əlavə'}
+            </button>
+
+            {showAdditionalFields && (
+              <div className={styles.additionalFields}>
+                <div>
+                  <div>Tip</div>
+                  <input
+                    value={type}
+                    type="text"
+                    placeholder="Material tipi"
+                    onChange={(e) => setType(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <div>Şəkillər</div>
+                  <input
+                    value={images}
+                    type="text"
+                    placeholder="Şəkillər"
+                    onChange={(e) => setImages(e.target.value)}
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div>
+            <button
+              className={styles.submitButton}
+              type="submit"
+              disabled={btnDisabled}
+              style={{ backgroundColor: btnDisabled ? 'red' : '' }}
+            >
+              {spinner && <div className={spinnerStyles.spinner} />}
+              Əlavə et
+            </button>
+          </div>
+        </div>
       </div>
     </form>
   )

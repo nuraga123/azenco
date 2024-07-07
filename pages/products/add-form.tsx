@@ -6,6 +6,7 @@ import useRedirectByUserCheck from '@/hooks/useRedirectByUserCheck'
 // import { getLocalStorageUser } from '@/localStorageUser'
 
 import '@/styles/globals.css'
+import BackBtn from '@/components/elements/btn/BackBtn'
 
 const AddForm = () => {
   const { shouldLoadContent } = useRedirectByUserCheck()
@@ -18,6 +19,7 @@ const AddForm = () => {
       <>
         {shouldLoadContent && (
           <Layout title={'Yeni Materiallar Yarat'}>
+            <BackBtn />
             <FormProductPage />
           </Layout>
         )}

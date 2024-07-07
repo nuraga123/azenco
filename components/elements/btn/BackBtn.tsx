@@ -1,16 +1,17 @@
-import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import React from 'react'
 import { IoMdArrowRoundBack } from 'react-icons/io'
 
-import styles from '@/styles/barn/index.module.scss'
+import styles from '@/styles/btn/index.module.scss'
 
-const BackBtn = ({ href, text }: { href?: string; text?: string }) => (
-  <button className={styles.barn__btn_back}>
-    <Link href={`/${href}`} className={styles.barn__btn_back}>
+const BackBtn = () => {
+  const router = useRouter()
+  const backClick = () => router.back()
+  return (
+    <button className={styles.btn__back} onClick={backClick}>
       <IoMdArrowRoundBack />
-      <h5>{text}</h5>
-    </Link>
-  </button>
-)
+    </button>
+  )
+}
 
 export default BackBtn

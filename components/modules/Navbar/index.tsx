@@ -4,16 +4,29 @@ import NavbarItem from './NavbarItem'
 import styles from '@/styles/layout/index.module.scss'
 
 const Navbar: React.FC = () => {
+  const storageIsOpen =
+    localStorage.getItem('isOpen') === 'open' ? 'open' : 'close'
+
   const [isNavVisible, setIsNavVisible] = useState<boolean>(false)
-  const [isOpen, setIsOpen] = useState<boolean>(true)
+  const [isOpen, setIsOpen] = useState<'close' | 'open'>(storageIsOpen)
 
   const toggleNavVisibility = () => setIsNavVisible((prev) => !prev)
-  const handleToggle = () => setIsOpen(!isOpen)
+  const handleToggle = () => {
+    if (isOpen === 'open') {
+      setIsOpen('close')
+      localStorage.setItem('isOpen', 'close')
+    }
+
+    if (isOpen === 'close') {
+      setIsOpen('open')
+      localStorage.setItem('isOpen', 'open')
+    }
+  }
 
   const handleMouseEnter = () => !isNavVisible && toggleNavVisibility()
   const handleMouseLeave = () => isNavVisible && toggleNavVisibility()
 
-  const showNavbar: boolean = isOpen || isNavVisible
+  const showNavbar: boolean = (isOpen === 'open' ? true : false) || isNavVisible
 
   const navStyle: React.CSSProperties = {
     width: showNavbar ? '250px' : '100px',
@@ -30,7 +43,7 @@ const Navbar: React.FC = () => {
             type="checkbox"
             id="toggleSwitch"
             className={styles.toggleSwitch}
-            checked={isOpen}
+            checked={isOpen === 'open' ? true : false}
             onChange={handleToggle}
           />
           <label htmlFor="toggleSwitch" className={styles.toggleLabel}>

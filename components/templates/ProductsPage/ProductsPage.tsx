@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 
-import { getProductsFx } from '@/app/api/products'
+import { getProductsFx, getSearchNameWordProductFx } from '@/app/api/products'
 import { IProductsResponse } from '@/types/products'
 import ProductTable from '@/components/modules/ProductsPage/ProductTable'
 import Pagination from '@/components/templates/Pagination/Pagination'
@@ -24,26 +24,33 @@ const ProductsPage = () => {
   const query = new URLSearchParams(window.location.search)
   const initialOffset = Number(query.get('offset')) || 0
   const initialSortBy = query.get('sortBy') || 'asc'
-  //const initialPriceFrom = query.get('priceFrom') || '0'
-  //const initialPriceTo = query.get('priceTo') || '100000000000000'
+  const initialPriceFrom = query.get('priceFrom') || '0'
+  const initialPriceTo = query.get('priceTo') || '0'
 
   const [spinner, setSpinner] = useState<boolean>(false)
   const [offset, setOffset] = useState<number>(initialOffset)
   const [sortBy, setSortBy] = useState<string>(initialSortBy)
-  //const [price, setPrice] = useState([initialPriceFrom, initialPriceTo])
-  //console.log(setPrice([]))
+  const [search, setSearch] = useState<string>('')
+  const [resultSearch, setResultSearch] = useState<IProductsResponse>({
+    count: 0,
+    rows: [],
+  })
+  const [priceFrom, setPriceFrom] = useState(initialPriceFrom)
+  const [priceTo, setPriceTo] = useState(initialPriceTo)
 
   const [products, setProducts] = useState<IProductsResponse>({
     count: 0,
     rows: [],
   })
 
+  const filterProducts = resultSearch.count ? resultSearch : products
+
   useEffect(() => {
     const loadProducts = async () => {
       try {
         setSpinner(true)
         const data: IProductsResponse = await getProductsFx(
-          `/products?limit=${limit}&offset=${offset}&sortBy=${sortBy}`
+          `/products?limit=${limit}&offset=${offset}&sortBy=${sortBy}&sortBy=asc&priceFrom=1&priceTo=2`
         )
 
         if (data?.rows) {
@@ -60,12 +67,34 @@ const ProductsPage = () => {
     }
 
     loadProducts()
-  }, [offset, sortBy])
+  }, [offset, priceFrom, priceTo, router, sortBy])
 
   useEffect(() => {
     const url = `/products?limit=${limit}&offset=${offset}&sortBy=${sortBy}`
     router.push(url)
   }, [offset, router, sortBy])
+
+  const searchProductPartName = async () => {
+    try {
+      setSpinner(true)
+      const data = await getSearchNameWordProductFx({
+        part_name: search,
+      })
+
+      setResultSearch({
+        count: data.products.length,
+        rows: data.products,
+      })
+    } catch (error) {
+      alert(error)
+    } finally {
+      setSpinner(false)
+    }
+  }
+
+  const searchPrices = () => {
+    console.log(priceFrom, priceTo)
+  }
 
   const totalPages = Math.ceil(products.count / limit)
   const currentPage = offset + 1 // Convert to 1-based for display
@@ -76,6 +105,10 @@ const ProductsPage = () => {
 
   const handleSortChange = (newSortBy: string) => {
     setSortBy(newSortBy)
+  }
+
+  const handleSearchPartName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value)
   }
 
   if (spinner) {
@@ -100,22 +133,37 @@ const ProductsPage = () => {
         )}
       </div>
       <div>
-        <input type="text" />
-        <button>поиск</button>
+        <input type="text" value={search} onChange={handleSearchPartName} />
+        <button onClick={searchProductPartName}>поиск</button>
       </div>
       <div>
         от
-        <input type="text" onChange={() => console.log()} />
+        <input
+          type="text"
+          onChange={(e) => {
+            e.preventDefault()
+            setPriceFrom(e.target.value)
+          }}
+        />
         до
-        <input type="text" />
+        <input
+          type="text"
+          onChange={(e) => {
+            e.preventDefault()
+            setPriceTo(e.target.value)
+          }}
+        />
       </div>
+      <button onClick={searchPrices}>поиск по цене</button>
       <SortButtons currentSortBy={sortBy} onSortChange={handleSortChange} />
-      <ProductTable data={products} />
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={handlePageChange}
-      />
+      <ProductTable data={filterProducts} />
+      <div>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
+      </div>
       Cəmi: <b>{products.count}</b> material var
     </div>
   )

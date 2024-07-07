@@ -1,10 +1,9 @@
 .container {
-  max-width: 100vw;
-  width: 100%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   font-family: 'Montserrat', sans-serif;
+
 
   // Медиа-запрос для мобильных телефонов
   @media only screen and (min-width: 300px) {

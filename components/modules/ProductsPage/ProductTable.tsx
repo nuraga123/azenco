@@ -13,38 +13,31 @@ const ProductTable = ({ data }: { data: IProductsResponse }) => {
   }
 
   return (
-    <div className={styles.tableContainer}>
-      <table className={styles.table}>
-        <thead>
-          <tr>
-            {/* Заголовки столбцов таблицы */}
-            <th className={`${styles.th} ${styles.numList}`}>{' №'}</th>
-            <th className={`${styles.th} ${styles.small}`}>Azenco Code</th>
-            <th className={`${styles.th} ${styles.max}`}>MATERIAL</th>
-            <th className={`${styles.th} ${styles.small}`}>Ölçü vahidi</th>
-            <th className={`${styles.th} ${styles.small}`}>Qiymət</th>
-            <th className={styles.th}>ID</th>
-          </tr>
-        </thead>
-        <tbody>
-          {products.map((product: IProduct, index: number) => (
-            <tr key={product.id} className={styles.tr}>
-              <td
-                className={`${styles.td} ${styles.numList}`}
-              >{`${index + 1})`}</td>
-              <td className={`${styles.td} ${styles.small}`}>
-                {product.azencoCode}
-              </td>
-              <td className={`${styles.td} ${styles.max}`}>{product.name}</td>
-              <td className={`${styles.td} ${styles.small}`}>{product.unit}</td>
-              <td className={`${styles.td} ${styles.small}`}>
-                {numberMetricFormat(product.price)}
-              </td>
-              <td className={styles.td}>{product.id}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className={styles.table}>
+      <div className={`${styles.tableRow} ${styles.tableRow__title}`}>
+        <div className={`${styles.th} ${styles.numList}`}>{' №'}</div>
+        <div className={`${styles.th} ${styles.small}`}>Azenco Code</div>
+        <div className={`${styles.th} ${styles.max}`}>MATERIAL</div>
+        <div className={`${styles.th} ${styles.small}`}>Ölçü vahidi</div>
+        <div className={`${styles.th} ${styles.small}`}>Qiymət</div>
+        <div className={`${styles.th} ${styles.numList}`}>ID</div>
+      </div>
+      {products.map((product: IProduct, index: number) => (
+        <div key={product.id} className={styles.tableRow}>
+          <div className={`${styles.td} ${styles.numList}`}>
+            {`${index + 1})`}
+          </div>
+          <div className={`${styles.td} ${styles.small}`}>
+            {product.azencoCode}
+          </div>
+          <div className={`${styles.td} ${styles.max}`}>{product.name}</div>
+          <div className={`${styles.td} ${styles.small}`}>{product.unit}</div>
+          <div className={`${styles.td} ${styles.small}`}>
+            {numberMetricFormat(product.price)}
+          </div>
+          <div className={`${styles.td} ${styles.numList}`}>{product.id}</div>
+        </div>
+      ))}
     </div>
   )
 }
