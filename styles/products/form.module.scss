@@ -1,0 +1,156 @@
+// form component
+.form {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 10px 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+  &__wrapper {
+    display: flex;
+    justify-content: space-between;
+
+    &__unit {
+      padding: 5px 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      outline: none;
+      font-size: 18px;
+      width: 200px;
+      margin-left: 10px;
+    }
+  }
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-self: stretch;
+    margin-bottom: 10px;
+
+    input {
+      padding: 5px 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      outline: none;
+      font-size: 18px;
+      width: 200px;
+    }
+  }
+
+  .title {
+    text-align: center;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+
+    .error {
+      color: red;
+      margin-top: 5px;
+    }
+
+    div {
+      margin: 5px 10px;
+    }
+
+    input {
+      padding: 5px 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      outline: none;
+      font-size: 18px;
+    }
+  }
+
+  .additionalButton {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    &:hover {
+      background-color: #0056b3;
+    }
+  }
+
+  .additionalFields {
+    width: 300px;
+    margin-top: 20px;
+    display: flex;
+
+    div {
+      margin-bottom: 10px;
+
+      input {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 200px;
+      }
+    }
+  }
+
+  .dropdown {
+    background: white;
+    border: 1px solid #ccc;
+    max-width: 200px;
+    overflow-y: auto;
+    margin: 5px 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+    &__title {
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      background-color: black;
+      color: #ccc;
+      font-weight: bold;
+      padding: 5px 10px;
+      margin-bottom: 5px;
+      border-bottom: 2px solid #007bff;
+    }
+
+    li {
+      padding: 5px 10px;
+      cursor: pointer;
+      border-bottom: 2px solid #28a745;
+
+      &:hover {
+        background: #f1f1f1;
+      }
+    }
+  }
+
+  .submitButton {
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:hover {
+      background-color: #218838;
+    }
+
+    &:disabled {
+      background-color: #c3e6cb;
+      cursor: not-allowed;
+    }
+  }
+}

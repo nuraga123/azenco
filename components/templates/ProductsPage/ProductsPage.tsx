@@ -1,4 +1,5 @@
-/* eslint-disable max-len */
+// pages/products/page.tsx
+
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
@@ -8,51 +9,51 @@ import { IProductsResponse } from '@/types/products'
 import ProductTable from '@/components/modules/ProductsPage/ProductTable'
 import Pagination from '@/components/templates/Pagination/Pagination'
 import SortButtons from '@/components/templates/SortButtons/SortButtons'
-//import { getLocalStorageUser } from '@/localStorageUser'
+import PriceFilter from '@/components/modules/ProductsPage/PriceFilter'
 
 import styles from '@/styles/products/index.module.scss'
 import spinnerStyles from '@/styles/spinner/index.module.scss'
+import { toast } from 'react-toastify'
 
 const ProductsPage = () => {
   const router = useRouter()
-  const limit: number = 20
-  //const { usernameStorage } = getLocalStorageUser()
-  //usernameStorage === `${process.env.NEXT_PUBLIC_ADMIN_NAME}`
+  const limit = 20
   const adminCheck = true
-  console.log(`admin check = ${adminCheck}`)
-
   const query = new URLSearchParams(window.location.search)
   const initialOffset = Number(query.get('offset')) || 0
   const initialSortBy = query.get('sortBy') || 'asc'
-  const initialPriceFrom = query.get('priceFrom') || '0'
-  const initialPriceTo = query.get('priceTo') || '0'
+  const initialpriceFrom = query.get('priceFrom') || '0'
+  const initialpriceTo = query.get('priceTo')
 
-  const [spinner, setSpinner] = useState<boolean>(false)
-  const [offset, setOffset] = useState<number>(initialOffset)
-  const [sortBy, setSortBy] = useState<string>(initialSortBy)
-  const [search, setSearch] = useState<string>('')
+  const [spinner, setSpinner] = useState(false)
+  const [prices, setPrices] = useState(false)
+  const [offset, setOffset] = useState(initialOffset)
+  const [sortBy, setSortBy] = useState(initialSortBy)
+  const [searchType, setSearchType] = useState('name')
+  const [searchValue, setSearchValue] = useState('')
+  const [priceFrom, setPriceFrom] = useState<string>(initialpriceFrom)
+  const [priceTo, setPriceTo] = useState<string>(
+    initialpriceTo ? initialpriceTo : '0'
+  )
   const [resultSearch, setResultSearch] = useState<IProductsResponse>({
     count: 0,
     rows: [],
   })
-  const [priceFrom, setPriceFrom] = useState(initialPriceFrom)
-  const [priceTo, setPriceTo] = useState(initialPriceTo)
-
   const [products, setProducts] = useState<IProductsResponse>({
     count: 0,
     rows: [],
   })
-
   const filterProducts = resultSearch.count ? resultSearch : products
 
   useEffect(() => {
     const loadProducts = async () => {
       try {
         setSpinner(true)
-        const data: IProductsResponse = await getProductsFx(
-          `/products?limit=${limit}&offset=${offset}&sortBy=${sortBy}&sortBy=asc&priceFrom=1&priceTo=2`
+        const data = await getProductsFx(
+          `/products?limit=${limit}&offset=${prices ? 0 : offset}&sortBy=${sortBy}${
+            prices ? `&priceFrom=${priceFrom}&priceTo=${priceTo}` : ''
+          }`
         )
-
         if (data?.rows) {
           setProducts(data)
         } else {
@@ -60,31 +61,33 @@ const ProductsPage = () => {
         }
       } catch (error) {
         console.log('Error:', error)
-        setSpinner(false)
       } finally {
         setSpinner(false)
       }
     }
 
     loadProducts()
-  }, [offset, priceFrom, priceTo, router, sortBy])
+  }, [prices, offset, router, sortBy, priceFrom, priceTo])
 
   useEffect(() => {
-    const url = `/products?limit=${limit}&offset=${offset}&sortBy=${sortBy}`
+    const url = `/products?limit=${limit}&offset=${offset}&sortBy=${sortBy}
+    ${prices ? `&priceFrom=${priceFrom}&priceTo=${priceTo}` : ''}`
     router.push(url)
-  }, [offset, router, sortBy])
+  }, [prices, offset, router, sortBy, priceFrom, priceTo])
 
-  const searchProductPartName = async () => {
+  const searchProduct = async () => {
     try {
       setSpinner(true)
-      const data = await getSearchNameWordProductFx({
-        part_name: search,
-      })
-
-      setResultSearch({
-        count: data.products.length,
-        rows: data.products,
-      })
+      let data
+      if (searchType === 'name') {
+        data = await getSearchNameWordProductFx({ part_name: searchValue })
+      } else {
+        //data = await getSearchNameWordProductFx({ azencoCode: searchValue })
+      }
+      if (data?.error_message) {
+        toast.warning(data?.error_message)
+      }
+      setResultSearch({ count: data.products?.length, rows: data.products })
     } catch (error) {
       alert(error)
     } finally {
@@ -92,79 +95,88 @@ const ProductsPage = () => {
     }
   }
 
-  const searchPrices = () => {
-    console.log(priceFrom, priceTo)
+  const clearSearch = () => {
+    setOffset(0)
+    setSearchValue('')
+    setPriceFrom('0')
+    setPriceTo('10000000')
+    setResultSearch({ count: 0, rows: [] })
   }
 
-  const totalPages = Math.ceil(products.count / limit)
-  const currentPage = offset + 1 // Convert to 1-based for display
-
   const handlePageChange = (page: number) => {
-    setOffset(page - 1) // Convert to 0-based for offset
+    setOffset(page - 1)
   }
 
   const handleSortChange = (newSortBy: string) => {
     setSortBy(newSortBy)
   }
 
-  const handleSearchPartName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value)
+  const handlePriceFilter = (priceFrom: string, priceTo: string) => {
+    setPrices(true)
+    setPriceFrom(priceFrom)
+    setPriceTo(priceTo)
   }
+
+  const totalPages = Math.ceil(filterProducts.count / limit)
 
   if (spinner) {
     return (
-      <div>
-        <div
-          style={{ margin: '100px auto' }}
-          className={spinnerStyles.spinner}
-        />
+      <div className={spinnerStyles.spinnerContainer}>
+        <div className={spinnerStyles.spinner} />
       </div>
     )
   }
 
   return (
-    <div>
-      <div className={styles.products__header}>
+    <div className={styles.container}>
+      <div className={styles.productsHeader}>
         <h1 className={styles.title}>Materiallar</h1>
         {adminCheck && (
           <Link href={'/products/add-form'} legacyBehavior passHref>
-            <button className={styles.add__button}>Yeni Material Yarat</button>
+            <button className={styles.addButton}>Yeni Material Yarat</button>
           </Link>
         )}
       </div>
-      <div>
-        <input type="text" value={search} onChange={handleSearchPartName} />
-        <button onClick={searchProductPartName}>поиск</button>
-      </div>
-      <div>
-        от
+      <div className={styles.searchContainer}>
+        <select
+          value={searchType}
+          onChange={(e) => setSearchType(e.target.value)}
+          className={styles.searchSelect}
+        >
+          <option value="name">Поиск по имени продукта</option>
+          <option value="code">Поиск по коду продукта</option>
+        </select>
         <input
           type="text"
-          onChange={(e) => {
-            e.preventDefault()
-            setPriceFrom(e.target.value)
-          }}
+          value={searchValue}
+          onChange={(e) => setSearchValue(e.target.value)}
+          placeholder={`Поиск по ${searchType === 'name' ? 'имени' : 'коду'} продукта`}
+          className={styles.searchInput}
         />
-        до
-        <input
-          type="text"
-          onChange={(e) => {
-            e.preventDefault()
-            setPriceTo(e.target.value)
-          }}
-        />
+        <PriceFilter onFilter={handlePriceFilter} />
+        <button
+          onClick={searchProduct}
+          disabled={!searchValue && !priceFrom && !priceTo}
+          className={styles.searchButton}
+        >
+          Поиск
+        </button>
+        <button onClick={clearSearch} className={styles.clearButton}>
+          Стереть фильтр
+        </button>
       </div>
-      <button onClick={searchPrices}>поиск по цене</button>
       <SortButtons currentSortBy={sortBy} onSortChange={handleSortChange} />
       <ProductTable data={filterProducts} />
-      <div>
+      {totalPages > 1 && (
         <Pagination
-          currentPage={currentPage}
+          currentPage={offset / limit}
           totalPages={totalPages}
           onPageChange={handlePageChange}
         />
+      )}
+      <div className={styles.totalCount}>
+        Cəmi: <b>{filterProducts.count}</b> material var
       </div>
-      Cəmi: <b>{products.count}</b> material var
     </div>
   )
 }

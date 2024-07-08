@@ -98,6 +98,8 @@
 }
 
 .header {
+  width: 100%;
+  max-width: 1200px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -114,13 +116,15 @@
 
   &__content {
     width: 100%;
-    overflow-x: auto; // Добавляем горизонтальный скролл, если содержимое выходит за пределы
+    max-width: 1200px;
+    margin: 0 auto;
   }
 }
 
 .main {
   margin: 15px;
-  overflow-x: auto; // Добавляем горизонтальный скролл для содержимого
+  width: 100%;
+  max-width: 1200px;
 }
 
 .toggleSwitch {

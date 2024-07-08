@@ -8,9 +8,9 @@ import React, {
 import { toast } from 'react-toastify'
 import { addProductFx } from '@/app/api/products'
 import { DataNewProduct } from '@/types/products'
-import styles from '@/styles/products/index.module.scss'
-import spinnerStyles from '@/styles/spinner/index.module.scss'
 import { numberMetricFormat } from '@/utils/anbar'
+import styles from '@/styles/products/form.module.scss'
+import spinnerStyles from '@/styles/spinner/index.module.scss'
 
 const FormProductPage: React.FC = () => {
   const [spinner, setSpinner] = useState<boolean>(false)

@@ -25,9 +25,9 @@ const CreateFormBarn = () => {
     id: 0,
     name: '',
     type: '',
-    price: '',
+    price: +'',
     unit: '',
-    azencoСode: '',
+    azencoCode: '',
     img: '',
     createdAt: '',
     updatedAt: '',
@@ -49,6 +49,9 @@ const CreateFormBarn = () => {
         stock: Number(quantity),
         productId: +selectedProduct.id,
       })
+
+      console.log('result')
+      console.log(result)
 
       if (result?.message && result?.newAnbar?.id) {
         setModalOpen(false)

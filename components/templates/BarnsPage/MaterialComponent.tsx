@@ -45,7 +45,7 @@ const MaterialComponent = ({
 
   const totalStockDynamic = () => {
     const total = +newStockResult + +usedStockResult + +brokenStockResult
-    if (total) return +total + 
+    console.log(total)
   }
 
   const dynamicPrice = (prevStock: number, dynamicStock: number) =>

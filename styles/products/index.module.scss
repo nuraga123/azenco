@@ -1,14 +1,109 @@
+.productsHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 20px auto;
+  padding: 10px;
+  background-color: #f8f8f8;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  margin: 10px 0;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+.searchContainer {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #f8f8f8;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.searchInput,
+.searchSelect,
+.priceInput {
+  padding: 12px 15px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  transition: border 0.3s ease;
+
+  &:focus {
+    border-color: #4caf50;
+    outline: none;
+  }
+}
+
+.searchButton,
+.clearButton,
+.addButton {
+  padding: 12px 20px;
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #45a049;
+  }
+
+  &:disabled {
+    background-color: grey;
+    cursor: not-allowed;
+  }
+}
+
+.clearButton {
+  background-color: #f44336;
+
+  &:hover {
+    background-color: #e53935;
+  }
+}
+
+.totalCount {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+.spinnerContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+// table
 .table {
-  width: 100vw;
-  height: 330px;
+  width: fit-content;
+  height: 100%;
+  max-height: 330px;
   display: flex;
   flex-direction: column;
   margin-bottom: 10px;
   margin: 0 auto;
   font-size: 18px;
-  overflow-x: scroll;
   overflow-y: scroll;
   white-space: nowrap;
+  border-bottom: 2px solid #808080;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 
   img {
     border-radius: 10px;
@@ -18,7 +113,7 @@
 .tableRow {
   display: flex;
   width: 100%;
-  max-width: 1250px;
+  max-width: 1200px;
 
   &__title {
     position: sticky;
@@ -28,8 +123,8 @@
 
 .th,
 .td {
-  border: 3px solid #808080;
-  padding: 5px 10px;
+  border: 1px solid #808080;
+  padding: 10px 15px;
   text-align: left;
   white-space: nowrap;
 }
@@ -38,6 +133,7 @@
   background-color: #4caf50;
   letter-spacing: 1px;
   color: #fff;
+  font-weight: bold;
 }
 
 .numList {
@@ -65,20 +161,6 @@
   background-color: #d9f4e8;
 }
 
-.title {
-  margin: 10px 0;
-  text-align: center;
-}
-
-.products {
-  &__header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin: 0 auto;
-  }
-}
-
 .img {
   display: flex;
   align-items: flex-start;
@@ -96,20 +178,26 @@
     color: red;
     border: 1px solid red;
     border-radius: 50%;
-  }
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease;
 
-  &__close:hover {
-    background-color: red;
-    color: white;
+    &:hover {
+      background-color: red;
+      color: white;
+    }
   }
 }
 
 .button {
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   font-size: 18px;
-  padding: 5px 10px;
+  padding: 10px 20px;
   cursor: pointer;
+  transition:
+    background-color 0.3s ease,
+    opacity 0.3s ease;
 
   &:hover {
     opacity: 0.8;
@@ -139,161 +227,4 @@
   background-color: grey;
   color: white;
   cursor: not-allowed;
-}
-
-// form component
-.form {
-  width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 10px 20px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-
-  &__wrapper {
-    display: flex;
-    justify-content: space-between;
-
-    &__unit {
-      padding: 5px 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      outline: none;
-      font-size: 18px;
-      width: 200px;
-      margin-left: 10px;
-    }
-  }
-
-  &__container {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .row {
-    display: flex;
-    justify-content: space-between;
-    align-self: stretch;
-    margin-bottom: 10px;
-
-    input {
-      padding: 5px 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      outline: none;
-      font-size: 18px;
-      width: 200px;
-    }
-  }
-
-  .title {
-    text-align: center;
-  }
-
-  .container {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 15px;
-
-    .error {
-      color: red;
-      margin-top: 5px;
-    }
-
-    div {
-      margin: 5px 10px;
-    }
-
-    input {
-      padding: 5px 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      outline: none;
-      font-size: 18px;
-    }
-  }
-
-  .additionalButton {
-    margin-top: 20px;
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    &:hover {
-      background-color: #0056b3;
-    }
-  }
-
-  .additionalFields {
-    width: 300px;
-    margin-top: 20px;
-    display: flex;
-
-    div {
-      margin-bottom: 10px;
-
-      input {
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        width: 200px;
-      }
-    }
-  }
-
-  .dropdown {
-    background: white;
-    border: 1px solid #ccc;
-    max-width: 200px;
-    overflow-y: auto;
-    margin: 5px 10px;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-
-    &__title {
-      position: sticky;
-      top: 0;
-      z-index: 999;
-      background-color: black;
-      color: #ccc;
-      font-weight: bold;
-      padding: 5px 10px;
-      margin-bottom: 5px;
-      border-bottom: 2px solid #007bff;
-    }
-
-    li {
-      padding: 5px 10px;
-      cursor: pointer;
-      border-bottom: 2px solid #28a745;
-
-      &:hover {
-        background: #f1f1f1;
-      }
-    }
-  }
-
-  .submitButton {
-    padding: 10px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    &:hover {
-      background-color: #218838;
-    }
-
-    &:disabled {
-      background-color: #c3e6cb;
-      cursor: not-allowed;
-    }
-  }
 }
