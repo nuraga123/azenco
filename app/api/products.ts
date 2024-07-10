@@ -84,3 +84,46 @@ export const getSearchNameWordProductFx = createEffect(
     }
   }
 )
+
+export const postSearchNameAndAzencoCodeFiltersPorudctsFx = createEffect(
+  async ({
+    limit,
+    offset,
+    sortBy,
+    type,
+    searchValue,
+    priceFrom,
+    priceTo,
+  }: {
+    limit: string
+    offset: string
+    sortBy: 'asc' | 'desc'
+    type: 'name' | 'code'
+    searchValue: string
+    priceFrom?: string
+    priceTo?: string
+  }) => {
+    try {
+      const { tokenStorage } = getLocalStorageUser()
+      const { data } = await api.post(
+        `/products/filter?limit=${limit}&offset=${offset}&sortBy=${sortBy}`,
+        {
+          type,
+          searchValue,
+          priceFrom,
+          priceTo,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${tokenStorage}`,
+          },
+        }
+      )
+
+      console.log(data)
+      return data
+    } catch (error) {
+      console.log(error)
+    }
+  }
+)

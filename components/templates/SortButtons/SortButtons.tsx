@@ -2,8 +2,8 @@ import React from 'react'
 import styles from '@/styles/sort-buttons/index.module.scss'
 
 interface SortButtonsProps {
-  currentSortBy: string
-  onSortChange: (sortBy: string) => void
+  currentSortBy: 'asc' | 'desc'
+  onSortChange: (sortBy: 'asc' | 'desc') => void
 }
 
 const SortButtons: React.FC<SortButtonsProps> = ({

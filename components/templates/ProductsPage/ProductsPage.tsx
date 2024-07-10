@@ -1,15 +1,17 @@
-// pages/products/page.tsx
-
+/* eslint-disable max-len */
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 
-import { getProductsFx, getSearchNameWordProductFx } from '@/app/api/products'
+import {
+  getProductsFx,
+  //getSearchNameWordProductFx,
+  postSearchNameAndAzencoCodeFiltersPorudctsFx,
+} from '@/app/api/products'
 import { IProductsResponse } from '@/types/products'
 import ProductTable from '@/components/modules/ProductsPage/ProductTable'
 import Pagination from '@/components/templates/Pagination/Pagination'
 import SortButtons from '@/components/templates/SortButtons/SortButtons'
-import PriceFilter from '@/components/modules/ProductsPage/PriceFilter'
 
 import styles from '@/styles/products/index.module.scss'
 import spinnerStyles from '@/styles/spinner/index.module.scss'
@@ -21,28 +23,28 @@ const ProductsPage = () => {
   const adminCheck = true
   const query = new URLSearchParams(window.location.search)
   const initialOffset = Number(query.get('offset')) || 0
-  const initialSortBy = query.get('sortBy') || 'asc'
-  const initialpriceFrom = query.get('priceFrom') || '0'
-  const initialpriceTo = query.get('priceTo')
+  const initialSortBy = query.get('sortBy') === 'asc' ? 'asc' : 'desc'
+  const initialpriceFrom = query.get('priceFrom') || ''
+  const initialpriceTo = query.get('priceTo') || ''
 
   const [spinner, setSpinner] = useState(false)
-  const [prices, setPrices] = useState(false)
   const [offset, setOffset] = useState(initialOffset)
-  const [sortBy, setSortBy] = useState(initialSortBy)
-  const [searchType, setSearchType] = useState('name')
+  const [sortBy, setSortBy] = useState<'asc' | 'desc'>(initialSortBy)
+  const [searchType, setSearchType] = useState<'name' | 'code'>('name')
   const [searchValue, setSearchValue] = useState('')
   const [priceFrom, setPriceFrom] = useState<string>(initialpriceFrom)
-  const [priceTo, setPriceTo] = useState<string>(
-    initialpriceTo ? initialpriceTo : '0'
-  )
+  const [priceTo, setPriceTo] = useState<string>(initialpriceTo)
+
   const [resultSearch, setResultSearch] = useState<IProductsResponse>({
     count: 0,
     rows: [],
   })
+
   const [products, setProducts] = useState<IProductsResponse>({
     count: 0,
     rows: [],
   })
+
   const filterProducts = resultSearch.count ? resultSearch : products
 
   useEffect(() => {
@@ -50,9 +52,7 @@ const ProductsPage = () => {
       try {
         setSpinner(true)
         const data = await getProductsFx(
-          `/products?limit=${limit}&offset=${prices ? 0 : offset}&sortBy=${sortBy}${
-            prices ? `&priceFrom=${priceFrom}&priceTo=${priceTo}` : ''
-          }`
+          `/products?limit=${limit}&offset=${offset}&sortBy=${sortBy}`
         )
         if (data?.rows) {
           setProducts(data)
@@ -60,6 +60,7 @@ const ProductsPage = () => {
           console.log('Failed to fetch data')
         }
       } catch (error) {
+        setSpinner(false)
         console.log('Error:', error)
       } finally {
         setSpinner(false)
@@ -67,27 +68,32 @@ const ProductsPage = () => {
     }
 
     loadProducts()
-  }, [prices, offset, router, sortBy, priceFrom, priceTo])
+  }, [offset, sortBy])
 
   useEffect(() => {
-    const url = `/products?limit=${limit}&offset=${offset}&sortBy=${sortBy}
-    ${prices ? `&priceFrom=${priceFrom}&priceTo=${priceTo}` : ''}`
+    const url = `/products?limit=${limit}&offset=${offset}&sortBy=${sortBy}`
     router.push(url)
-  }, [prices, offset, router, sortBy, priceFrom, priceTo])
+  }, [offset, router, sortBy])
 
   const searchProduct = async () => {
+    debugger
     try {
       setSpinner(true)
-      let data
-      if (searchType === 'name') {
-        data = await getSearchNameWordProductFx({ part_name: searchValue })
-      } else {
-        //data = await getSearchNameWordProductFx({ azencoCode: searchValue })
+      const searchData = await postSearchNameAndAzencoCodeFiltersPorudctsFx({
+        limit: `${limit}`,
+        offset: `${offset}`,
+        type: searchType,
+        sortBy,
+        searchValue,
+        priceFrom,
+        priceTo,
+      })
+
+      if (searchData?.error_message) {
+        toast.warning(searchData?.error_message)
       }
-      if (data?.error_message) {
-        toast.warning(data?.error_message)
-      }
-      setResultSearch({ count: data.products?.length, rows: data.products })
+      console.log(searchData)
+      setResultSearch(searchData)
     } catch (error) {
       alert(error)
     } finally {
@@ -98,23 +104,18 @@ const ProductsPage = () => {
   const clearSearch = () => {
     setOffset(0)
     setSearchValue('')
-    setPriceFrom('0')
-    setPriceTo('10000000')
+    setPriceFrom('')
+    setPriceTo('')
     setResultSearch({ count: 0, rows: [] })
   }
 
   const handlePageChange = (page: number) => {
-    setOffset(page - 1)
+    console.log(`page: --- ${page}`)
+    setOffset(page)
   }
 
-  const handleSortChange = (newSortBy: string) => {
+  const handleSortChange = (newSortBy: 'asc' | 'desc') => {
     setSortBy(newSortBy)
-  }
-
-  const handlePriceFilter = (priceFrom: string, priceTo: string) => {
-    setPrices(true)
-    setPriceFrom(priceFrom)
-    setPriceTo(priceTo)
   }
 
   const totalPages = Math.ceil(filterProducts.count / limit)
@@ -140,11 +141,13 @@ const ProductsPage = () => {
       <div className={styles.searchContainer}>
         <select
           value={searchType}
-          onChange={(e) => setSearchType(e.target.value)}
+          onChange={(e) =>
+            setSearchType(e.target.value === 'name' ? 'name' : 'code')
+          }
           className={styles.searchSelect}
         >
-          <option value="name">Поиск по имени продукта</option>
-          <option value="code">Поиск по коду продукта</option>
+          <option value="name">Məhsul adına görə axtarın</option>
+          <option value="code">Məhsul Azenco kodu ilə axtarın</option>
         </select>
         <input
           type="text"
@@ -153,23 +156,47 @@ const ProductsPage = () => {
           placeholder={`Поиск по ${searchType === 'name' ? 'имени' : 'коду'} продукта`}
           className={styles.searchInput}
         />
-        <PriceFilter onFilter={handlePriceFilter} />
+        <>
+          <div className={styles.priceFilterContainer}>
+            <input
+              type="text"
+              value={priceFrom}
+              onChange={(e) => {
+                e.preventDefault()
+                setPriceFrom(e.target.value)
+              }}
+              placeholder="min. qiymət"
+              className={styles.priceInput}
+            />
+            <input
+              type="text"
+              value={priceTo}
+              onChange={(e) => {
+                e.preventDefault()
+                setPriceTo(e.target.value)
+              }}
+              placeholder="max. qiymət"
+              className={styles.priceInput}
+            />
+            <button className={styles.priceFilterButton}>Применить</button>
+          </div>
+        </>
         <button
           onClick={searchProduct}
           disabled={!searchValue && !priceFrom && !priceTo}
           className={styles.searchButton}
         >
-          Поиск
+          Axtar
         </button>
         <button onClick={clearSearch} className={styles.clearButton}>
-          Стереть фильтр
+          Filtri silin
         </button>
       </div>
       <SortButtons currentSortBy={sortBy} onSortChange={handleSortChange} />
       <ProductTable data={filterProducts} />
       {totalPages > 1 && (
         <Pagination
-          currentPage={offset / limit}
+          currentPage={offset}
           totalPages={totalPages}
           onPageChange={handlePageChange}
         />

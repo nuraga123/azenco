@@ -11,30 +11,35 @@ const Pagination: React.FC<PaginationProps> = ({
   currentPage,
   totalPages,
   onPageChange,
-}) => (
-  <div className={styles.pagination}>
-    <button
-      onClick={() => onPageChange(currentPage - 1)}
-      disabled={currentPage === 1}
-    >
-      {'<<'}
-    </button>
-    {Array.from({ length: totalPages }, (_, index) => (
-      <button
-        key={index}
-        className={index + 1 === currentPage ? styles.active : ''}
-        onClick={() => onPageChange(index + 1)}
-      >
-        {index + 1}
-      </button>
-    ))}
-    <button
-      onClick={() => onPageChange(currentPage + 1)}
-      disabled={currentPage === totalPages}
-    >
-      {'>>'}
-    </button>
-  </div>
-)
+}) => {
+  console.log(`currentPage: ${currentPage}`)
+  console.log(`totalPages: ${totalPages}`)
+  const array = Array.from({ length: totalPages }, (_, i) => i + 1)
 
+  return (
+    <div className={styles.pagination}>
+      <button
+        onClick={() => onPageChange(currentPage - 1)}
+        disabled={currentPage === 1}
+      >
+        {'<<'}
+      </button>
+      {array.map((el: number) => (
+        <button
+          key={el}
+          className={el + 1 === currentPage ? styles.active : ''}
+          onClick={() => onPageChange(el)}
+        >
+          {el}
+        </button>
+      ))}
+      <button
+        onClick={() => onPageChange(currentPage + 1)}
+        disabled={currentPage >= totalPages}
+      >
+        {'>>'}
+      </button>
+    </div>
+  )
+}
 export default Pagination
