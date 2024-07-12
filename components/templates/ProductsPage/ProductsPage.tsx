@@ -5,10 +5,9 @@ import Link from 'next/link'
 
 import {
   getProductsFx,
-  //getSearchNameWordProductFx,
   postSearchNameAndAzencoCodeFiltersPorudctsFx,
 } from '@/app/api/products'
-import { IProductsResponse } from '@/types/products'
+import { IProducts, IProductsResponse } from '@/types/products'
 import ProductTable from '@/components/modules/ProductsPage/ProductTable'
 import Pagination from '@/components/templates/Pagination/Pagination'
 import SortButtons from '@/components/templates/SortButtons/SortButtons'
@@ -35,17 +34,12 @@ const ProductsPage = () => {
   const [priceFrom, setPriceFrom] = useState<string>(initialpriceFrom)
   const [priceTo, setPriceTo] = useState<string>(initialpriceTo)
 
-  const [resultSearch, setResultSearch] = useState<IProductsResponse>({
-    count: 0,
-    rows: [],
-  })
+  const [resultSearch, setResultSearch] = useState<IProducts>({ products: [] })
 
   const [products, setProducts] = useState<IProductsResponse>({
     count: 0,
     rows: [],
   })
-
-  const filterProducts = resultSearch.count ? resultSearch : products
 
   useEffect(() => {
     const loadProducts = async () => {
@@ -60,7 +54,6 @@ const ProductsPage = () => {
           console.log('Failed to fetch data')
         }
       } catch (error) {
-        setSpinner(false)
         console.log('Error:', error)
       } finally {
         setSpinner(false)
@@ -76,12 +69,9 @@ const ProductsPage = () => {
   }, [offset, router, sortBy])
 
   const searchProduct = async () => {
-    debugger
     try {
       setSpinner(true)
       const searchData = await postSearchNameAndAzencoCodeFiltersPorudctsFx({
-        limit: `${limit}`,
-        offset: `${offset}`,
         type: searchType,
         sortBy,
         searchValue,
@@ -92,8 +82,9 @@ const ProductsPage = () => {
       if (searchData?.error_message) {
         toast.warning(searchData?.error_message)
       }
-      console.log(searchData)
+
       setResultSearch(searchData)
+      console.log(searchData)
     } catch (error) {
       alert(error)
     } finally {
@@ -106,23 +97,23 @@ const ProductsPage = () => {
     setSearchValue('')
     setPriceFrom('')
     setPriceTo('')
-    setResultSearch({ count: 0, rows: [] })
+    setResultSearch({ products: [] })
   }
 
-  const handlePageChange = (page: number) => {
-    console.log(`page: --- ${page}`)
-    setOffset(page)
+  const handlePageChange = (page: number | string) => {
+    setOffset(+page - 1) // изменено для корректного отображения
   }
 
   const handleSortChange = (newSortBy: 'asc' | 'desc') => {
     setSortBy(newSortBy)
   }
 
-  const totalPages = Math.ceil(filterProducts.count / limit)
+  const totalPages = Math.ceil(products.count / limit)
 
   if (spinner) {
     return (
-      <div className={spinnerStyles.spinnerContainer}>
+      <div className={spinnerStyles.container}>
+        <h1>yüklənir</h1>
         <div className={spinnerStyles.spinner} />
       </div>
     )
@@ -153,7 +144,9 @@ const ProductsPage = () => {
           type="text"
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
-          placeholder={`Поиск по ${searchType === 'name' ? 'имени' : 'коду'} продукта`}
+          placeholder={`Поиск по ${
+            searchType === 'name' ? 'имени' : 'коду'
+          } продукта`}
           className={styles.searchInput}
         />
         <>
@@ -188,22 +181,34 @@ const ProductsPage = () => {
         >
           Axtar
         </button>
+
         <button onClick={clearSearch} className={styles.clearButton}>
           Filtri silin
         </button>
       </div>
       <SortButtons currentSortBy={sortBy} onSortChange={handleSortChange} />
-      <ProductTable data={filterProducts} />
-      {totalPages > 1 && (
-        <Pagination
-          currentPage={offset}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
-        />
+      {resultSearch?.products?.length ? (
+        <>
+          <ProductTable products={resultSearch.products} />
+          <div className={styles.totalCount}>
+            Cəmi: <b>{resultSearch?.products?.length}</b> material var
+          </div>
+        </>
+      ) : (
+        <>
+          <ProductTable products={products.rows} />
+          {totalPages > 1 && (
+            <Pagination
+              currentPage={offset + 1}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
+          )}
+          <div className={styles.totalCount}>
+            Cəmi: <b>{products?.count}</b> material var
+          </div>
+        </>
       )}
-      <div className={styles.totalCount}>
-        Cəmi: <b>{filterProducts.count}</b> material var
-      </div>
     </div>
   )
 }

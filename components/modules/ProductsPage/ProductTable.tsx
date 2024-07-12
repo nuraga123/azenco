@@ -1,11 +1,9 @@
 import React from 'react'
-import { IProduct, IProductsResponse } from '@/types/products'
+import { IProduct, IProducts } from '@/types/products'
 import { numberMetricFormat } from '@/utils/anbar'
 import styles from '@/styles/products/index.module.scss'
 
-const ProductTable = ({ data }: { data: IProductsResponse }) => {
-  const products = data.rows.length ? data.rows : []
-
+const ProductTable = ({ products }: IProducts) => {
   if (products.length === 0) {
     return (
       <h1 style={{ textAlign: 'center' }}>Materialların siyahısı boşdur</h1>

@@ -10,6 +10,10 @@ export interface IProduct {
   updatedAt: string
 }
 
+export interface IProducts {
+  products: IProduct[]
+}
+
 export interface IProductsResponse {
   count: number
   rows: IProduct[]
