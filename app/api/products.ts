@@ -29,21 +29,32 @@ export const postImportProductsFx = createEffect(
   }
 )
 
-export const getProductsFx = createEffect(async (url: string) => {
-  try {
-    const { tokenStorage } = getLocalStorageUser()
-    const { data } = await api.get(url, {
-      headers: {
-        Authorization: `Bearer ${tokenStorage}`,
-      },
-    })
+export interface IGetProducts {
+  limit: number
+  offset: number
+  sortBy: 'asc' | 'desc'
+}
 
-    console.log(data)
-    return data
-  } catch (error) {
-    console.log(error)
+export const getProductsFx = createEffect(
+  async ({ limit, offset, sortBy }: IGetProducts) => {
+    try {
+      const { tokenStorage } = getLocalStorageUser()
+      const { data } = await api.get(
+        `/products?limit=${limit}&offset=${offset}&sortBy=${sortBy}`,
+        {
+          headers: {
+            Authorization: `Bearer ${tokenStorage}`,
+          },
+        }
+      )
+
+      console.log(data)
+      return data
+    } catch (error) {
+      console.log(error)
+    }
   }
-})
+)
 
 export const addProductFx = createEffect(
   async ({ url, new__product }: addProductFxProps) => {
@@ -102,8 +113,9 @@ export const postSearchNameAndAzencoCodeFiltersPorudctsFx = createEffect(
     try {
       const { tokenStorage } = getLocalStorageUser()
       const { data } = await api.post(
-        `/products/filter?limit=20&offset=0&sortBy=${sortBy}`,
+        `/products/filter`,
         {
+          sortBy,
           type,
           searchValue,
           priceFrom,

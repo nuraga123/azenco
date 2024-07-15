@@ -2,6 +2,7 @@
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { toast } from 'react-toastify'
 
 import {
   getProductsFx,
@@ -14,7 +15,6 @@ import SortButtons from '@/components/templates/SortButtons/SortButtons'
 
 import styles from '@/styles/products/index.module.scss'
 import spinnerStyles from '@/styles/spinner/index.module.scss'
-import { toast } from 'react-toastify'
 
 const ProductsPage = () => {
   const router = useRouter()
@@ -45,9 +45,12 @@ const ProductsPage = () => {
     const loadProducts = async () => {
       try {
         setSpinner(true)
-        const data = await getProductsFx(
-          `/products?limit=${limit}&offset=${offset}&sortBy=${sortBy}`
-        )
+        const data = await getProductsFx({
+          limit,
+          offset,
+          sortBy,
+        })
+
         if (data?.rows) {
           setProducts(data)
         } else {
@@ -144,9 +147,9 @@ const ProductsPage = () => {
           type="text"
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
-          placeholder={`Поиск по ${
-            searchType === 'name' ? 'имени' : 'коду'
-          } продукта`}
+          placeholder={`Məhsul ${
+            searchType === 'name' ? 'adı' : 'kodu'
+          } ilə axtarın`}
           className={styles.searchInput}
         />
         <>
@@ -171,7 +174,6 @@ const ProductsPage = () => {
               placeholder="max. qiymət"
               className={styles.priceInput}
             />
-            <button className={styles.priceFilterButton}>Применить</button>
           </div>
         </>
         <button
@@ -187,6 +189,7 @@ const ProductsPage = () => {
         </button>
       </div>
       <SortButtons currentSortBy={sortBy} onSortChange={handleSortChange} />
+      <br />
       {resultSearch?.products?.length ? (
         <>
           <ProductTable products={resultSearch.products} />

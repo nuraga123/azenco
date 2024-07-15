@@ -28,6 +28,14 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+.priceFilterContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 120px;
+}
+
 .searchInput,
 .searchSelect,
 .priceInput {
@@ -36,6 +44,7 @@
   border: 1px solid #ccc;
   border-radius: 8px;
   transition: border 0.3s ease;
+  height: 50px;
 
   &:focus {
     border-color: #4caf50;
@@ -86,6 +95,16 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
+}
+
+.barn__result__container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 20px;
+  overflow-y: scroll;
+  padding: 10px;
+  border-radius: 10px;
+  border: 2px solid #45a049;
 }
 
 // table

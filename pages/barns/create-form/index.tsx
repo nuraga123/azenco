@@ -6,7 +6,7 @@ const AddFormPage = () => {
   console.log()
 
   return (
-    <Layout title={'Forma Anbarı yaradın'}>
+    <Layout title={'Anbarı yaradın'}>
       <CreateFormBarn />
     </Layout>
   )

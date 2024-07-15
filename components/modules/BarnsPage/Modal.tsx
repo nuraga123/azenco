@@ -13,7 +13,7 @@ interface ModalProps {
   setQuantity: React.Dispatch<React.SetStateAction<string>>
 }
 
-const Modal: React.FC<ModalProps> = ({
+const BarnModal: React.FC<ModalProps> = ({
   isOpen,
   onClose,
   product,
@@ -43,7 +43,7 @@ const Modal: React.FC<ModalProps> = ({
         </p>
         <p>
           Material azenco kodu:
-          <b>{product.azencoСode}</b>
+          <b>{product.azencoCode}</b>
         </p>
         <input
           type="text"
@@ -71,4 +71,4 @@ const Modal: React.FC<ModalProps> = ({
   )
 }
 
-export default Modal
+export default BarnModal

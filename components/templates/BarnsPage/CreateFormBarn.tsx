@@ -1,115 +1,163 @@
 import React, { useState } from 'react'
 import { toast } from 'react-toastify'
 
-import { addAnbarProductFx } from '@/app/api/barn'
+import { IProducts } from '@/types/products'
+import SortButtons from '../SortButtons/SortButtons'
+import { postSearchNameAndAzencoCodeFiltersPorudctsFx } from '@/app/api/products'
+import BarnModal from '@/components/modules/BarnsPage/Modal'
 import ProductCard from '@/components/modules/BarnsPage/ProductsCard'
-import Spinner from '@/components/modules/Spinner/Spinner'
-import Modal from '@/components/modules/BarnsPage/Modal'
-import { IProduct } from '@/types/products'
 
-import SearchContainer from '@/components/modules/BarnsPage/SearchContainer'
-import { useStore } from 'effector-react'
-import { $products } from '@/context/barns'
-import styles from '@/styles/anbar/add_form.module.scss'
+// import styles from '@/styles/anbar/add_form.module.scss'
+import productsStyles from '@/styles/products/index.module.scss'
+import spinnerStyles from '@/styles/spinner/index.module.scss'
 
 const CreateFormBarn = () => {
-  const searchProducts = useStore($products)
+  const [spinner, setSpinner] = useState(false)
+  const [searchType, setSearchType] = useState<'name' | 'code'>('name')
+  const [searchValue, setSearchValue] = useState('')
+  const [sortBy, setSortBy] = useState<'asc' | 'desc'>('asc')
+  const [priceFrom, setPriceFrom] = useState<string>('')
+  const [priceTo, setPriceTo] = useState<string>('')
 
-  const [spinner, setSpinner] = useState<boolean>(false)
+  const [resultSearch, setResultSearch] = useState<IProducts>({ products: [] })
 
-  const [error, setError] = useState<string>('')
-
-  const [modalOpen, setModalOpen] = useState<boolean>(false)
-
-  const [selectedProduct, setSelectedProduct] = useState<IProduct>({
-    id: 0,
-    name: '',
-    type: '',
-    price: +'',
-    unit: '',
-    azencoCode: '',
-    img: '',
-    createdAt: '',
-    updatedAt: '',
-  })
-
-  const [username, setUsername] = useState<string>('')
-  const [quantity, setQuantity] = useState<string>('')
-
-  const handleModalSubmit = async () => {
-    setSpinner(true)
-    console.log('Имя пользователя:', username)
-    console.log('ID продукта:', selectedProduct.id)
-    console.log('Количество товара:', quantity)
-
-    if (!!username && selectedProduct?.id && !!quantity && !isNaN(+quantity)) {
-      const result = await addAnbarProductFx({
-        url: '/barns/add',
-        username,
-        stock: Number(quantity),
-        productId: +selectedProduct.id,
+  const searchProduct = async () => {
+    try {
+      setSpinner(true)
+      const searchData = await postSearchNameAndAzencoCodeFiltersPorudctsFx({
+        type: searchType,
+        sortBy,
+        searchValue,
+        priceFrom,
+        priceTo,
       })
 
-      console.log('result')
-      console.log(result)
-
-      if (result?.message && result?.newAnbar?.id) {
-        setModalOpen(false)
-        toast.success(result.message)
+      if (searchData?.error_message) {
+        toast.warning(searchData?.error_message)
       }
 
-      if (result?.message) {
-        setModalOpen(false)
-        toast.warning(result.message)
-      }
-
-      if (result.message) {
-        setModalOpen(false)
-        toast.error(result.message)
-      }
-
-      console.log(result)
-
-      setError(result.error_message)
+      setResultSearch(searchData)
+      console.log(searchData)
+    } catch (error) {
+      alert(error)
+    } finally {
+      setSpinner(false)
     }
   }
 
-  console.log(searchProducts)
+  const clearSearch = () => {
+    setSearchValue('')
+    setPriceFrom('')
+    setPriceTo('')
+    setResultSearch({ products: [] })
+  }
+
+  const handleSortChange = (newSortBy: 'asc' | 'desc') => {
+    setSortBy(newSortBy)
+  }
 
   return (
-    <div>
-      <SearchContainer />
+    <div className={productsStyles.container}>
+      <div className={productsStyles.searchContainer}>
+        <select
+          value={searchType}
+          className={productsStyles.searchSelect}
+          onChange={(e) =>
+            setSearchType(e.target.value === 'name' ? 'name' : 'code')
+          }
+        >
+          <option value="name">Məhsul adına görə axtarın</option>
+          <option value="code">Məhsul Azenco kodu ilə axtarın</option>
+        </select>
+        <input
+          type="text"
+          value={searchValue}
+          onChange={(e) => setSearchValue(e.target.value)}
+          placeholder={`Məhsul ${
+            searchType === 'name' ? 'adı' : 'kodu'
+          } ilə axtarın`}
+          className={productsStyles.searchInput}
+        />
+        <>
+          <div className={productsStyles.priceFilterContainer}>
+            <input
+              type="text"
+              value={priceFrom}
+              onChange={(e) => {
+                e.preventDefault()
+                setPriceFrom(e.target.value)
+              }}
+              placeholder="min. qiymət"
+              className={productsStyles.priceInput}
+            />
+            <input
+              type="text"
+              value={priceTo}
+              onChange={(e) => {
+                e.preventDefault()
+                setPriceTo(e.target.value)
+              }}
+              placeholder="max. qiymət"
+              className={productsStyles.priceInput}
+            />
+          </div>
+        </>
+
+        <button
+          onClick={searchProduct}
+          disabled={!searchValue && !priceFrom && !priceTo}
+          className={productsStyles.searchButton}
+        >
+          Axtar
+        </button>
+
+        <button onClick={clearSearch} className={productsStyles.clearButton}>
+          Filtri silin
+        </button>
+      </div>
+
+      <SortButtons currentSortBy={sortBy} onSortChange={handleSortChange} />
+      <br />
 
       {spinner ? (
-        <Spinner />
-      ) : (
-        <div className={styles.product_list}>
-          {searchProducts?.length ? (
-            searchProducts.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                onClick={(product) => {
-                  setSelectedProduct(product)
-                  setModalOpen(true)
-                }}
-              />
-            ))
-          ) : (
-            <span className={styles.error}>{error}</span>
-          )}
+        <div className={spinnerStyles.container}>
+          <h1>yüklənir</h1>
+          <div className={spinnerStyles.spinner} />
         </div>
+      ) : (
+        <>
+          <div className={productsStyles.totalCount}>
+            Cəmi: <b>{resultSearch?.products?.length}</b> material tapildi
+          </div>
+          <br />
+          <div className={productsStyles.barn__result__container}>
+            {resultSearch?.products?.length &&
+              resultSearch.products.map((el) => (
+                <ProductCard key={el.id} product={el} onClick={() => {}} />
+              ))}
+          </div>
+        </>
       )}
 
-      <Modal
-        isOpen={modalOpen && !!selectedProduct}
-        product={selectedProduct}
-        username={username}
-        quantity={quantity}
-        setUsername={setUsername}
-        onClose={() => setModalOpen(false)}
-        setQuantity={setQuantity}
-        onSubmit={handleModalSubmit}
+      <BarnModal
+        isOpen={true}
+        product={{
+          id: 1,
+          name: '',
+          type: '',
+          price: 0,
+          unit: '',
+          azencoCode: '',
+          img: '',
+          createdAt: '',
+          updatedAt: '',
+        }}
+        username={''}
+        quantity={''}
+        setUsername={() => {}}
+        onClose={() => {}}
+        setQuantity={() => {}}
+        onSubmit={() => {}}
       />
     </div>
   )

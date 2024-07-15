@@ -49,6 +49,7 @@ const FormProductPage: React.FC = () => {
       setAzencoCodeErrorMessage('9 simvol olmalıdır !')
       return false
     }
+
     setAzencoCodeErrorMessage('ok')
     return true
   }, [azencoCode])
@@ -286,7 +287,7 @@ const FormProductPage: React.FC = () => {
               className={styles.additionalButton}
               onClick={() => setShowAdditionalFields(!showAdditionalFields)}
             >
-              {showAdditionalFields ? 'Gizlət' : 'Əlavə'}
+              {showAdditionalFields ? 'Gizlət' : 'Daha çox filtr'}
             </button>
 
             {showAdditionalFields && (

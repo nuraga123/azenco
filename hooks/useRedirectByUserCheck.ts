@@ -18,7 +18,7 @@ const useRedirectByUserCheck = (isAuthPage = false) => {
         console.log(user)
 
         if (isAuthPage) {
-          if (user.name === 'TokenExpiredError') {
+          if (user?.name === 'TokenExpiredError') {
             router.push('/login')
             return
           }
