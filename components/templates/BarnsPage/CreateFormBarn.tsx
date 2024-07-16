@@ -1,17 +1,15 @@
 import React, { useState } from 'react'
 import { toast } from 'react-toastify'
-
-import { IProducts } from '@/types/products'
+import { IProducts, IProduct } from '@/types/products'
 import SortButtons from '../SortButtons/SortButtons'
 import { postSearchNameAndAzencoCodeFiltersPorudctsFx } from '@/app/api/products'
 import BarnModal from '@/components/modules/BarnsPage/Modal'
-import ProductCard from '@/components/modules/BarnsPage/ProductsCard'
-
-// import styles from '@/styles/anbar/add_form.module.scss'
 import productsStyles from '@/styles/products/index.module.scss'
 import spinnerStyles from '@/styles/spinner/index.module.scss'
+import ProductTable from '@/components/modules/ProductsPage/ProductTable'
 
 const CreateFormBarn = () => {
+  const [isOpen, setIsOpen] = useState(false)
   const [spinner, setSpinner] = useState(false)
   const [searchType, setSearchType] = useState<'name' | 'code'>('name')
   const [searchValue, setSearchValue] = useState('')
@@ -20,6 +18,7 @@ const CreateFormBarn = () => {
   const [priceTo, setPriceTo] = useState<string>('')
 
   const [resultSearch, setResultSearch] = useState<IProducts>({ products: [] })
+  const [selectedProduct, setSelectedProduct] = useState<IProduct | null>(null)
 
   const searchProduct = async () => {
     try {
@@ -54,6 +53,18 @@ const CreateFormBarn = () => {
 
   const handleSortChange = (newSortBy: 'asc' | 'desc') => {
     setSortBy(newSortBy)
+  }
+
+  const countProducts: string = `${
+    resultSearch?.products?.length === 0 ||
+    resultSearch?.products?.length === undefined
+      ? ''
+      : resultSearch?.products?.length
+  }`
+
+  const handleAddProductClick = (product: IProduct) => {
+    setSelectedProduct(product)
+    setIsOpen(true)
   }
 
   return (
@@ -125,39 +136,27 @@ const CreateFormBarn = () => {
           <div className={spinnerStyles.spinner} />
         </div>
       ) : (
-        <>
-          <div className={productsStyles.totalCount}>
-            Cəmi: <b>{resultSearch?.products?.length}</b> material tapildi
-          </div>
-          <br />
+        countProducts && (
           <div className={productsStyles.barn__result__container}>
-            {resultSearch?.products?.length &&
-              resultSearch.products.map((el) => (
-                <ProductCard key={el.id} product={el} onClick={() => {}} />
-              ))}
+            <div className={productsStyles.totalCount}>
+              Cəmi: <b>{countProducts}</b> material tapildi
+            </div>
+
+            <br />
+
+            <ProductTable
+              products={resultSearch.products}
+              operation={true}
+              addProduct={handleAddProductClick}
+            />
           </div>
-        </>
+        )
       )}
 
       <BarnModal
         isOpen={true}
-        product={{
-          id: 1,
-          name: '',
-          type: '',
-          price: 0,
-          unit: '',
-          azencoCode: '',
-          img: '',
-          createdAt: '',
-          updatedAt: '',
-        }}
-        username={''}
-        quantity={''}
-        setUsername={() => {}}
-        onClose={() => {}}
-        setQuantity={() => {}}
-        onSubmit={() => {}}
+        product={selectedProduct}
+        onClose={() => setIsOpen(false)}
       />
     </div>
   )

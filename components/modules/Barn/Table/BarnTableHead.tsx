@@ -42,20 +42,18 @@ const BarnTableHead = () => {
 
         {/* Əsas miqdar */}
         <th className={styles.title}>Yeni</th>
-        <th className={styles.title}>Yararli</th>
+        <th className={styles.title}>İşlənmiş</th>
         <th className={styles.title}>Yararsız</th>
         <th className={styles.title}>Ümumi</th>
 
         {/* Əsas məbləğ */}
         <th className={styles.title}>Yeni</th>
-        <th className={styles.title}>Yararli</th>
+        <th className={styles.title}>İşlənmiş</th>
         <th className={styles.title}>Yararsız</th>
         <th className={styles.title}>Ümumi</th>
 
         {/* Əlavə */}
-        <th className={styles.title}>Növ</th>
         <th className={styles.title}>Yer</th>
-        <th className={styles.title}>Şəkil</th>
         <th className={styles.title}>Yaradılma tarixi</th>
         <th className={styles.title}>Yenilənib</th>
       </tr>

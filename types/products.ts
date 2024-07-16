@@ -12,6 +12,8 @@ export interface IProduct {
 
 export interface IProducts {
   products: IProduct[]
+  operation?: boolean
+  addProduct?: (product: IProduct) => void
 }
 
 export interface IProductsResponse {

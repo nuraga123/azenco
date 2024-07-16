@@ -11,11 +11,13 @@ export interface AnbarProduct {
   updatedAt: string
 }
 
-export interface IAddAnbarProduct {
-  url: string
-  username: string
+export interface ICreateAnbarProduct {
+  userId: number
   productId: number
-  stock: number
+  location: string
+  newStock: number
+  usedStock: number
+  brokenStock: number
 }
 
 export interface IAnbarProductProps {

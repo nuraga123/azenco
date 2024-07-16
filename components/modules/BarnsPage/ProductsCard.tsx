@@ -8,21 +8,40 @@ interface ProductCardProps {
   onClick: (product: IProduct) => void
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product, onClick }) => (
-  <div className={styles.product_card}>
-    <div className={styles.product_info}>
-      <p className={styles.product_name}>Azenco kod: {product.azencoCode}</p>
-      <h3 className={styles.product_name}>Material adı: {product.name}</h3>
-      <p className={styles.product_unit}>Ölçü vahidi: {product.unit}</p>
-      <h4 className={styles.product_price}>
-        Qiymət: {numberMetricFormat(product.price)} m.
-      </h4>
+export const ProductCardKey: React.FC<ProductCardProps> = ({
+  product,
+  onClick,
+}) => (
+  <div className={styles.productCard}>
+    <div className={styles.table__title}>
+      <p className={styles.value}>{product.azencoCode}</p>
+      <p className={styles.value}>{product.name}</p>
+      <p className={styles.value}>{product.unit}</p>
+      <p className={styles.value}>{numberMetricFormat(product.price)} m.</p>
+      <p className={styles.value}>
+        <button className={styles.button} onClick={() => onClick(product)}>
+          əlavə edin
+        </button>
+      </p>
     </div>
-
-    <button className={styles.button} onClick={() => onClick(product)}>
-      əlavə edin
-    </button>
   </div>
 )
 
-export default ProductCard
+export const ProductCardValue: React.FC<ProductCardProps> = ({
+  product,
+  onClick,
+}) => (
+  <div className={styles.productCard}>
+    <div className={styles.table__title}>
+      <p className={styles.value}>{product.azencoCode}</p>
+      <p className={styles.value}>{product.name}</p>
+      <p className={styles.value}>{product.unit}</p>
+      <p className={styles.value}>{numberMetricFormat(product.price)} m.</p>
+      <p className={styles.value}>
+        <button className={styles.button} onClick={() => onClick(product)}>
+          əlavə edin
+        </button>
+      </p>
+    </div>
+  </div>
+)
