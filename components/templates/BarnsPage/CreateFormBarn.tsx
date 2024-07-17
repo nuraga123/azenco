@@ -154,7 +154,7 @@ const CreateFormBarn = () => {
       )}
 
       <BarnModal
-        isOpen={true}
+        isOpen={isOpen}
         product={selectedProduct}
         onClose={() => setIsOpen(false)}
       />

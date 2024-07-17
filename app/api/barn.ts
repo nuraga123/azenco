@@ -76,7 +76,7 @@ export const createAnbarProductFx = createEffect(
     try {
       const { tokenStorage } = getLocalStorageUser()
       const { data } = await api.post(
-        'barn/create',
+        '/barn/create',
         {
           userId,
           productId,

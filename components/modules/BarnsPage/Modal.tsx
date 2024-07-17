@@ -1,9 +1,13 @@
-import React, { useState, useEffect } from 'react'
-import { IProduct } from '@/types/products'
-import styles from '@/styles/barn/form/add/index.module.scss'
+import { useStore } from 'effector-react'
+import React, { useState } from 'react'
+
 import { createAnbarProductFx } from '@/app/api/barn'
+import { $user } from '@/context/user'
 import { IUser } from '@/types/user'
-import { getUsersNamesServer } from '@/app/api/auth'
+import { IProduct } from '@/types/products'
+import { getLocalStorageUser } from '@/localStorageUser'
+import styles from '@/styles/barn/form/add/index.module.scss'
+import { toast } from 'react-toastify'
 
 interface ModalProps {
   isOpen: boolean
@@ -12,58 +16,45 @@ interface ModalProps {
 }
 
 const BarnModal: React.FC<ModalProps> = ({ isOpen, onClose, product }) => {
-  const [users, setUsers] = useState<IUser[]>([])
-  const [selectedUserId, setSelectedUserId] = useState<number>(0)
-  const [location, setLocation] = useState<string>('Baku')
-  const [newStock, setNewStock] = useState<string>('0')
-  const [usedStock, setUsedStock] = useState<string>('0')
-  const [brokenStock, setBrokenStock] = useState<string>('0')
-
-  useEffect(() => {
-    if (isOpen) {
-      loadUsers()
-    }
-  }, [isOpen])
-
-  const loadUsers = async () => {
-    try {
-      const dataUser = await getUsersNamesServer()
-      setUsers(dataUser)
-      console.log(dataUser)
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  const user: IUser = useStore($user)
+  const { id, username } = user
+  const userId = id || getLocalStorageUser().userIdStorage
+  const barnUsername: string = username || getLocalStorageUser().usernameStorage
+  const [location, setLocation] = useState<string>('')
+  const [newStock, setNewStock] = useState<string>('')
+  const [usedStock, setUsedStock] = useState<string>('')
+  const [brokenStock, setBrokenStock] = useState<string>('')
+  const totalStock = +brokenStock + +usedStock + +newStock
 
   const createNewBarn = async () => {
-    if (
-      product &&
-      selectedUserId &&
-      location &&
-      newStock &&
-      usedStock &&
-      brokenStock
-    ) {
+    console.log('Функция createNewBarn вызвана') // Добавлен вывод в консоль
+    console.log(`product ${product?.azencoCode}`)
+    console.log(`id ${id}`)
+    console.log(`location ${location}`)
+    console.log(`totalStock ${totalStock}`)
+
+    if (product && id && location && totalStock) {
       try {
+        console.log('Все необходимые данные присутствуют')
         const newBarn = await createAnbarProductFx({
-          userId: selectedUserId,
+          userId: +userId,
           productId: product.id,
           location: location,
-          newStock: parseInt(newStock),
-          usedStock: parseInt(usedStock),
-          brokenStock: parseInt(brokenStock),
+          newStock: +newStock,
+          usedStock: +usedStock,
+          brokenStock: +brokenStock,
         })
+
         console.log(newBarn)
-        onClose() // Закрываем модальное окно после создания записи
       } catch (error) {
         console.log(error)
       }
+    } else {
+      toast.warning('Некоторые данные отсутствуют') // Добавлен вывод в консоль
     }
   }
 
-  const handleSubmit = () => {
-    createNewBarn()
-  }
+  // const validate: boolean = !location || totalStock <= 0
 
   if (!isOpen) return null
 
@@ -78,33 +69,43 @@ const BarnModal: React.FC<ModalProps> = ({ isOpen, onClose, product }) => {
 
         <h2>Materialın əlavə edilməsi</h2>
         <div>
-          <label>Выбрать складчика</label>
-          <select
-            onChange={(e) => setSelectedUserId(parseInt(e.target.value))}
-            value={selectedUserId}
-          >
-            <option value={0}>Выберите складчика</option>
-            {users.map((user) => (
-              <option key={user.id} value={user.id}>
-                {user.username}
-              </option>
-            ))}
-          </select>
+          <p>
+            Anbardar: <b>{barnUsername}</b>
+          </p>
         </div>
+
         <div>
-          <label>Location</label>
+          <p>
+            Material Ad: <b>{product?.name}</b>
+          </p>
+        </div>
+
+        <div>
+          <p>
+            Ölçü vahidi: <b>{product?.unit}</b>
+          </p>
+        </div>
+
+        <div>
+          <p>
+            Qiymət: <b>{product?.price}</b> m.
+          </p>
+        </div>
+
+        <div>
+          <label>Material hardadır ?</label>
           <input
             type="text"
             value={location}
             onChange={(e) => setLocation(e.target.value)}
-            placeholder="Location"
+            placeholder="ünvanı yazın"
             className={styles.modal__input}
           />
         </div>
         <div>
           <label>Yeni Materialın Miqdarı</label>
           <input
-            type="number"
+            type="text"
             value={newStock}
             onChange={(e) => setNewStock(e.target.value)}
             placeholder="Yeni materialın miqdarını daxil edin"
@@ -112,9 +113,9 @@ const BarnModal: React.FC<ModalProps> = ({ isOpen, onClose, product }) => {
           />
         </div>
         <div>
-          <label>İstifadə Olunan Materialın Miqdarı</label>
+          <label>İşlənmiş Materialın Miqdarı</label>
           <input
-            type="number"
+            type="text"
             value={usedStock}
             onChange={(e) => setUsedStock(e.target.value)}
             placeholder="İstifadə olunan materialın miqdarını daxil edin"
@@ -122,18 +123,25 @@ const BarnModal: React.FC<ModalProps> = ({ isOpen, onClose, product }) => {
           />
         </div>
         <div>
-          <label>Sınıq Materialın Miqdarı</label>
+          <label>Yararsız Materialın Miqdarı</label>
           <input
-            type="number"
+            type="text"
             value={brokenStock}
             onChange={(e) => setBrokenStock(e.target.value)}
             placeholder="Sınıq materialın miqdarını daxil edin"
             className={styles.modal__input}
           />
         </div>
+        <div>
+          <br />
+          <label>
+            {`Ümumi Materialın Miqdarı: `}
+            <b style={{ fontSize: 20 }}>{totalStock}</b>
+          </label>
+        </div>
         <div className={styles.modal__cont}>
           <div>
-            <button className={styles.modal__btn} onClick={handleSubmit}>
+            <button className={styles.modal__btn} onClick={createNewBarn}>
               Anbara əlavə edin
             </button>
           </div>
