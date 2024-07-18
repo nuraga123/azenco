@@ -7,7 +7,7 @@ export const showAuthError = (error: unknown) => {
 
   if (axiosError.response) {
     if (axiosError.response.status === HTTPStatus.UNAUTHORIZED) {
-      toast.error('Daxil etdiyiniz istifadəçi adı və ya parol səhvdir')
+      toast.error('Daxil etdiyiniz istifadəçi parol səhvdir')
       return
     }
   }

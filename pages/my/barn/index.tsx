@@ -64,7 +64,7 @@ const MyBarn = () => {
   return (
     <Layout title={`Anbar | ${username}`}>
       <div className={styles.barn__table}>
-        <BackBtn href="my" />
+        <BackBtn />
         <h1 className={styles.barn__title}>Anbardar: {username}</h1>
       </div>
 

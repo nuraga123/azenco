@@ -102,4 +102,20 @@
       background-color: #45a049;
     }
   }
+
+  &__btn_add {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #0070f3;
+    color: white;
+    font-size: 20px;
+    border-radius: 10px;
+    width: max-content;
+
+    &:hover {
+      background-color: #014796;
+    }
+  }
 }

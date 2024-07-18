@@ -1,11 +1,11 @@
 import { createEffect, Effect } from 'effector-next'
 import { toast } from 'react-toastify'
 import { AxiosError } from 'axios'
-
 import { ISingUpFx, ISignInFx } from '@/types/auth'
 import api from '../axiosClient'
 import { HTTPStatus } from '@/constans'
 import { IForgotPassword } from '@/pages/forgot-password'
+import { setUser } from '@/context/user'
 
 export const singUpFx = createEffect(
   async ({ url, username, password, email }: ISingUpFx) => {
@@ -15,7 +15,7 @@ export const singUpFx = createEffect(
       toast.warning(data.warningMessage)
       return
     }
-    toast.success('Регистрация прощла успешно!')
+    toast.success('Qeydiyyat uğurla başa çatdı!')
     return data
   }
 )
@@ -24,10 +24,12 @@ export const singInFx = createEffect(
   async ({ url, username, password }: ISignInFx) => {
     const { data } = await api.post(url, { username, password })
 
-    toast.success('Вход выполнен!')
     console.log(data)
-
-    return data
+    if (data) {
+      setUser(data)
+      toast.success('Proqrama daxil oldunuz!')
+      return data
+    }
   }
 )
 

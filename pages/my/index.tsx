@@ -38,6 +38,12 @@ const MyBarn = () => {
         <h1 className={styles.barn__title}>Anbardar: {username}</h1>
 
         <div className={styles.barn__wrapper}>
+          <div>
+            <Link href={`barns/create-form`} passHref legacyBehavior>
+              <a className={styles.barn__btn_add}>Anbar yaradın</a>
+            </Link>
+          </div>
+
           <Link href={'/my/barn'} passHref legacyBehavior>
             <button className={styles.barn__ok}>Anbar materiallari</button>
           </Link>

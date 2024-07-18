@@ -1,12 +1,14 @@
 import React, { useState } from 'react'
 import { toast } from 'react-toastify'
+
 import { IProducts, IProduct } from '@/types/products'
 import SortButtons from '../SortButtons/SortButtons'
 import { postSearchNameAndAzencoCodeFiltersPorudctsFx } from '@/app/api/products'
+import ProductTable from '@/components/modules/ProductsPage/ProductTable'
 import BarnModal from '@/components/modules/BarnsPage/Modal'
+
 import productsStyles from '@/styles/products/index.module.scss'
 import spinnerStyles from '@/styles/spinner/index.module.scss'
-import ProductTable from '@/components/modules/ProductsPage/ProductTable'
 
 const CreateFormBarn = () => {
   const [isOpen, setIsOpen] = useState(false)

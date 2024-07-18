@@ -32,6 +32,12 @@
   position: relative;
   animation: slideIn 0.3s ease;
 
+  .input__wrapper {
+    display: flex;
+    align-items: center;
+    margin: 10px;
+  }
+
   // Заголовок модального окна
   h2 {
     margin-top: 0;
@@ -42,10 +48,14 @@
 
   // Стили для текстовых параграфов
   p {
-    margin: 20px 0;
+    padding: 10px;
     font-size: 16px;
     color: #555;
-    border-bottom: 2px solid;
+    border: 1px solid;
+    margin: 5px 0;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
   }
 
   b {
@@ -61,6 +71,10 @@
     border-radius: 4px;
     font-size: 16px;
     box-sizing: border-box;
+
+    &label {
+      white-space: nowrap;
+    }
 
     &:focus {
       border-color: #007bff;
@@ -86,6 +100,7 @@
 
     &:disabled {
       background-color: #999999;
+      cursor: no-drop;
     }
   }
 
