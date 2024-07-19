@@ -38,3 +38,16 @@ export interface addProductFxProps {
   url: string
   new__product: DataNewProduct
 }
+
+export interface ISearchProducts {
+  searchType: 'code' | 'name'
+  searchValue: string
+  priceFrom: string
+  priceTo: string
+  setSearchType: (value: React.SetStateAction<'name' | 'code'>) => void
+  setSearchValue: (value: React.SetStateAction<string>) => void
+  setPriceFrom: (value: React.SetStateAction<string>) => void
+  setPriceTo: (value: React.SetStateAction<string>) => void
+  searchProduct: () => Promise<void>
+  clearSearch: () => void
+}

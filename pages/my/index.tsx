@@ -40,13 +40,14 @@ const MyBarn = () => {
         <div className={styles.barn__wrapper}>
           <div>
             <Link href={`barns/create-form`} passHref legacyBehavior>
-              <a className={styles.barn__btn_add}>Anbar yaradın</a>
+              <a className={styles.barn__btn_add}>ANBAR YARADIN</a>
             </Link>
           </div>
 
           <Link href={'/my/barn'} passHref legacyBehavior>
             <button className={styles.barn__ok}>Anbar materiallari</button>
           </Link>
+
           <Link href={'/my/lost-barn'} passHref legacyBehavior>
             <button className={styles.barn__not}>itirilmiş materiallar</button>
           </Link>

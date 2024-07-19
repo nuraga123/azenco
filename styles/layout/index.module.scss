@@ -4,7 +4,6 @@
   flex-direction: column;
   font-family: 'Montserrat', sans-serif;
 
-
   // Медиа-запрос для мобильных телефонов
   @media only screen and (min-width: 300px) {
     min-width: 300px; // Минимальная ширина контейнера для мобильных телефонов
@@ -118,15 +117,26 @@
 
   &__content {
     width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
+    max-width: 1020px;
+    margin: 5px auto;
   }
 }
 
 .main {
   margin: 15px;
-  width: 100%;
   max-width: 1200px;
+}
+
+@media (max-width: 1300px) {
+  .wrapper {
+    display: flex;
+  
+    &__content {
+      width: 100%;
+      max-width: 1000px;
+      margin: 5px auto;
+    }
+  }
 }
 
 .toggleSwitch {

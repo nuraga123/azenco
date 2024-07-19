@@ -1,0 +1,125 @@
+.searchContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  @media (max-width: 1000px) {
+    padding: 15px;
+  }
+}
+
+.topSection,
+.bottomSection {
+  display: flex;
+  width: 100%;
+  margin-bottom: 20px;
+  justify-content: space-between;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+.topSection {
+  border-bottom: 2px solid;
+  padding-bottom: 10px;
+}
+
+.searchSelect,
+.searchInput,
+.priceInput,
+.searchButton,
+.clearButton {
+  border-radius: 4px;
+  font-size: 16px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  transition: all 0.3s ease;
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+    border: 1px solid rgba(81, 203, 238, 1);
+  }
+
+  @media (max-width: 600px) {
+    width: 100%;
+    margin-bottom: 10px;
+    margin-right: 0;
+  }
+}
+
+.searchInput {
+  width: 60%;
+}
+
+.searchSelect {
+  width: 270px;
+}
+
+.priceInput {
+  margin-right: 20px;
+}
+
+.searchButton,
+.clearButton {
+  cursor: pointer;
+  font-weight: bold;
+
+  &:hover {
+    background-color: darken(#4caf50, 10%);
+  }
+}
+
+.searchButton {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  max-width: 200px;
+  width: 100%;
+  font-size: 20px;
+
+  &:disabled {
+    background-color: #9e9e9e;
+    cursor: not-allowed;
+  }
+}
+
+.clearButton {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 10px;
+  width: 100px;
+  white-space: nowrap;
+  border-radius: 10px;
+
+  &:hover {
+    background-color: darken(#f44336, 10%);
+  }
+}
+
+.priceFilterContainer {
+  display: flex;
+  justify-content: space-between;
+  width: calc(50% - 20px);
+
+  @media (max-width: 600px) {
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+.priceInput {
+  width: 100%;
+}

@@ -12,6 +12,7 @@ import { IProducts, IProductsResponse } from '@/types/products'
 import ProductTable from '@/components/modules/ProductsPage/ProductTable'
 import Pagination from '@/components/templates/Pagination/Pagination'
 import SortButtons from '@/components/templates/SortButtons/SortButtons'
+import SearchProductsComponent from '@/components/modules/ProductsPage/SearchProductsComponent'
 
 import styles from '@/styles/products/index.module.scss'
 import spinnerStyles from '@/styles/spinner/index.module.scss'
@@ -126,70 +127,32 @@ const ProductsPage = () => {
     <div className={styles.container}>
       <div className={styles.productsHeader}>
         <h1 className={styles.title}>Materiallar</h1>
+        <br />
         {adminCheck && (
           <Link href={'/products/add-form'} legacyBehavior passHref>
             <button className={styles.addButton}>Yeni Material Yarat</button>
           </Link>
         )}
       </div>
-      <div className={styles.searchContainer}>
-        <select
-          value={searchType}
-          onChange={(e) =>
-            setSearchType(e.target.value === 'name' ? 'name' : 'code')
-          }
-          className={styles.searchSelect}
-        >
-          <option value="name">Məhsul adına görə axtarın</option>
-          <option value="code">Məhsul Azenco kodu ilə axtarın</option>
-        </select>
-        <input
-          type="text"
-          value={searchValue}
-          onChange={(e) => setSearchValue(e.target.value)}
-          placeholder={`Məhsul ${
-            searchType === 'name' ? 'adı' : 'kodu'
-          } ilə axtarın`}
-          className={styles.searchInput}
-        />
-        <>
-          <div className={styles.priceFilterContainer}>
-            <input
-              type="text"
-              value={priceFrom}
-              onChange={(e) => {
-                e.preventDefault()
-                setPriceFrom(e.target.value)
-              }}
-              placeholder="min. qiymət"
-              className={styles.priceInput}
-            />
-            <input
-              type="text"
-              value={priceTo}
-              onChange={(e) => {
-                e.preventDefault()
-                setPriceTo(e.target.value)
-              }}
-              placeholder="max. qiymət"
-              className={styles.priceInput}
-            />
-          </div>
-        </>
-        <button
-          onClick={searchProduct}
-          disabled={!searchValue && !priceFrom && !priceTo}
-          className={styles.searchButton}
-        >
-          Axtar
-        </button>
 
-        <button onClick={clearSearch} className={styles.clearButton}>
-          Filtri silin
-        </button>
-      </div>
+      <SearchProductsComponent
+        searchType={searchType}
+        searchValue={searchValue}
+        priceFrom={priceFrom}
+        priceTo={priceTo}
+        setSearchType={setSearchType}
+        setSearchValue={setSearchValue}
+        setPriceFrom={setPriceFrom}
+        setPriceTo={setPriceTo}
+        searchProduct={searchProduct}
+        clearSearch={clearSearch}
+      />
+
+      <br />
+
       <SortButtons currentSortBy={sortBy} onSortChange={handleSortChange} />
       <br />
+
       {resultSearch?.products?.length ? (
         <>
           <ProductTable products={resultSearch.products} />

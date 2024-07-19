@@ -131,8 +131,8 @@ const BarnModal: React.FC<ModalProps> = ({ isOpen, onClose, product }) => {
             </div>
           </div>
 
-          <div className={styles.b}>
-            <div className={styles.input__wrapper}>
+          <div style={{ margin: 10 }}>
+            <div>
               <label>Material hardadır ?</label>
               <input
                 type="text"

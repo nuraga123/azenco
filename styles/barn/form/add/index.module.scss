@@ -26,11 +26,15 @@
   max-width: 500px;
   width: 100%;
   padding: 20px;
-  max-height: 670px;
+  max-height: 700px;
   height: 100%;
   box-sizing: border-box;
   position: relative;
   animation: slideIn 0.3s ease;
+  display: flex;
+  overflow-y: auto;
+  flex-direction: column;
+  justify-content: space-between;
 
   .input__wrapper {
     display: flex;
@@ -71,10 +75,6 @@
     border-radius: 4px;
     font-size: 16px;
     box-sizing: border-box;
-
-    &label {
-      white-space: nowrap;
-    }
 
     &:focus {
       border-color: #007bff;
