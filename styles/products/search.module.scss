@@ -3,8 +3,6 @@
   flex-direction: column;
   align-items: center;
   padding: 20px;
-  max-width: 1000px;
-  margin: 0 auto;
   background-color: #f9f9f9;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -28,7 +26,6 @@
 }
 
 .topSection {
-  border-bottom: 2px solid;
   padding-bottom: 10px;
 }
 
@@ -40,7 +37,7 @@
   border-radius: 4px;
   font-size: 16px;
   padding: 10px;
-  border: 1px solid #ddd;
+  border: 1px solid #6f6f6f;
   background-color: #fff;
   transition: all 0.3s ease;
 

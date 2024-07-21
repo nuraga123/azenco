@@ -10,6 +10,7 @@ import SortButtons from '@/components/templates/SortButtons/SortButtons'
 
 import productsStyles from '@/styles/products/index.module.scss'
 import spinnerStyles from '@/styles/spinner/index.module.scss'
+import BackBtn from '@/components/elements/btn/BackBtn'
 
 const CreateFormBarn = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -72,6 +73,7 @@ const CreateFormBarn = () => {
 
   return (
     <div className={productsStyles.container}>
+      <BackBtn />
       <SearchProductsComponent
         searchType={searchType}
         searchValue={searchValue}

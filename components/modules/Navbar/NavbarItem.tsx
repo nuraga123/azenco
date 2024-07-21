@@ -36,7 +36,9 @@ const NavbarItem = ({
       className={`${styles.navItem} ${isActive ? styles.active : ''}`}
     >
       <span className={styles.navItem__icon} onClick={handleClick}>
-        {icon}
+        <Link href={url} passHref legacyBehavior>
+          {icon}
+        </Link>
       </span>
       {showNavbar && (
         <Link href={url} passHref legacyBehavior>

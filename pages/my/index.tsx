@@ -39,7 +39,7 @@ const MyBarn = () => {
 
         <div className={styles.barn__wrapper}>
           <div>
-            <Link href={`barns/create-form`} passHref legacyBehavior>
+            <Link href={`my/create-form`} passHref legacyBehavior>
               <a className={styles.barn__btn_add}>ANBAR YARADIN</a>
             </Link>
           </div>

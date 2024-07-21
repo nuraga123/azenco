@@ -9,6 +9,7 @@
   background: rgba(0, 0, 0, 0.5); // полупрозрачный фон
   display: flex;
   justify-content: center;
+  align-items: center;
   z-index: 1000;
   overflow: auto;
   padding: 20px;
@@ -17,16 +18,41 @@
   transition:
     opacity 0.3s ease,
     visibility 0.3s ease;
+
+  &__content {
+    display: flex;
+    justify-content: space-between;
+    max-width: 800px;
+    width: 100%;
+  }
+
+  @media screen and (max-width: 750px) {
+    &__content {
+      flex-direction: column;
+      justify-content: flex-start;
+      max-width: 400px;
+    }
+  }
+}
+
+.info {
+  margin-right: 20px;
+}
+
+.values {
+  margin: 10px;
+  width: 100%;
+  max-width: 300px;
 }
 
 .modalContent {
   background: #fff;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  max-width: 500px;
   width: 100%;
+  max-width: 1000px;
   padding: 20px;
-  max-height: 700px;
+  max-height: 500px;
   height: 100%;
   box-sizing: border-box;
   position: relative;
@@ -44,7 +70,7 @@
 
   // Заголовок модального окна
   h2 {
-    margin-top: 0;
+    margin-bottom: 10px;
     font-size: 24px;
     font-weight: 600;
     color: #333;
@@ -117,11 +143,21 @@
     top: 10px;
     right: 10px;
     font-size: 40px;
-    color: #aaa;
+    color: red;
     cursor: pointer;
+    border-radius: 50%;
+    border: 1px solid;
+    background: #fff;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.2s ease-in-out;
 
     &:hover {
-      color: red;
+      color: #fff;
+      background-color: red;
     }
   }
 }
@@ -135,5 +171,39 @@
   to {
     transform: translateY(0);
     opacity: 1;
+  }
+}
+
+// Адаптивная верстка для мобильного телефона 320px и высоты 641px
+@media (max-width: 500px) {
+  .modalContent {
+    padding: 10px;
+
+    h2 {
+      font-size: 20px;
+    }
+
+    p {
+      font-size: 14px;
+      padding: 8px;
+    }
+
+    .modal__input {
+      padding: 8px;
+      font-size: 14px;
+    }
+
+    .modal__btn {
+      padding: 10px 16px;
+      font-size: 14px;
+    }
+
+    .modal__cont {
+      margin-top: 10px;
+    }
+
+    .close {
+      font-size: 30px;
+    }
   }
 }

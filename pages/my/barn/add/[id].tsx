@@ -1,6 +1,4 @@
 import { useEffect, useState } from 'react'
-import Link from 'next/link'
-import { IoMdArrowRoundBack } from 'react-icons/io'
 import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
 
@@ -9,11 +7,10 @@ import { IBarnItem } from '@/types/barn'
 import useRedirectByUserCheck from '@/hooks/useRedirectByUserCheck'
 import Layout from '@/components/layout/Layout'
 import BarnForm from '@/components/templates/BarnsPage/BarnForm'
-//import MaterialComponent from '@/components/templates/BarnsPage/MaterialComponent'
 
 import spinnerStyles from '@/styles/spinner/index.module.scss'
 import styles from '@/styles/barn/index.module.scss'
-// import MaterialComponent from '@/components/templates/BarnsPage/MaterialComponent'
+import BackBtn from '@/components/elements/btn/BackBtn'
 
 const AddStocksBarn = () => {
   const { asPath, query } = useRouter()
@@ -57,11 +54,7 @@ const AddStocksBarn = () => {
     <Layout title={`Anbara material əlavə edin`}>
       <div>
         <div className={styles.barn__header}>
-          <button className={styles.barn__btn_back}>
-            <Link href="/my/barn" className={styles.barn__btn_back}>
-              <IoMdArrowRoundBack />
-            </Link>
-          </button>
+          <BackBtn />
           <h2 style={{ textAlign: 'center' }}>
             Anbarda materialın miqdarının artırılması formasının uçotu
           </h2>
@@ -70,7 +63,6 @@ const AddStocksBarn = () => {
 
         <div className={styles.barn__container}>
           <BarnForm barnId={barnId} />
-          {/* <MaterialComponent barn={barnData} /> */}
         </div>
       </div>
     </Layout>

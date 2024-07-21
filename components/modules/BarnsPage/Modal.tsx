@@ -62,6 +62,11 @@ const BarnModal: React.FC<ModalProps> = ({ isOpen, onClose, product }) => {
 
         console.log(newBarn)
 
+        if (newBarn.error_message) {
+          toast.error(newBarn.error_message)
+          return
+        }
+
         toast.success(newBarn.message)
         return
       } catch (error) {
@@ -100,8 +105,8 @@ const BarnModal: React.FC<ModalProps> = ({ isOpen, onClose, product }) => {
           </span>
         </div>
 
-        <div className={styles.modal__wrapper}>
-          <div className={styles.a}>
+        <div className={styles.modal__content}>
+          <div className={styles.info}>
             <div>
               <p>
                 Anbardar:{' '}
@@ -131,7 +136,7 @@ const BarnModal: React.FC<ModalProps> = ({ isOpen, onClose, product }) => {
             </div>
           </div>
 
-          <div style={{ margin: 10 }}>
+          <div className={styles.values}>
             <div>
               <label>Material hardadır ?</label>
               <input

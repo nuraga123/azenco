@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import { IBarnItem } from '@/types/barn'
 
 import styles from '@/styles/barn/material/index.module.scss'
@@ -35,27 +35,33 @@ const MaterialComponent = ({
     totalPrice,
   } = barn
 
-  const newStockResult = newStockDynamic ? +newStockDynamic + +newStock : ''
-
-  const usedStockResult = usedStockDynamic ? +usedStockDynamic + +usedStock : ''
-
-  const brokenStockResult = newStockDynamic
-    ? +brokenStockDynamic + +brokenStock
-    : ''
-
-  const totalStockDynamic = () => {
-    const total = +newStockResult + +usedStockResult + +brokenStockResult
-    console.log(total)
-  }
+  const newStockResult = useMemo(
+    () => +newStock + newStockDynamic,
+    [newStock, newStockDynamic]
+  )
+  const usedStockResult = useMemo(
+    () => +usedStock + usedStockDynamic,
+    [usedStock, usedStockDynamic]
+  )
+  const brokenStockResult = useMemo(
+    () => +brokenStock + brokenStockDynamic,
+    [brokenStock, brokenStockDynamic]
+  )
+  const totalStockResult = useMemo(
+    () => +newStockResult + +usedStockResult + +brokenStockResult,
+    [newStockResult, usedStockResult, brokenStockResult]
+  )
 
   const dynamicPrice = (prevStock: number, dynamicStock: number) =>
     (+prevStock + +dynamicStock) * +price
 
   const TableBarnElement = ({
+    isString = false,
     title = '',
     value = '',
     dynamicValue = '',
   }: {
+    isString?: boolean
     title: string
     value: string | number
     dynamicValue?: string | number
@@ -63,9 +69,15 @@ const MaterialComponent = ({
     <tr>
       <th>{title}</th>
       <td>
-        <b>
-          <i>{dynamicValue ? `[ ${+dynamicValue + +value} ]` : +value}</i>
-        </b>
+        {isString ? (
+          <b>
+            <i>{value}</i>
+          </b>
+        ) : (
+          <b>
+            <i>{+dynamicValue ? +dynamicValue : value}</i>
+          </b>
+        )}
       </td>
     </tr>
   )
@@ -74,12 +86,24 @@ const MaterialComponent = ({
     <div className={styles.material__details}>
       <table className={styles.table}>
         <tbody>
-          <TableBarnElement title={'Anbarin I.D.'} value={id} />
-          <TableBarnElement title={'Azenco Kodu'} value={azencoCode} />
-          <TableBarnElement title={'Materialın Adı'} value={productName} />
-          <TableBarnElement title={'Ölçü vahidi'} value={unit} />
-          <TableBarnElement title={'Qiymət'} value={+price} />
-          <TableBarnElement title={'Ünvanı'} value={location} />
+          <TableBarnElement isString={true} title={'Anbarin I.D.'} value={id} />
+          <TableBarnElement
+            isString={true}
+            title={'Azenco Kodu'}
+            value={azencoCode}
+          />
+          <TableBarnElement
+            isString={true}
+            title={'Materialın Adı'}
+            value={productName}
+          />
+          <TableBarnElement
+            isString={true}
+            title={'Ölçü vahidi'}
+            value={unit}
+          />
+          <TableBarnElement isString={true} title={'Qiymət'} value={+price} />
+          <TableBarnElement isString={true} title={'Ünvanı'} value={location} />
         </tbody>
       </table>
     </div>
@@ -92,49 +116,42 @@ const MaterialComponent = ({
           <TableBarnElement
             title={'Yeni miqdar'}
             value={+newStock}
-            dynamicValue={+newStockDynamic + +newStock}
+            dynamicValue={+newStockResult}
           />
-
           <TableBarnElement
             title={'İstifadə olunmuş miqdar'}
             value={+usedStock}
-            dynamicValue={+usedStockDynamic + +usedStock}
+            dynamicValue={+usedStockResult}
           />
-
           <TableBarnElement
             title={'Zədələnmiş miqdar'}
             value={+brokenStock}
-            dynamicValue={+brokenStockDynamic + +brokenStock}
+            dynamicValue={+brokenStockResult}
           />
-
           <TableBarnElement
             title={'Ümumi miqdar'}
             value={+totalStock}
-            dynamicValue={+totalStockDynamic}
+            dynamicValue={+totalStockResult}
           />
-
           <TableBarnElement
             title={'Yeni məbləğ'}
             value={+newTotalPrice}
             dynamicValue={dynamicPrice(+newStock, newStockDynamic)}
           />
-
           <TableBarnElement
             title={'İstifadə olunmuş məbləğ'}
             value={+usedTotalPrice}
             dynamicValue={dynamicPrice(+usedStock, usedStockDynamic)}
           />
-
           <TableBarnElement
             title={'Zədələnmiş məbləğ'}
             value={+brokenTotalPrice}
             dynamicValue={dynamicPrice(+brokenStock, brokenStockDynamic)}
           />
-
           <TableBarnElement
             title={'Ümumi məbləğ'}
             value={+totalPrice}
-            dynamicValue={dynamicPrice(+totalStockDynamic, 0)}
+            dynamicValue={dynamicPrice(+totalStockResult, 0)}
           />
         </tbody>
       </table>
