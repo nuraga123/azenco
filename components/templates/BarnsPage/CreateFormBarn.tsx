@@ -7,10 +7,10 @@ import SearchProductsComponent from '@/components/modules/ProductsPage/SearchPro
 import ProductTable from '@/components/modules/ProductsPage/ProductTable'
 import BarnModal from '@/components/modules/BarnsPage/Modal'
 import SortButtons from '@/components/templates/SortButtons/SortButtons'
+import BackBtn from '@/components/elements/btn/BackBtn'
 
 import productsStyles from '@/styles/products/index.module.scss'
 import spinnerStyles from '@/styles/spinner/index.module.scss'
-import BackBtn from '@/components/elements/btn/BackBtn'
 
 const CreateFormBarn = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -88,6 +88,7 @@ const CreateFormBarn = () => {
       />
 
       <SortButtons currentSortBy={sortBy} onSortChange={handleSortChange} />
+
       {spinner ? (
         <div className={spinnerStyles.container}>
           <h1>yüklənir</h1>
@@ -110,6 +111,7 @@ const CreateFormBarn = () => {
           </div>
         )
       )}
+
       <BarnModal
         isOpen={isOpen}
         product={selectedProduct}

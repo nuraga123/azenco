@@ -7,6 +7,7 @@ import MaterialComponent from './MaterialComponent'
 
 import styles from '@/styles/barn/form/index.module.scss'
 import spinnerStyles from '@/styles/spinner/index.module.scss'
+import { toast } from 'react-toastify'
 
 const BarnForm: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
   const [spinner, setSpinner] = useState<boolean>(false)
@@ -65,6 +66,7 @@ const BarnForm: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
 
       // Проверка материалов
       const totalStock = +newStock + +usedStock + +brokenStock
+
       if (isNaN(totalStock) || totalStock <= 0) {
         setStockError('Ən azı 1 ədəd material yazın? ')
         setIsStockValid(false)
@@ -132,9 +134,13 @@ const BarnForm: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
 
     try {
       setSpinner(true)
-      const res = await postAddStocksBarn(formData)
-      console.log(res)
-      // router.push('/some-path') // замените на нужный путь после успешного добавления
+      const barnProduct = await postAddStocksBarn(formData)
+      console.log(barnProduct)
+      if (barnProduct?.error_message) {
+        toast.error(barnProduct.error_message)
+        return
+      }
+      toast.success(barnProduct.message)
     } catch (error) {
       console.error(error)
       setSpinner(false)
@@ -142,6 +148,13 @@ const BarnForm: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
       setSpinner(false)
     }
   }
+
+  const handleIconSwitch = (state: boolean) =>
+    state ? (
+      <TiTick style={{ color: 'green' }} />
+    ) : (
+      <TiTimes style={{ color: 'red' }} />
+    )
 
   return (
     <div className={styles.barn_form}>
@@ -154,13 +167,10 @@ const BarnForm: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
         <div className={styles.form__locations}>
           <div className={styles.form_group}>
             <label>
-              {'Hansi ünvanından gəldi? '}
-              {isFromLocationValid ? (
-                <TiTick style={{ color: 'green' }} />
-              ) : (
-                <TiTimes style={{ color: 'red' }} />
-              )}
+              Hansi ünvanından gəldi?
+              {handleIconSwitch(isFromLocationValid)}
             </label>
+
             <input
               className={styles.form_group__adress}
               required
@@ -174,13 +184,10 @@ const BarnForm: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
 
           <div className={styles.form_group}>
             <label>
-              {'Hansı ünvana çatdırılıb? '}
-              {isToLocationValid ? (
-                <TiTick style={{ color: 'green' }} />
-              ) : (
-                <TiTimes style={{ color: 'red' }} />
-              )}
+              Hansı ünvana çatdırılıb?
+              {handleIconSwitch(isToLocationValid)}
             </label>
+
             <input
               className={styles.form_group__adress}
               required
@@ -195,16 +202,13 @@ const BarnForm: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
 
         <div className={styles.form__stocks_header}>
           <label>
-            {'Material miqdarı? '}
-            {isStockValid ? (
-              <TiTick style={{ color: 'green' }} />
-            ) : (
-              <TiTimes style={{ color: 'red' }} />
-            )}
+            Material miqdarı?
+            {handleIconSwitch(isStockValid)}
             {stockError && <div style={{ color: 'red' }}>{stockError}</div>}
           </label>
         </div>
 
+        {/* колличество продукта */}
         <div className={styles.form__stocks}>
           <div className={styles.form_group}>
             <label>Yeni</label>
@@ -246,15 +250,12 @@ const BarnForm: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
           </div>
         </div>
 
+        {/* дата */}
         <div className={styles.form_group}>
           {dateError && <div style={{ color: 'red' }}>{dateError}</div>}
           <label htmlFor="userSelectedDate">
             Alınma tarix?
-            {isDateValid ? (
-              <TiTick style={{ color: 'green' }} />
-            ) : (
-              <TiTimes style={{ color: 'red' }} />
-            )}
+            {handleIconSwitch(isDateValid)}
           </label>
           <input
             className={styles.form_group__date}
@@ -262,10 +263,10 @@ const BarnForm: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
             id="userSelectedDate"
             name="userSelectedDate"
             value={userSelectedDate}
+            required
             onChange={(e) =>
               handleInputChange(e, setUserSelectedDate, setIsDateValid)
             }
-            required
           />
         </div>
 
@@ -277,7 +278,7 @@ const BarnForm: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
             className={styles.submit_button}
             disabled={isDisabled}
           >
-            artırmaq
+            ARTIRMAQ
           </button>
         )}
       </form>
