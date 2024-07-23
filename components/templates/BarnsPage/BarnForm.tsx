@@ -121,13 +121,13 @@ const BarnForm: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
     e.preventDefault()
 
     const formData: IStocksBarn = {
+      barnId,
       userSelectedDate: formaterDate(userSelectedDate),
       fromLocation,
       toLocation,
       newStock: +newStock,
       usedStock: +usedStock,
       brokenStock: +brokenStock,
-      barnId,
     }
 
     console.log(formData)
@@ -136,10 +136,12 @@ const BarnForm: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
       setSpinner(true)
       const barnProduct = await postAddStocksBarn(formData)
       console.log(barnProduct)
+
       if (barnProduct?.error_message) {
         toast.error(barnProduct.error_message)
         return
       }
+
       toast.success(barnProduct.message)
     } catch (error) {
       console.error(error)

@@ -30,7 +30,7 @@ export const navbarArray: INavbarElement[] = [
     icon: <AiOutlineDatabase />,
   },
   {
-    href: '/history',
+    href: '/archive',
     title: 'Arxiv',
     icon: <AiOutlineHistory />,
   },
