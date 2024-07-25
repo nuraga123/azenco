@@ -1,7 +1,7 @@
 import { createEffect } from 'effector-next'
 import api from '@/app/axiosClient'
 
-export const getHistoryAll = createEffect(async () => {
+export const getArchiveAll = createEffect(async () => {
   try {
     const { data } = await api.get('history/all')
     console.log(data)
