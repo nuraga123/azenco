@@ -10,7 +10,7 @@ import { getLocalStorageUser } from '@/localStorageUser'
 import '@/styles/globals.css'
 import styles from '@/styles/archive/index.module.scss'
 import spinnerStyles from '@/styles/spinner/index.module.scss'
-import { getHistoryAll } from '@/app/api/history'
+import { getArchiveAll } from '@/app/api/archive'
 
 const Archive = () => {
   interface IArchiveElement {
@@ -55,7 +55,7 @@ const Archive = () => {
     if (userIdResult) setLoading(false)
 
     const loadHistoryData = async () => {
-      const data = await getHistoryAll()
+      const data = await getArchiveAll()
       setArchiveData(data)
     }
 
