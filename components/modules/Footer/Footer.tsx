@@ -52,7 +52,7 @@ const Footer = () => (
             </li>
           </ul>
 
-          <BackBtn href="login" text="proqrama qayıtmaq" />
+          <BackBtn />
         </div>
       </div>
     </div>
