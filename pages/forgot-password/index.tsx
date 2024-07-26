@@ -63,7 +63,7 @@ const ForgotPassword = () => {
       </Head>
       {adminCheck ? (
         <div className={styles.container}>
-          <BackBtn href="/my" text="login menusina qayitmaq !" />
+          <BackBtn text="login menusina qayitmaq !" />
           <h2>Şifrəni unutmusunuz</h2>
           <form onSubmit={handleSubmit} className={styles.form}>
             <label>secret soz:</label>
@@ -103,7 +103,7 @@ const ForgotPassword = () => {
           </form>
         </div>
       ) : (
-        <BackBtn href="/my" text="ancaq admin parolu deyise biler !" />
+        <BackBtn text="ancaq admin parolu deyise biler !" />
       )}
     </>
   )
