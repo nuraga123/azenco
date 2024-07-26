@@ -12,13 +12,17 @@ const SortButtons: React.FC<SortButtonsProps> = ({
 }) => (
   <div className={styles.sorting}>
     <button
-      className={`${styles.button} ${currentSortBy === 'asc' ? styles.active : ''}`}
+      className={`${styles.button} ${
+        currentSortBy === 'asc' ? styles.active : ''
+      }`}
       onClick={() => onSortChange('asc')}
     >
       əvvəlcə ucuz
     </button>
     <button
-      className={`${styles.button} ${currentSortBy === 'desc' ? styles.active : ''}`}
+      className={`${styles.button} ${
+        currentSortBy === 'desc' ? styles.active : ''
+      }`}
       onClick={() => onSortChange('desc')}
     >
       əvvəlcə bahalı
