@@ -1,22 +1,48 @@
 import React from 'react'
-import spinnerStyles from '@/styles/spinner/index.module.scss'
+import styles from '@/styles/spinner/index.module.scss'
 
 const Spinner: ({
   top,
   left,
+  widthPX,
+  heightPX,
+  loadingText,
 }: {
   top?: number | undefined
   left?: number | undefined
-}) => React.JSX.Element = ({ top, left }: { top?: number; left?: number }) => {
-  if (top || left) {
+  widthPX?: number | undefined
+  heightPX?: number | undefined
+  loadingText?: string
+}) => React.JSX.Element = ({
+  top,
+  left,
+  widthPX = 30,
+  heightPX = 30,
+  loadingText = '',
+}: {
+  top?: number
+  left?: number
+  widthPX?: number | undefined
+  heightPX?: number | undefined
+  loadingText?: string
+}) => {
+  if (top || left || widthPX) {
     return (
-      <div
-        className={spinnerStyles.spinner}
-        style={{ top: `${top}%`, left: `${left}%` }}
-      />
+      <>
+        <div
+          className={styles.spinner}
+          style={{
+            top: `${top}%`,
+            left: `${left}%`,
+            width: `${widthPX}px`,
+            height: `${heightPX}px`,
+          }}
+        />
+        <h1 className={styles.text}>{loadingText}</h1>
+      </>
     )
   } else {
-    return <div className={spinnerStyles.spinner} style={{ top: `40%` }} />
+    return <div className={styles.spinner} style={{ top: `40%` }} />
   }
 }
 

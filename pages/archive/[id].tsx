@@ -1,50 +1,63 @@
-import { GetServerSideProps } from 'next'
+// pages/archive/[id].tsx
 import { useRouter } from 'next/router'
-import axios from 'axios'
+import { useEffect, useState } from 'react'
+import { findArchiveById } from '@/app/api/archive'
+import ArchiveCard, { ArchiveData } from '@/components/modules/ArchiveCard'
+import Layout from '@/components/layout/Layout'
+import Spinner from '@/components/modules/Spinner/Spinner'
+import BackBtn from '@/components/elements/btn/BackBtn'
 
-interface Item {
-  id: string
-  name: string
-  description: string
-  // Добавьте другие поля, если необходимо
-}
-
-interface ItemProps {
-  item: Item
-}
-
-const ItemPage: React.FC<ItemProps> = ({ item }) => {
+const ArchiveItem: React.FC = () => {
   const router = useRouter()
+  const { id } = router.query
+  const [data, setData] = useState({} as ArchiveData)
+  const [spinner, setSpinner] = useState(false)
 
-  if (router.isFallback) {
-    return <div>Загрузка...</div>
+  useEffect(() => {
+    setSpinner(true)
+
+    const loadArchive = async () => {
+      if (id) {
+        const archiveData = await findArchiveById(+id)
+        setData(archiveData)
+        setTimeout(() => setSpinner(false), 500)
+      }
+    }
+
+    loadArchive()
+  }, [id])
+
+  if (spinner) {
+    return (
+      <Layout title={`Arxiv | Загрузка`}>
+        <div style={{ height: '50vh' }}>
+          <Spinner
+            top={30}
+            widthPX={70}
+            heightPX={70}
+            loadingText="arxiv yüklənir"
+          />
+        </div>
+      </Layout>
+    )
   }
 
+  if (data) {
+    return (
+      <Layout title={`Arxiv | ${data?.username}`}>
+        <BackBtn />
+        <ArchiveCard data={data} />
+      </Layout>
+    )
+  }
   return (
-    <div>
-      <h1>{item.name}</h1>
-      <p>{item.description}</p>
-    </div>
+    <Layout title={`Arxiv | məlumatlari yoxdur`}>
+      <BackBtn />
+      <h1 style={{ textAlign: 'center' }}>
+        Göstəriləcək arxivin məlumatlari yoxdur !
+      </h1>
+    </Layout>
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { id } = context.params!
-
-  try {
-    const response = await axios.get(`https://api.example.com/items/${id}`)
-    const item: Item = response.data
-
-    return {
-      props: {
-        item,
-      },
-    }
-  } catch (error) {
-    return {
-      notFound: true,
-    }
-  }
-}
-
-export default ItemPage
+export default ArchiveItem

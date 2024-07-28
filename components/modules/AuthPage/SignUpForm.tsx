@@ -77,7 +77,7 @@ const SignUpForm = () => {
 
         <Link href={'/help'} passHref legacyBehavior>
           <a className={styles.link}>
-            <span>Şifrəni unutmusunuz ?</span>
+            <span>qeydiyyatdan keçə bilmirəm</span>
           </a>
         </Link>
       </div>

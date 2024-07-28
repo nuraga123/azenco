@@ -3,13 +3,13 @@ import { formaterDate } from '@/utils/dateFormater'
 import { IBarnItem, IStocksBarn } from '@/types/barn'
 import { TiTick, TiTimes } from 'react-icons/ti'
 import { getBarnById, postAddStocksBarn } from '@/app/api/barn'
-import MaterialComponent from './MaterialComponent'
+import MaterialComponent from '../MaterialComponent/AddMaterial'
 
 import styles from '@/styles/barn/form/index.module.scss'
 import spinnerStyles from '@/styles/spinner/index.module.scss'
 import { toast } from 'react-toastify'
 
-const BarnForm: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
+const AddBarn: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
   const [spinner, setSpinner] = useState<boolean>(false)
   const [barnData, setBarnData] = useState({} as IBarnItem)
   const [userSelectedDate, setUserSelectedDate] = useState<string>('')
@@ -295,4 +295,4 @@ const BarnForm: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
   )
 }
 
-export default BarnForm
+export default AddBarn

@@ -5,12 +5,14 @@ import { useRouter } from 'next/router'
 
 const Error404Page = () => {
   const router = useRouter()
+  const title: string = document.title
+  console.log(title)
 
   useEffect(() => {
     // Перенаправляем пользователя на главную страницу через 5 секунд
     const redirectTimer = setTimeout(() => {
       router.push('/')
-    }, 5000)
+    }, 3000)
 
     // Очищаем таймер при размонтировании компонента
     return () => clearTimeout(redirectTimer)

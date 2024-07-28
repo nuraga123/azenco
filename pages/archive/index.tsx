@@ -81,9 +81,11 @@ const Archive = () => {
             <tr>
               <th>İstifadəçi adı</th>
               <th>Hərəkət növü</th>
-              <th>Mesaj</th>
+              <th>Təsviri</th>
               <th>İstifadəçinin seçdiyi tarix</th>
-              <th>польный просмотр</th>
+              <th>
+                <span className={styles.icon}>🗃️</span>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -92,11 +94,14 @@ const Archive = () => {
                 <tr key={el.id}>
                   <td>{el.username}</td>
                   <td>{el.movementType}</td>
-                  <td style={{ whiteSpace: 'nowrap' }}>{el.message}</td>
+                  <td className={styles.message}>{el.message}</td>
                   <td>{el.userSelectedDate}</td>
                   <td>
-                    <button onClick={() => router.push(`/${[el.id]}`)}>
-                      смотреть
+                    <button
+                      className={styles.button}
+                      onClick={() => router.push(`/archive/${[el.id]}`)}
+                    >
+                      daha ətraflı
                     </button>
                   </td>
                 </tr>

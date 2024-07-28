@@ -20,11 +20,6 @@ export const navbarArray: INavbarElement[] = [
     icon: <AiOutlineHome />,
   },
   {
-    href: '/products',
-    title: 'Materiallar',
-    icon: <AiOutlineFileText />,
-  },
-  {
     href: '/barns',
     title: 'Anbarlar',
     icon: <AiOutlineDatabase />,
@@ -33,6 +28,11 @@ export const navbarArray: INavbarElement[] = [
     href: '/archive',
     title: 'Arxiv',
     icon: <AiOutlineHistory />,
+  },
+  {
+    href: '/products',
+    title: 'Materiallar',
+    icon: <AiOutlineFileText />,
   },
   {
     href: '/contacts',

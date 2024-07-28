@@ -133,3 +133,21 @@ export const postAddStocksBarn = createEffect(async (stocks: IStocksBarn) => {
     console.log(error)
   }
 })
+
+export const postReduceStocksBarn = createEffect(
+  async (stocks: IStocksBarn) => {
+    try {
+      const { tokenStorage } = getLocalStorageUser()
+      const { data } = await api.post('barn/add-stocks', stocks, {
+        headers: {
+          Authorization: `Bearer ${tokenStorage}`,
+        },
+      })
+
+      console.log(data)
+      return data
+    } catch (error) {
+      console.log(error)
+    }
+  }
+)

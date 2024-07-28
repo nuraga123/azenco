@@ -6,13 +6,13 @@ import { getBarnById } from '@/app/api/barn'
 import { IBarnItem } from '@/types/barn'
 import useRedirectByUserCheck from '@/hooks/useRedirectByUserCheck'
 import Layout from '@/components/layout/Layout'
-import AddBarnForm from '@/components/templates/BarnsPage/Form/AddBarn'
+import ReduceBarnForm from '@/components/templates/BarnsPage/Form/ReduceBarn'
 
 import spinnerStyles from '@/styles/spinner/index.module.scss'
 import styles from '@/styles/barn/index.module.scss'
 import BackBtn from '@/components/elements/btn/BackBtn'
 
-const AddStocksBarn = () => {
+const ReduceStocksBarn = () => {
   const { asPath, query } = useRouter()
   const { shouldLoadContent } = useRedirectByUserCheck()
 
@@ -27,7 +27,7 @@ const AddStocksBarn = () => {
         const zz = await getBarnById(barnId)
         console.log(zz)
         if (barn) setBarnData(barn)
-        else toast.warning('нет амбара')
+        else toast.warning('anbarda material yoxdur')
       }
     }
 
@@ -56,17 +56,17 @@ const AddStocksBarn = () => {
         <div className={styles.barn__header}>
           <BackBtn />
           <h2 style={{ textAlign: 'center' }}>
-            Anbarda materialın miqdarının artırılması formasının uçotu
+            Anbarda olan materialın miqdarının azaldılması formasının uçotu
           </h2>
           <p style={{ marginRight: 10 }}>Anbardar: {barnData.username}</p>
         </div>
 
         <div className={styles.barn__container}>
-          <AddBarnForm barnId={barnId} />
+          <ReduceBarnForm barnId={barnId} />
         </div>
       </div>
     </Layout>
   )
 }
 
-export default AddStocksBarn
+export default ReduceStocksBarn

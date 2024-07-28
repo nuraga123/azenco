@@ -13,6 +13,7 @@ import { withClickOutside } from '@/utils/withClickOutside'
 import { getLocalStorageUser, removeLocalStorageUser } from '@/localStorageUser'
 
 import styles from '@/styles/profileDropDown/index.module.scss'
+import { toast } from 'react-toastify'
 
 const ProfileDropDown = forwardRef<HTMLDivElement, IWrappedComponentProps>(
   ({ open, setOpen }, ref) => {
@@ -28,8 +29,9 @@ const ProfileDropDown = forwardRef<HTMLDivElement, IWrappedComponentProps>(
 
     const handleLogout = async () => {
       removeLocalStorageUser()
-      router.push('/login')
       await logoutFx('/users/logout')
+      toast.success('proqramdan çıxmısınız')
+      router.push('/login')
     }
 
     return (

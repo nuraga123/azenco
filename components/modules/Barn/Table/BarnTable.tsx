@@ -27,17 +27,21 @@ const BarnTable = ({ barn }: { barn: IBarnResponse }) => (
             </td>
 
             <td style={{ padding: '5px 36px' }}>
-              <GrSubtractCircle
-                className={styles.icon__minus}
-                onClick={(e) => console.log(e.target)}
-              />
+              <Link href={`/my/barn/reduce/${+el?.id}`} passHref legacyBehavior>
+                <GrSubtractCircle
+                  className={styles.icon__minus}
+                  onClick={(e) => console.log(e.target)}
+                />
+              </Link>
             </td>
 
             <td style={{ padding: '11px 26px' }}>
-              <MdDeleteForever
-                className={styles.icon__delete}
-                onClick={(e) => console.log(e.target)}
-              />
+              <Link href={`/my/barn/delete/${+el?.id}`} passHref legacyBehavior>
+                <MdDeleteForever
+                  className={styles.icon__delete}
+                  onClick={(e) => console.log(e.target)}
+                />
+              </Link>
             </td>
 
             {/* Əsas */}

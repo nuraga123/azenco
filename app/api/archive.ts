@@ -13,7 +13,7 @@ export const getArchiveAll = createEffect(async () => {
 
 export const findArchiveById = createEffect(async (id: number) => {
   try {
-    const { data } = await api.get(`history/${id}`)
+    const { data } = await api.get(`archive/${id}`)
     console.log(data)
     return data
   } catch (error) {
