@@ -1,15 +1,18 @@
+import { useRouter } from 'next/router'
 import React, { useState, useEffect } from 'react'
+import { TiTick, TiTimes } from 'react-icons/ti'
+import { toast } from 'react-toastify'
+
 import { formaterDate } from '@/utils/dateFormater'
 import { IBarnItem, IStocksBarn } from '@/types/barn'
-import { TiTick, TiTimes } from 'react-icons/ti'
-import { getBarnById, postAddStocksBarn } from '@/app/api/barn'
-import MaterialComponent from '../MaterialComponent/AddMaterial'
+import { getBarnById, postReduceStocksBarn } from '@/app/api/barn'
+import ReduceMaterialComponent from '../MaterialComponent/ReduceMaterial'
 
 import styles from '@/styles/barn/form/index.module.scss'
 import spinnerStyles from '@/styles/spinner/index.module.scss'
-import { toast } from 'react-toastify'
 
 const ReduceBarn: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
+  const router = useRouter()
   const [spinner, setSpinner] = useState<boolean>(false)
   const [barnData, setBarnData] = useState({} as IBarnItem)
   const [userSelectedDate, setUserSelectedDate] = useState<string>('')
@@ -67,8 +70,27 @@ const ReduceBarn: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
       // Проверка материалов
       const totalStock = +newStock + +usedStock + +brokenStock
 
-      if (isNaN(totalStock) || totalStock <= 0) {
-        setStockError('Ən azı 1 ədəd material yazın? ')
+      if (totalStock <= 0) {
+        setStockError('Ən azı 1 ədəd material yazın !')
+        setIsStockValid(false)
+        isValid = false
+      } else if (+newStock > +barnData.newStock) {
+        setStockError('Anbardan daha çox yeni material götürdünüz !')
+        setIsStockValid(false)
+      } else if (+usedStock > +barnData.usedStock) {
+        isValid = false
+        setIsStockValid(false)
+        setStockError(
+          'Anbardan daha çox istifadə edilmiş material götürdünüz !'
+        )
+        setIsStockValid(false)
+        isValid = false
+      } else if (+brokenStock > +barnData.brokenStock) {
+        setStockError('Anbardan daha yararsız material götürdünüz !')
+        setIsStockValid(false)
+        isValid = false
+      } else if (isNaN(+newStock) || isNaN(+usedStock) || isNaN(+brokenStock)) {
+        setStockError('bu rəqəm deyil !')
         setIsStockValid(false)
         isValid = false
       } else {
@@ -87,6 +109,10 @@ const ReduceBarn: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
     newStock,
     usedStock,
     brokenStock,
+    barnData.totalStock,
+    barnData.newStock,
+    barnData.usedStock,
+    barnData.brokenStock,
   ])
 
   useEffect(() => {
@@ -134,7 +160,7 @@ const ReduceBarn: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
 
     try {
       setSpinner(true)
-      const barnProduct = await postAddStocksBarn(formData)
+      const barnProduct = await postReduceStocksBarn(formData)
       console.log(barnProduct)
 
       if (barnProduct?.error_message) {
@@ -148,6 +174,7 @@ const ReduceBarn: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
       setSpinner(false)
     } finally {
       setSpinner(false)
+      router.push('/my/barn')
     }
   }
 
@@ -169,8 +196,7 @@ const ReduceBarn: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
         <div className={styles.form__locations}>
           <div className={styles.form_group}>
             <label>
-              Hansi ünvanından gəldi?
-              {handleIconSwitch(isFromLocationValid)}
+              hardan göndərilir ? {handleIconSwitch(isFromLocationValid)}
             </label>
 
             <input
@@ -186,8 +212,7 @@ const ReduceBarn: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
 
           <div className={styles.form_group}>
             <label>
-              Hansı ünvana çatdırılıb?
-              {handleIconSwitch(isToLocationValid)}
+              hara göndərirsiniz ? {handleIconSwitch(isToLocationValid)}
             </label>
 
             <input
@@ -222,46 +247,59 @@ const ReduceBarn: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
                 onChange={(e) =>
                   handleInputChange(e, setNewStock, setIsStockValid)
                 }
-                min="0"
               />
             </div>
           ) : (
-            <div>Yeni materiallar yoxdur</div>
+            <div className={styles.form_group}>
+              <label>Yeni material</label>
+              <b>yoxdur</b>
+            </div>
           )}
 
-          <div className={styles.form_group}>
-            <label>İstifadə olunmuş</label>
-            <input
-              className={styles.form_group__stocks}
-              type="text"
-              value={usedStock}
-              onChange={(e) =>
-                handleInputChange(e, setUsedStock, setIsStockValid)
-              }
-              min="0"
-            />
-          </div>
+          {+barnData.usedStock ? (
+            <div className={styles.form_group}>
+              <label>İstifadə olunmuş</label>
+              <input
+                className={styles.form_group__stocks}
+                type="text"
+                value={usedStock}
+                onChange={(e) =>
+                  handleInputChange(e, setUsedStock, setIsStockValid)
+                }
+              />
+            </div>
+          ) : (
+            <div className={styles.form_group}>
+              <label>İstifadə olunmuş material</label>
+              <b>yoxdur</b>
+            </div>
+          )}
 
-          <div className={styles.form_group}>
-            <label>Zədələnmiş</label>
-            <input
-              className={styles.form_group__stocks}
-              type="text"
-              value={brokenStock}
-              onChange={(e) =>
-                handleInputChange(e, setBrokenStock, setIsStockValid)
-              }
-              min="0"
-            />
-          </div>
+          {+barnData.brokenStock ? (
+            <div className={styles.form_group}>
+              <label>Yararsız</label>
+              <input
+                className={styles.form_group__stocks}
+                type="text"
+                value={brokenStock}
+                onChange={(e) =>
+                  handleInputChange(e, setBrokenStock, setIsStockValid)
+                }
+              />
+            </div>
+          ) : (
+            <div className={styles.form_group}>
+              <label>Yararsız material</label>
+              <b>yoxdur</b>
+            </div>
+          )}
         </div>
 
         {/* дата */}
         <div className={styles.form_group}>
           {dateError && <div style={{ color: 'red' }}>{dateError}</div>}
           <label htmlFor="userSelectedDate">
-            Alınma tarix?
-            {handleIconSwitch(isDateValid)}
+            Materialı nə vaxt göndərmisiniz ?{handleIconSwitch(isDateValid)}
           </label>
           <input
             className={styles.form_group__date}
@@ -284,12 +322,12 @@ const ReduceBarn: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
             className={styles.submit_button}
             disabled={isDisabled}
           >
-            ARTIRMAQ
+            AZALTMAQ
           </button>
         )}
       </form>
 
-      <MaterialComponent
+      <ReduceMaterialComponent
         barn={barnData}
         newStockDynamic={+newStock}
         usedStockDynamic={+usedStock}

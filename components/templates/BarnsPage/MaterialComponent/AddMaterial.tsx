@@ -5,12 +5,12 @@ import styles from '@/styles/barn/material/index.module.scss'
 
 export interface IMaterialComponentProps {
   barn: IBarnItem
-  newStockDynamic?: number
-  usedStockDynamic?: number
-  brokenStockDynamic?: number
+  newStockDynamic: number
+  usedStockDynamic: number
+  brokenStockDynamic: number
 }
 
-const MaterialComponent = ({
+const AddMaterial = ({
   barn,
   newStockDynamic = 0,
   usedStockDynamic = 0,
@@ -36,24 +36,33 @@ const MaterialComponent = ({
   } = barn
 
   const newStockResult = useMemo(
-    () => +newStock + newStockDynamic,
+    () => +newStock + +newStockDynamic,
     [newStock, newStockDynamic]
   )
   const usedStockResult = useMemo(
-    () => +usedStock + usedStockDynamic,
+    () => +usedStock + +usedStockDynamic,
     [usedStock, usedStockDynamic]
   )
   const brokenStockResult = useMemo(
-    () => +brokenStock + brokenStockDynamic,
+    () => +brokenStock + +brokenStockDynamic,
     [brokenStock, brokenStockDynamic]
   )
-  const totalStockResult = useMemo(
-    () => +newStockResult + +usedStockResult + +brokenStockResult,
-    [newStockResult, usedStockResult, brokenStockResult]
-  )
 
-  const dynamicPrice = (prevStock: number, dynamicStock: number) =>
-    (+prevStock + +dynamicStock) * +price
+  const totalStockResult =
+    +newStockResult + +usedStockResult + +brokenStockResult
+
+  console.log('newStockResult')
+  console.log(newStockResult)
+  console.log('totalStockResult')
+  console.log(totalStockResult)
+
+  const dynamicPrice = (prevStock: number, dynamicStock: number) => {
+    const sum = +prevStock + +dynamicStock
+    console.log('sum')
+    console.log(sum)
+
+    return +sum * +price
+  }
 
   const TableBarnElement = ({
     isString = false,
@@ -64,7 +73,7 @@ const MaterialComponent = ({
     isString?: boolean
     title: string
     value: string | number
-    dynamicValue?: string | number
+    dynamicValue?: string | number | undefined
   }) => (
     <tr>
       <th>{title}</th>
@@ -75,7 +84,7 @@ const MaterialComponent = ({
           </b>
         ) : (
           <b>
-            <i>{+dynamicValue ? +dynamicValue : value}</i>
+            <i>{+dynamicValue ? +dynamicValue : +value}</i>
           </b>
         )}
       </td>
@@ -113,6 +122,13 @@ const MaterialComponent = ({
     <div className={styles.material__details}>
       <table className={styles.table}>
         <tbody>
+          <TableBarnElement
+            isString={true}
+            title={'Ölçü vahidi'}
+            value={unit}
+          />
+          <TableBarnElement isString={true} title={'Qiymət'} value={+price} />
+
           <TableBarnElement
             title={'Yeni miqdar'}
             value={+newStock}
@@ -179,4 +195,4 @@ const MaterialComponent = ({
   )
 }
 
-export default MaterialComponent
+export default AddMaterial

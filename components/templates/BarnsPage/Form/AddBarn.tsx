@@ -3,13 +3,15 @@ import { formaterDate } from '@/utils/dateFormater'
 import { IBarnItem, IStocksBarn } from '@/types/barn'
 import { TiTick, TiTimes } from 'react-icons/ti'
 import { getBarnById, postAddStocksBarn } from '@/app/api/barn'
-import MaterialComponent from '../MaterialComponent/AddMaterial'
+import AddMaterialComponent from '../MaterialComponent/AddMaterial'
 
 import styles from '@/styles/barn/form/index.module.scss'
 import spinnerStyles from '@/styles/spinner/index.module.scss'
 import { toast } from 'react-toastify'
+import { useRouter } from 'next/router'
 
 const AddBarn: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
+  const router = useRouter()
   const [spinner, setSpinner] = useState<boolean>(false)
   const [barnData, setBarnData] = useState({} as IBarnItem)
   const [userSelectedDate, setUserSelectedDate] = useState<string>('')
@@ -148,6 +150,7 @@ const AddBarn: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
       setSpinner(false)
     } finally {
       setSpinner(false)
+      router.push('/my/barn')
     }
   }
 
@@ -285,7 +288,7 @@ const AddBarn: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
         )}
       </form>
 
-      <MaterialComponent
+      <AddMaterialComponent
         barn={barnData}
         newStockDynamic={+newStock}
         usedStockDynamic={+usedStock}

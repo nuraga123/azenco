@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react'
 import { IBarnItem } from '@/types/barn'
 
 import styles from '@/styles/barn/material/index.module.scss'
+import { toast } from 'react-toastify'
 
 export interface IMaterialComponentProps {
   barn: IBarnItem
@@ -10,7 +11,7 @@ export interface IMaterialComponentProps {
   brokenStockDynamic?: number
 }
 
-const MaterialComponent = ({
+const ReduceMaterial = ({
   barn,
   newStockDynamic = 0,
   usedStockDynamic = 0,
@@ -35,25 +36,61 @@ const MaterialComponent = ({
     totalPrice,
   } = barn
 
-  const newStockResult = useMemo(
-    () => +newStock + newStockDynamic,
-    [newStock, newStockDynamic]
-  )
-  const usedStockResult = useMemo(
-    () => +usedStock + usedStockDynamic,
-    [usedStock, usedStockDynamic]
-  )
-  const brokenStockResult = useMemo(
-    () => +brokenStock + brokenStockDynamic,
-    [brokenStock, brokenStockDynamic]
-  )
+  const newStockResult = useMemo(() => {
+    if (+newStock - +newStockDynamic > -0.001) {
+      console.log(+newStock - +newStockDynamic)
+      return +newStock - +newStockDynamic
+    } else {
+      if (+newStockDynamic !== 0) {
+        toast.warning('çox yeni material götürdünüz !')
+      }
+
+      return +newStock
+    }
+  }, [newStock, newStockDynamic])
+
+  const usedStockResult = useMemo(() => {
+    if (+usedStock - +usedStockDynamic > -0.001) {
+      return +usedStock - +usedStockDynamic
+    } else {
+      if (+usedStockDynamic !== 0) {
+        toast.warning('çox İstifadə olunmuş material götürdünüz !')
+      }
+
+      return +usedStock
+    }
+  }, [usedStock, usedStockDynamic])
+
+  const brokenStockResult = useMemo(() => {
+    if (+brokenStock - +brokenStockDynamic > -0.001) {
+      return +brokenStock - +brokenStockDynamic
+    } else {
+      if (+brokenStockDynamic !== 0) {
+        toast.warning('çox yararsız material götürdünüz !')
+      }
+
+      return +brokenStock
+    }
+  }, [brokenStock, brokenStockDynamic])
+
+  const resultTotalDynamic: number =
+    +newStockDynamic + +usedStockDynamic + +brokenStockDynamic
+
+  console.log('resultTotalDynamic')
+  console.log(resultTotalDynamic)
+
   const totalStockResult = useMemo(
-    () => +newStockResult + +usedStockResult + +brokenStockResult,
-    [newStockResult, usedStockResult, brokenStockResult]
+    () => +totalStock - +resultTotalDynamic,
+    [totalStock, resultTotalDynamic]
   )
 
-  const dynamicPrice = (prevStock: number, dynamicStock: number) =>
-    (+prevStock + +dynamicStock) * +price
+  const dynamicPrice = (prevStock: number, dynamicStock: number) => {
+    const sum = +prevStock - +dynamicStock
+    console.log('sum')
+    console.log(sum)
+
+    return +sum * +price
+  }
 
   const TableBarnElement = ({
     isString = false,
@@ -75,7 +112,7 @@ const MaterialComponent = ({
           </b>
         ) : (
           <b>
-            <i>{+dynamicValue ? +dynamicValue : value}</i>
+            <i>{+dynamicValue > -1 ? dynamicValue : value}</i>
           </b>
         )}
       </td>
@@ -97,12 +134,6 @@ const MaterialComponent = ({
             title={'Materialın Adı'}
             value={productName}
           />
-          <TableBarnElement
-            isString={true}
-            title={'Ölçü vahidi'}
-            value={unit}
-          />
-          <TableBarnElement isString={true} title={'Qiymət'} value={+price} />
           <TableBarnElement isString={true} title={'Ünvanı'} value={location} />
         </tbody>
       </table>
@@ -114,9 +145,15 @@ const MaterialComponent = ({
       <table className={styles.table}>
         <tbody>
           <TableBarnElement
+            isString={true}
+            title={'Ölçü vahidi'}
+            value={unit}
+          />
+          <TableBarnElement isString={true} title={'Qiymət'} value={+price} />
+          <TableBarnElement
             title={'Yeni miqdar'}
             value={+newStock}
-            dynamicValue={+newStockResult}
+            dynamicValue={newStockResult}
           />
           <TableBarnElement
             title={'İstifadə olunmuş miqdar'}
@@ -179,4 +216,4 @@ const MaterialComponent = ({
   )
 }
 
-export default MaterialComponent
+export default ReduceMaterial

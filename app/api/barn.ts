@@ -138,7 +138,25 @@ export const postReduceStocksBarn = createEffect(
   async (stocks: IStocksBarn) => {
     try {
       const { tokenStorage } = getLocalStorageUser()
-      const { data } = await api.post('barn/add-stocks', stocks, {
+      const { data } = await api.post('barn/reduce-stocks', stocks, {
+        headers: {
+          Authorization: `Bearer ${tokenStorage}`,
+        },
+      })
+
+      console.log(data)
+      return data
+    } catch (error) {
+      console.log(error)
+    }
+  }
+)
+
+export const deleteMaterialOfBarn = createEffect(
+  async (stocks: IStocksBarn) => {
+    try {
+      const { tokenStorage } = getLocalStorageUser()
+      const { data } = await api.post('barn/reduce-stocks', stocks, {
         headers: {
           Authorization: `Bearer ${tokenStorage}`,
         },
