@@ -22,7 +22,7 @@ const Footer = () => (
               <div className={styles.footer__top__item__list__item__link}>
                 <div>Ünvanımız:</div>
                 <br />
-                <div>Mexkalon</div>
+                <h3>Mexkalon</h3>
                 <span>
                   <MarkerSvg />
                 </span>
@@ -34,6 +34,17 @@ const Footer = () => (
                 <div>Əlaqə telefonumuz:</div>
                 <br />
                 <h3>+994 (50) 341-67-36</h3>
+                <span>
+                  <PhoneSvg />
+                </span>
+              </div>
+            </li>
+
+            <li className={styles.footer__top__item__list__item}>
+              <div className={styles.footer__top__item__list__item__link}>
+                <div>iş vaxtı:</div>
+                <br />
+                <h3>08:00 - 17:00</h3>
                 <span>
                   <PhoneSvg />
                 </span>

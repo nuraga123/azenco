@@ -2,7 +2,7 @@ import { createEffect } from 'effector-next'
 
 import api from '@/app/axiosClient'
 import { getLocalStorageUser } from '@/localStorageUser'
-import { ICreateAnbarProduct, ITransferSend } from '@/types/anbar'
+import { ICreateBarnProduct, ITransferSend } from '@/types/anbar'
 import { IStocksBarn } from '@/types/barn'
 
 export const getBarnByUserId = createEffect(async (id: number) => {
@@ -64,27 +64,41 @@ export const getAnbarOneFx = createEffect(async (url: string) => {
 })
 
 // create new anbar
-export const createAnbarProductFx = createEffect(
-  async ({
+export const createbarnProductFx = createEffect(
+  async (
+    /*
+    {
     userId,
     productId,
     location,
     newStock,
     usedStock,
     brokenStock,
-  }: ICreateAnbarProduct) => {
+    fromLocation,
+    senderName,
+    carNumber,
+    driverName,
+    userSelectedDate,
+  }*/ newBarn: ICreateBarnProduct
+  ) => {
     try {
       const { tokenStorage } = getLocalStorageUser()
       const { data } = await api.post(
         '/barn/create',
-        {
-          userId,
-          productId,
-          location,
-          newStock,
-          usedStock,
-          brokenStock,
-        },
+        newBarn,
+        // {
+        //   userId,
+        //   productId,
+        //   location,
+        //   newStock,
+        //   usedStock,
+        //   brokenStock,
+        //   fromLocation,
+        //   senderName,
+        //   carNumber,
+        //   driverName,
+        //   userSelectedDate,
+        // },
         {
           headers: {
             Authorization: `Bearer ${tokenStorage}`,

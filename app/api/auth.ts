@@ -1,6 +1,6 @@
 import { createEffect, Effect } from 'effector-next'
 import { toast } from 'react-toastify'
-import { AxiosError } from 'axios'
+import axios, { AxiosError } from 'axios'
 import { ISingUpFx, ISignInFx } from '@/types/auth'
 import api from '../axiosClient'
 import { HTTPStatus } from '@/constans'
@@ -73,7 +73,25 @@ export const getTokenFx = createEffect(async (token: string) => {
     console.log(data)
     return data
   } catch (error) {
-    toast.error((error as Error).message)
+    if (axios.isAxiosError(error)) {
+      // Axios səhvi
+      if (error.response) {
+        toast.error(
+          `server işləmir: ${error.response.status} - ${error.response.statusText}`
+        )
+      } else if (error.request) {
+        toast.error(
+          'server işləmir. Xahiş edirik, daha sonra yenidən cəhd edin.'
+        )
+      } else {
+        toast.error(`server işləmir: ${error.message}`)
+      }
+    } else {
+      // Tanınmayan səhv tipi
+      toast.error('server işləmir')
+    }
+    console.log(error)
+    return 'not server'
   }
 })
 

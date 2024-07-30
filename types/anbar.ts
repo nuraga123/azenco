@@ -11,13 +11,18 @@ export interface AnbarProduct {
   updatedAt: string
 }
 
-export interface ICreateAnbarProduct {
+export interface ICreateBarnProduct {
   userId: number
   productId: number
   location: string
   newStock: number
   usedStock: number
   brokenStock: number
+  fromLocation: string
+  senderName: string
+  carNumber: string
+  driverName: string
+  userSelectedDate: string
 }
 
 export interface IAnbarProductProps {

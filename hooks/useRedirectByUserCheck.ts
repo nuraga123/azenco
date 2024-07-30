@@ -15,7 +15,12 @@ const useRedirectByUserCheck = (isAuthPage = false) => {
 
       if (tokenStorage) {
         const user = await getTokenFx(tokenStorage)
+        console.log('user')
         console.log(user)
+
+        if (user === 'not server') {
+          router.push('/404')
+        }
 
         if (isAuthPage) {
           if (user?.name === 'TokenExpiredError') {
@@ -32,7 +37,7 @@ const useRedirectByUserCheck = (isAuthPage = false) => {
           return
         }
 
-        if (user.name === 'TokenExpiredError') {
+        if (user?.name === 'TokenExpiredError') {
           router.push('/login')
           return
         }
