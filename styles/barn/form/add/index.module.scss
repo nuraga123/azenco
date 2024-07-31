@@ -9,7 +9,7 @@
   background: rgba(0, 0, 0, 0.5); // полупрозрачный фон
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: start;
   z-index: 1000;
   overflow: auto;
   padding: 20px;
@@ -22,27 +22,33 @@
   &__content {
     display: flex;
     justify-content: space-between;
-    max-width: 800px;
     width: 100%;
   }
 
-  @media screen and (max-width: 750px) {
+  @media screen and (max-width: 800px) {
     &__content {
       flex-direction: column;
       justify-content: flex-start;
-      max-width: 400px;
     }
   }
 }
 
 .info {
   margin-right: 20px;
+  width: 100%;
+  max-width: 500px;
 }
 
 .values {
-  margin: 10px;
+  margin: 10px 0;
   width: 100%;
-  max-width: 300px;
+  max-width: 500px;
+}
+
+.input__wrapper {
+  display: flex;
+  align-items: center;
+  margin: 10px;
 }
 
 .modalContent {
@@ -52,7 +58,6 @@
   width: 100%;
   max-width: 1000px;
   padding: 20px;
-  max-height: 500px;
   height: 100%;
   box-sizing: border-box;
   position: relative;
@@ -61,12 +66,6 @@
   overflow-y: auto;
   flex-direction: column;
   justify-content: space-between;
-
-  .input__wrapper {
-    display: flex;
-    align-items: center;
-    margin: 10px;
-  }
 
   // Заголовок модального окна
   h2 {
@@ -97,8 +96,8 @@
     width: 100%;
     padding: 10px;
     margin: 10px 0;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    border: 2px solid #707070;
+    border-radius: 5px;
     font-size: 16px;
     box-sizing: border-box;
 
@@ -205,5 +204,72 @@
     .close {
       font-size: 30px;
     }
+  }
+
+  .info {
+    margin-right: 0;
+  }
+}
+
+// car
+.car__wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  margin: 20px 0;
+  border: 1px solid #007bff;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.questionSection {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.inputSection {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.questionSection label,
+.inputSection label {
+  margin-bottom: 10px;
+}
+
+.inputSection input {
+  width: 100%;
+  max-width: 220px;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.buttons {
+  margin-top: 10px;
+}
+
+.button {
+  margin-right: 10px;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  background-color: #007bff;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #1dca2f;
+  }
+}
+
+.button:last-child {
+  background-color: #ec6875;
+
+  &:hover {
+    background-color: #dc3545;
   }
 }

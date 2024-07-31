@@ -63,48 +63,16 @@ export const getAnbarOneFx = createEffect(async (url: string) => {
   }
 })
 
-// create new anbar
-export const createbarnProductFx = createEffect(
-  async (
-    /*
-    {
-    userId,
-    productId,
-    location,
-    newStock,
-    usedStock,
-    brokenStock,
-    fromLocation,
-    senderName,
-    carNumber,
-    driverName,
-    userSelectedDate,
-  }*/ newBarn: ICreateBarnProduct
-  ) => {
+// create new barn
+export const createBarnProductFx = createEffect(
+  async (newBarn: ICreateBarnProduct) => {
     try {
       const { tokenStorage } = getLocalStorageUser()
-      const { data } = await api.post(
-        '/barn/create',
-        newBarn,
-        // {
-        //   userId,
-        //   productId,
-        //   location,
-        //   newStock,
-        //   usedStock,
-        //   brokenStock,
-        //   fromLocation,
-        //   senderName,
-        //   carNumber,
-        //   driverName,
-        //   userSelectedDate,
-        // },
-        {
-          headers: {
-            Authorization: `Bearer ${tokenStorage}`,
-          },
-        }
-      )
+      const { data } = await api.post('/barn/create', newBarn, {
+        headers: {
+          Authorization: `Bearer ${tokenStorage}`,
+        },
+      })
 
       console.log(data)
       return data

@@ -1,23 +1,23 @@
 export interface IBarnItem {
+  //видно на таблице
   id: number
-  userId: number
-  productId: number
-  username: string
-  productName: string
   azencoCode: string
-  type: string
+  productName: string
   unit: string
-  img: string
-  location: string
+  price: string
   newStock: string
   usedStock: string
   brokenStock: string
   totalStock: string
-  price: string
   newTotalPrice: string
   usedTotalPrice: string
   brokenTotalPrice: string
   totalPrice: string
+  location: string
+  createdAt: string
+  updatedAt: string
+  username: string
+  // потерянное
   lostNewStock: string
   lostUsedStock: string
   lostBrokenStock: string
@@ -26,8 +26,11 @@ export interface IBarnItem {
   lostUsedTotalPrice: string
   lostBrokenTotalPrice: string
   lostTotalPrice: string
-  createdAt: string
-  updatedAt: string
+  // не видно
+  userId: number
+  productId: number
+  type: string
+  img: string
 }
 
 // Интерфейс для ответа сервера
