@@ -12,7 +12,7 @@ import BackBtn from '@/components/elements/btn/BackBtn'
 import productsStyles from '@/styles/products/index.module.scss'
 import spinnerStyles from '@/styles/spinner/index.module.scss'
 
-const CreateFormBarn = () => {
+const CreateBarn = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [spinner, setSpinner] = useState(false)
   const [searchType, setSearchType] = useState<'name' | 'code'>('name')
@@ -121,4 +121,4 @@ const CreateFormBarn = () => {
   )
 }
 
-export default CreateFormBarn
+export default CreateBarn

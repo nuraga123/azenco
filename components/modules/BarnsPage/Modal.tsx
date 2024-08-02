@@ -8,6 +8,10 @@ import { $user } from '@/context/user'
 import { IUser } from '@/types/user'
 import { IProduct } from '@/types/products'
 import { getLocalStorageUser } from '@/localStorageUser'
+import { formatCarNumber } from '@/utils/car'
+import { dateFormater } from '@/utils/dateFormater'
+import AZ_FLAG_IMAGE from '@/components/elements/AZ_FLAG_IMAGE'
+
 import styles from '@/styles/barn/form/add/index.module.scss'
 import spinnerStyles from '@/styles/spinner/index.module.scss'
 
@@ -19,43 +23,39 @@ interface ModalProps {
 
 const BarnModal: React.FC<ModalProps> = ({ isOpen, onClose, product }) => {
   const [spinner, setSpinner] = useState<boolean>(false)
+
+  const [openInfoProduct, setOpenInfoProduct] = useState(true)
   const [senderName, setSenderName] = useState<string>('')
+
+  // car
   const [driverName, setDriverName] = useState<string>('')
-  const [isAze, setIsAze] = useState(false)
-  const [isOpenAze, setIsOpenAze] = useState(false)
+  const [isAze, setIsAze] = useState<'yes' | 'no' | ''>('')
+  const [isOpenAze, setIsOpenAze] = useState(true)
   const [carNumber, setCarNumber] = useState<string>('')
+
+  // from product amd time
   const [fromLocation, setFromLocation] = useState<string>('')
   const [location, setLocation] = useState<string>('')
   const [userSelectedDate, setUserSelectedDate] = useState<string>('')
+
+  // stocks
   const [newStock, setNewStock] = useState<string>('')
   const [usedStock, setUsedStock] = useState<string>('')
   const [brokenStock, setBrokenStock] = useState<string>('')
   const totalStock = +brokenStock + +usedStock + +newStock
 
-  const validate: boolean = !location || totalStock <= 0 || isNaN(totalStock)
+  const validate: boolean =
+    senderName.length < 3 ||
+    driverName.length < 3 ||
+    carNumber.length < 7 ||
+    fromLocation.length < 3 ||
+    location.length < 3 ||
+    !userSelectedDate ||
+    totalStock < 0 ||
+    isNaN(totalStock)
 
-  const formatCarNumber = (value: string): string => {
-    // Удаление всех нецифровых символов, кроме букв
-    const cleanedValue = value.replace(/[^A-Z0-9]/gi, '')
-
-    // Форматирование строки с тире
-    let formattedValue = ''
-
-    const digits = cleanedValue.replace(/[^0-9]/g, '') // Оставляем только цифры
-    const letters = cleanedValue.replace(/[0-9]/g, '') // Оставляем только буквы
-
-    if (digits.length > 0) {
-      formattedValue += digits.slice(0, 2) // Первые 2 цифры
-    }
-    if (letters.length > 0) {
-      formattedValue += '-' + letters.slice(0, 2).toLocaleUpperCase() // Следующие 2 буквы
-    }
-    if (digits.length > 2) {
-      formattedValue += '-' + digits.slice(2, 5) // Оставшиеся 3 цифры
-    }
-
-    return formattedValue
-  }
+  console.log('validate')
+  console.log(validate)
 
   const user: IUser = useStore($user)
   const userId = +user?.id || getLocalStorageUser().userIdStorage
@@ -63,10 +63,11 @@ const BarnModal: React.FC<ModalProps> = ({ isOpen, onClose, product }) => {
     user?.username || getLocalStorageUser().usernameStorage
 
   const clearData = () => {
+    setOpenInfoProduct(true)
     setSenderName('')
     setDriverName('')
-    setIsAze(false)
-    setIsOpenAze(false)
+    setIsAze('')
+    setIsOpenAze(true)
     setCarNumber('')
     setFromLocation('')
     setLocation('')
@@ -77,16 +78,11 @@ const BarnModal: React.FC<ModalProps> = ({ isOpen, onClose, product }) => {
   }
 
   const createNewBarn = async () => {
-    if (validate) {
-      toast.warning('ünvanını yazın və ya məhsulun miqdarını yazın')
-      return
-    }
-
-    if (product && userId && location && totalStock) {
+    if (product && userId && !validate) {
       try {
         setSpinner(true)
 
-        const newBarn = await createBarnProductFx({
+        const newBarn = {
           userId: +userId,
           productId: product.id,
           senderName,
@@ -94,39 +90,51 @@ const BarnModal: React.FC<ModalProps> = ({ isOpen, onClose, product }) => {
           carNumber,
           fromLocation,
           location,
-          userSelectedDate,
+          userSelectedDate: dateFormater(userSelectedDate),
           newStock: +newStock,
           usedStock: +usedStock,
           brokenStock: +brokenStock,
-        })
+        }
 
-        if (newBarn.error_message) {
-          toast.error(newBarn.error_message)
+        console.log('new barn')
+        console.log(newBarn)
+
+        const result = await createBarnProductFx(newBarn)
+
+        if (result.error_message) {
+          toast.error(result.error_message)
           return
         }
 
-        toast.success(newBarn.message)
+        toast.success(result.message)
       } catch (error) {
         toast.error((error as AxiosError).message)
         clearData()
       } finally {
-        setSpinner(false)
-        onClose()
         clearData()
+        onClose()
+        setSpinner(false)
       }
     } else {
-      toast.warning('Некоторые данные отсутствуют')
-      clearData()
+      toast.warning('Bütün məlumatları daxil edin !')
     }
   }
 
-  console.log(carNumber)
+  const toggleIsAze: boolean = isAze === 'yes' || isAze === 'no'
+
+  const showPic: React.JSX.Element | '' =
+    isAze === 'yes' ? <AZ_FLAG_IMAGE /> : ''
 
   if (!isOpen) return null
 
   return (
     <div className={styles.modal}>
-      <div className={styles.modalContent}>
+      <div
+        className={styles.modalContent}
+        style={{
+          maxWidth: openInfoProduct ? 1000 : 600,
+        }}
+      >
         <h2 style={{ textAlign: 'center' }}>
           Anbarda material yaratmaq Formasi
         </h2>
@@ -142,43 +150,59 @@ const BarnModal: React.FC<ModalProps> = ({ isOpen, onClose, product }) => {
           </span>
         </div>
 
+        <button
+          style={{ width: 50, fontSize: 18, cursor: 'pointer' }}
+          onClick={() => setOpenInfoProduct(!openInfoProduct)}
+        >
+          {openInfoProduct ? '❌' : '👁️'}
+        </button>
+
         <div className={styles.modal__content}>
           {/* об амбаре */}
-          <div className={styles.info}>
-            <div>
-              <p>
-                Anbardar:{' '}
-                <b>
-                  {barnUsername}
-                  <span>{` (ID: ${userId}) `}</span>
-                </b>
-              </p>
-            </div>
+          {openInfoProduct && (
+            <div className={styles.info}>
+              <div>
+                <p>
+                  Anbardar:{' '}
+                  <b>
+                    {barnUsername}
+                    <span>{` (ID: ${userId}) `}</span>
+                  </b>
+                </p>
+              </div>
 
-            <div>
-              <p>
-                Material Ad: <b>{product?.name}</b>
-              </p>
-            </div>
+              <div>
+                <p>
+                  Material Ad: <b>{product?.name}</b>
+                </p>
+              </div>
 
-            <div>
-              <p>
-                Ölçü vahidi: <b>{product?.unit}</b>
-              </p>
-            </div>
+              <div>
+                <p>
+                  Ölçü vahidi: <b>{product?.unit}</b>
+                </p>
+              </div>
 
-            <div>
-              <p>
-                Qiymət: <b>{product?.price} manat</b>
-              </p>
+              <div>
+                <p>
+                  Qiymət: <b>{product?.price} manat</b>
+                </p>
+              </div>
             </div>
-          </div>
+          )}
 
           {/* ввести данные */}
 
           <div className={styles.values}>
-            <div>
-              <label>Materialı sizə göndərənin şəxsın adı</label>
+            <div className={styles.li}>
+              <div className={styles.label__container}>
+                <label className={styles.label__text}>
+                  Materialı sizə göndərən şəxsin adı
+                </label>
+                <span className={styles.icon}>
+                  {senderName.length > 3 ? '✅' : '👨‍💼'}
+                </span>
+              </div>
               <input
                 type="text"
                 value={senderName}
@@ -188,8 +212,13 @@ const BarnModal: React.FC<ModalProps> = ({ isOpen, onClose, product }) => {
               />
             </div>
 
-            <div>
-              <label>Sürücü adı</label>
+            <div className={styles.li}>
+              <div className={styles.label__container}>
+                <label className={styles.label__text}>Sürücü adı</label>
+                <span className={styles.icon}>
+                  {driverName.length > 3 ? '✅' : '👨‍✈️'}
+                </span>
+              </div>
               <input
                 type="text"
                 value={driverName}
@@ -200,18 +229,22 @@ const BarnModal: React.FC<ModalProps> = ({ isOpen, onClose, product }) => {
             </div>
 
             {/* номер машины */}
+            {isOpenAze && (
+              <div className={styles.label__container}>
+                {/* Вопрос */}
 
-            <div className={styles.car__wrapper}>
-              {/* Вопрос */}
-              {isOpenAze && (
-                <div className={styles.questionSection}>
-                  <label>{'Azərbaycan avtomobil nömrəsidir ?'}</label>
-                  <label>{'(12-AB-345)'}</label>
+                <div>
+                  <div>
+                    <label style={{ display: 'flex' }}>
+                      {'Azərbaycan avtomobil nömrəsidir ? (12-AB-345) '}
+                      <AZ_FLAG_IMAGE />
+                    </label>
+                  </div>
                   <div className={styles.buttons}>
                     <button
                       className={styles.button}
                       onClick={() => {
-                        setIsAze(true)
+                        setIsAze('yes')
                         setIsOpenAze(false)
                       }}
                     >
@@ -220,7 +253,7 @@ const BarnModal: React.FC<ModalProps> = ({ isOpen, onClose, product }) => {
                     <button
                       className={styles.button}
                       onClick={() => {
-                        setIsAze(false)
+                        setIsAze('no')
                         setIsOpenAze(false)
                       }}
                     >
@@ -228,32 +261,61 @@ const BarnModal: React.FC<ModalProps> = ({ isOpen, onClose, product }) => {
                     </button>
                   </div>
                 </div>
-              )}
 
-              {/* Ввод номера машины */}
-              <div className={styles.inputSection}>
-                <label>{'Maşının nömrəsidir ?'}</label>
-                <input
-                  type="text"
-                  value={carNumber}
-                  onClick={() => setIsOpenAze(true)}
-                  onChange={(e) => {
-                    setIsOpenAze(false)
-                    const value = e.target.value
-                    if (isAze) {
-                      setCarNumber(formatCarNumber(value))
-                    } else {
-                      setCarNumber(value)
-                    }
-                  }}
-                  placeholder="Maşının nömrəsini yazın..."
-                  className={styles.modal__input}
-                />
+                {/* Ввод номера машины */}
               </div>
-            </div>
+            )}
 
-            <div>
-              <label>Material hardan gəlir ?</label>
+            {toggleIsAze && (
+              <div className={styles.li}>
+                <div className={styles.label__container}>
+                  <label>
+                    {`Maşının nömrəsi `}
+                    {carNumber.length > 7 ? '✅' : '🚛'}
+                  </label>
+                  {showPic}
+                  <h4>{isAze === 'no' ? ' -(Başqa ölkə)' : ''}</h4>
+                  <span
+                    style={{ padding: '0px 5px', color: 'yellow' }}
+                    className={styles.button}
+                    onClick={() => {
+                      setIsOpenAze(true)
+                      setIsAze('')
+                      setCarNumber('')
+                    }}
+                  >
+                    &times;
+                  </span>
+                </div>
+                <div>
+                  <input
+                    type="text"
+                    value={carNumber}
+                    onChange={(e) => {
+                      setIsOpenAze(false)
+                      const value = e.target.value
+                      if (isAze === 'yes') {
+                        setCarNumber(formatCarNumber(value))
+                      } else if (isAze === 'no') {
+                        setCarNumber(value)
+                      }
+                    }}
+                    placeholder="Maşının nömrəsini yazın..."
+                    className={styles.modal__input}
+                  />
+                </div>
+              </div>
+            )}
+
+            <div className={styles.li}>
+              <div className={styles.label__container}>
+                <label className={styles.label__text}>
+                  Material hardan gəlir?
+                </label>
+                <span className={styles.icon}>
+                  {fromLocation.length > 3 ? '✅' : '🌍'}
+                </span>
+              </div>
               <input
                 type="text"
                 value={fromLocation}
@@ -263,8 +325,13 @@ const BarnModal: React.FC<ModalProps> = ({ isOpen, onClose, product }) => {
               />
             </div>
 
-            <div>
-              <label>Material hardadır ?</label>
+            <div className={styles.li}>
+              <div className={styles.label__container}>
+                <label className={styles.label__text}>Material hardadır?</label>
+                <span className={styles.icon}>
+                  {location.length > 3 ? '✅' : '📌'}
+                </span>
+              </div>
               <input
                 type="text"
                 value={location}
@@ -274,8 +341,15 @@ const BarnModal: React.FC<ModalProps> = ({ isOpen, onClose, product }) => {
               />
             </div>
 
-            <div>
-              <label>Materialı hansı tarixdə və saatda almısınız?</label>
+            <div className={styles.li}>
+              <div className={styles.label__container}>
+                <label className={styles.label__text}>
+                  Materialı hansı tarixdə və saatda almısınız?
+                </label>
+                <span className={styles.icon}>
+                  {userSelectedDate ? '✅' : '📅'}
+                </span>
+              </div>
               <input
                 type="datetime-local"
                 value={userSelectedDate}
@@ -284,8 +358,13 @@ const BarnModal: React.FC<ModalProps> = ({ isOpen, onClose, product }) => {
               />
             </div>
 
-            <div>
-              <label>Yeni Materialın Miqdarı</label>
+            <div className={styles.li}>
+              <div className={styles.label__container}>
+                <label className={styles.label__text}>
+                  Yeni Materialın Miqdarı
+                </label>
+                <span className={styles.icon}>🆕📦</span>
+              </div>
               <input
                 type="text"
                 value={newStock}
@@ -295,8 +374,13 @@ const BarnModal: React.FC<ModalProps> = ({ isOpen, onClose, product }) => {
               />
             </div>
 
-            <div>
-              <label>İşlənmiş Materialın Miqdarı</label>
+            <div className={styles.li}>
+              <div className={styles.label__container}>
+                <label className={styles.label__text}>
+                  İşlənmiş Materialın Miqdarı
+                </label>
+                <span className={styles.icon}>🛠️📦</span>
+              </div>
               <input
                 type="text"
                 value={usedStock}
@@ -306,8 +390,13 @@ const BarnModal: React.FC<ModalProps> = ({ isOpen, onClose, product }) => {
               />
             </div>
 
-            <div>
-              <label>Yararsız Materialın Miqdarı</label>
+            <div className={styles.li}>
+              <div className={styles.label__container}>
+                <label className={styles.label__text}>
+                  Yararsız Materialın Miqdarı
+                </label>
+                <span className={styles.icon}>❌📦</span>
+              </div>
               <input
                 type="text"
                 value={brokenStock}
@@ -317,9 +406,8 @@ const BarnModal: React.FC<ModalProps> = ({ isOpen, onClose, product }) => {
               />
             </div>
 
-            <div>
-              <br />
-              <label>
+            <div className={styles.label__container}>
+              <label className={styles.label__text}>
                 {`Ümumi Materialın Miqdarı: `}
                 <b style={{ fontSize: 20 }}>
                   {Number.isNaN(totalStock)
@@ -327,9 +415,13 @@ const BarnModal: React.FC<ModalProps> = ({ isOpen, onClose, product }) => {
                     : totalStock}
                 </b>
               </label>
+              <span className={styles.icon}>
+                {totalStock > 0 ? '✅' : '📦'}
+              </span>
             </div>
           </div>
         </div>
+
         <div className={styles.modal__cont}>
           <div>
             <button

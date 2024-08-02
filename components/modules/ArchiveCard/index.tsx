@@ -1,7 +1,7 @@
 // components/ArchiveCard.tsx
 import React from 'react'
 import styles from '@/styles/archive/card/index.module.scss'
-import { formaterDate } from '@/utils/dateFormater'
+import { dateFormater } from '@/utils/dateFormater'
 
 export interface ArchiveData {
   id: number
@@ -185,17 +185,17 @@ const ArchiveCard: React.FC<ArchiveCardProps> = ({ data }) => {
         {createdAt === updatedAt ? (
           <div className={styles.item}>
             <span className={styles.key}>Yaradılmışdır:</span>
-            <span className={styles.value}>{formaterDate(createdAt)}</span>
+            <span className={styles.value}>{dateFormater(createdAt)}</span>
           </div>
         ) : (
           <>
             <div className={styles.item}>
               <span className={styles.key}>Yaradılmışdır:</span>
-              <span className={styles.value}>{formaterDate(createdAt)}</span>
+              <span className={styles.value}>{dateFormater(createdAt)}</span>
             </div>
             <div className={styles.item}>
               <span className={styles.key}>Yenilənib:</span>
-              <span className={styles.value}>{formaterDate(updatedAt)}</span>
+              <span className={styles.value}>{dateFormater(updatedAt)}</span>
             </div>
           </>
         )}

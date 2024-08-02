@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { TiTick, TiTimes } from 'react-icons/ti'
 import { toast } from 'react-toastify'
 
-import { formaterDate } from '@/utils/dateFormater'
+import { dateFormater } from '@/utils/dateFormater'
 import { IBarnItem, IStocksBarn } from '@/types/barn'
 import { getBarnById, postReduceStocksBarn } from '@/app/api/barn'
 import ReduceMaterialComponent from '../MaterialComponent/ReduceMaterial'
@@ -39,7 +39,7 @@ const ReduceBarn: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
       let isValid = true
 
       // Проверка даты
-      if (formaterDate(userSelectedDate) === 'Invalid Date') {
+      if (dateFormater(userSelectedDate) === 'Invalid Date') {
         setDateError('Yanlış Tarix')
         setIsDateValid(false)
         isValid = false
@@ -148,7 +148,7 @@ const ReduceBarn: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
 
     const formData: IStocksBarn = {
       barnId,
-      userSelectedDate: formaterDate(userSelectedDate),
+      userSelectedDate: dateFormater(userSelectedDate),
       fromLocation,
       toLocation,
       newStock: +newStock,

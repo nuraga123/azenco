@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { formaterDate } from '@/utils/dateFormater'
+import { dateFormater } from '@/utils/dateFormater'
 import { IBarnItem, IStocksBarn } from '@/types/barn'
 import { TiTick, TiTimes } from 'react-icons/ti'
 import { getBarnById, postAddStocksBarn } from '@/app/api/barn'
@@ -11,6 +11,13 @@ import { toast } from 'react-toastify'
 import { useRouter } from 'next/router'
 
 const AddBarn: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
+  // const [senderName, setSenderName] = useState<string>('')
+  // // car
+  // const [driverName, setDriverName] = useState<string>('')
+  // const [isAze, setIsAze] = useState<'yes' | 'no' | ''>('')
+  // const [isOpenAze, setIsOpenAze] = useState(true)
+  // const [carNumber, setCarNumber] = useState<string>('')
+
   const router = useRouter()
   const [spinner, setSpinner] = useState<boolean>(false)
   const [barnData, setBarnData] = useState({} as IBarnItem)
@@ -38,7 +45,7 @@ const AddBarn: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
       let isValid = true
 
       // Проверка даты
-      if (formaterDate(userSelectedDate) === 'Invalid Date') {
+      if (dateFormater(userSelectedDate) === 'Invalid Date') {
         setDateError('Yanlış Tarix')
         setIsDateValid(false)
         isValid = false
@@ -124,7 +131,7 @@ const AddBarn: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
 
     const formData: IStocksBarn = {
       barnId,
-      userSelectedDate: formaterDate(userSelectedDate),
+      userSelectedDate: dateFormater(userSelectedDate),
       fromLocation,
       toLocation,
       newStock: +newStock,

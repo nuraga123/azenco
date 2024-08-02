@@ -1,4 +1,4 @@
-export const formaterDate: (str: string) => string = (str: string) =>
+export const dateFormater: (str: string) => string = (str: string) =>
   new Date(str).toString() === 'Invalid Date'
-    ? 'Invalid Date'
+    ? 'Yanlış tarix'
     : new Date(str).toLocaleString().slice(0, 17).replace(',', ' ')

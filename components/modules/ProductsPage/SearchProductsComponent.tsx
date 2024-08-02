@@ -34,7 +34,6 @@ const SearchProductsComponent = ({
     setPriceTo(event.target.value)
   }
 
-  console.log('SearchProductsComponent')
   return (
     <div className={styles.searchContainer}>
       <div className={styles.topSection}>

@@ -1,13 +1,13 @@
 import React from 'react'
 import Layout from '@/components/layout/Layout'
-import CreateFormBarn from '@/components/templates/BarnsPage/CreateFormBarn'
+import CreateBarn from '@/components/templates/BarnsPage/Form/CreateBarn'
 
 const AddFormPage = () => {
   console.log()
 
   return (
     <Layout title={'Anbarı yaradın'}>
-      <CreateFormBarn />
+      <CreateBarn />
     </Layout>
   )
 }
