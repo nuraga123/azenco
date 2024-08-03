@@ -48,8 +48,7 @@ const AddMaterial = ({
     [brokenStock, brokenStockDynamic]
   )
 
-  const totalStockResult =
-    +newStockResult + +usedStockResult + +brokenStockResult
+  const totalStockResult = +newStockResult + usedStockResult + brokenStockResult
 
   console.log('newStockResult')
   console.log(newStockResult)
@@ -59,9 +58,8 @@ const AddMaterial = ({
   const dynamicPrice = (prevStock: number, dynamicStock: number) => {
     const sum = +prevStock + +dynamicStock
     console.log('sum')
-    console.log(sum)
 
-    return +sum * +price
+    return Number(+sum * +price).toFixed(2)
   }
 
   const TableBarnElement = ({
@@ -152,21 +150,21 @@ const AddMaterial = ({
           <TableBarnElement
             title={'Yeni məbləğ'}
             value={+newTotalPrice}
-            dynamicValue={dynamicPrice(+newStock, newStockDynamic)}
+            dynamicValue={dynamicPrice(+newStock, +newStockDynamic)}
           />
           <TableBarnElement
             title={'İstifadə olunmuş məbləğ'}
             value={+usedTotalPrice}
-            dynamicValue={dynamicPrice(+usedStock, usedStockDynamic)}
+            dynamicValue={dynamicPrice(+usedStock, +usedStockDynamic)}
           />
           <TableBarnElement
             title={'Zədələnmiş məbləğ'}
             value={+brokenTotalPrice}
-            dynamicValue={dynamicPrice(+brokenStock, brokenStockDynamic)}
+            dynamicValue={dynamicPrice(+brokenStock, +brokenStockDynamic)}
           />
           <TableBarnElement
             title={'Ümumi məbləğ'}
-            value={+totalPrice}
+            value={+totalPrice + 0}
             dynamicValue={dynamicPrice(+totalStockResult, 0)}
           />
         </tbody>

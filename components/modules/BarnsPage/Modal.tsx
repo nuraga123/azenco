@@ -51,7 +51,7 @@ const BarnModal: React.FC<ModalProps> = ({ isOpen, onClose, product }) => {
     fromLocation.length < 3 ||
     location.length < 3 ||
     !userSelectedDate ||
-    totalStock < 0 ||
+    totalStock <= 0 ||
     isNaN(totalStock)
 
   console.log('validate')

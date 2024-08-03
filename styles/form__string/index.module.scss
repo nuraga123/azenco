@@ -1,8 +1,9 @@
 /* FormString.module.scss */
 
-.form-container {
+.form__container {
   max-width: 800px;
-  margin: 0 auto;
+  width: 100%;
+  margin: 10px auto;
   padding: 20px;
   background-color: #f2f2f2;
   border-radius: 8px;
@@ -49,9 +50,15 @@
     &:hover {
       background-color: #0056b3;
     }
+
+    &:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+      color: black;
+    }
   }
 
-  .result-container {
+  .result__container {
     margin-top: 20px;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -69,7 +76,29 @@
     }
   }
 
-  .import-button {
+  .btn__red {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 16px;
+    margin: 10px;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: rgb(255, 89, 5);
+    }
+
+    &:disabled {
+      background-color: #ccc;
+      color: black;
+      cursor: not-allowed;
+    }
+  }
+
+  .import__button {
     margin-top: 20px;
 
     button {
@@ -85,6 +114,69 @@
       &:hover {
         background-color: #218838;
       }
+
+      &:disabled {
+        background-color: #ccc;
+        color: black;
+        cursor: not-allowed;
+      }
+    }
+  }
+}
+
+.table__container {
+  width: 100%;
+  margin: 20px 0;
+  overflow-x: auto;
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+
+    thead {
+      background-color: #0ebbff;
+      color: #ffffff;
+      text-align: left;
+    }
+
+    th,
+    td {
+      padding: 12px 15px;
+      border: 1px solid #000000;
+      text-align: left;
+    }
+
+    th {
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    tbody {
+      tr {
+        &:nth-child(even) {
+          background-color: #f9f9f9;
+        }
+
+        &:hover {
+          background-color: #e0e0e0;
+        }
+      }
+    }
+
+    .azencoCode {
+      width: 150px;
+    }
+
+    .materialName {
+      width: 300px;
+    }
+
+    .unit {
+      width: 100px;
+    }
+
+    .price {
+      width: 200px;
     }
   }
 }

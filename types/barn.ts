@@ -50,6 +50,12 @@ export interface IStocksBarn {
   brokenStock: number
 }
 
+export interface IStocksAddBarn extends IStocksBarn {
+  senderName: string
+  driverName: string
+  carNumber: string
+}
+
 export interface IStocksLostBarn {
   barnId: number
   userSelectedDate: string

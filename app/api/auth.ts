@@ -141,3 +141,14 @@ export const updateUserPasswordServer: Effect<
     console.log(error)
   }
 })
+
+export const getDoneSecret = createEffect(async (secret: string) => {
+  try {
+    const { data } = await api.post('users/secret', { secret })
+
+    console.log(data)
+    return data
+  } catch (error) {
+    console.log(error)
+  }
+})

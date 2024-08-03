@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { dateFormater } from '@/utils/dateFormater'
-import { IBarnItem, IStocksBarn } from '@/types/barn'
+import { IBarnItem, IStocksAddBarn } from '@/types/barn'
 import { TiTick, TiTimes } from 'react-icons/ti'
 import { getBarnById, postAddStocksBarn } from '@/app/api/barn'
 import AddMaterialComponent from '../MaterialComponent/AddMaterial'
@@ -8,17 +8,24 @@ import AddMaterialComponent from '../MaterialComponent/AddMaterial'
 import styles from '@/styles/barn/form/index.module.scss'
 import spinnerStyles from '@/styles/spinner/index.module.scss'
 import { toast } from 'react-toastify'
-import { useRouter } from 'next/router'
+// import { useRouter } from 'next/router'
 
 const AddBarn: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
-  // const [senderName, setSenderName] = useState<string>('')
-  // // car
-  // const [driverName, setDriverName] = useState<string>('')
+  const [senderName, setSenderName] = useState<string>('')
+  const [senderNameError, setSenderNameError] = useState<string>('')
+  const [isSenderNameValid, setIsSenderNameValid] = useState<boolean>(false)
+  // car
   // const [isAze, setIsAze] = useState<'yes' | 'no' | ''>('')
   // const [isOpenAze, setIsOpenAze] = useState(true)
-  // const [carNumber, setCarNumber] = useState<string>('')
+  const [driverName, setDriverName] = useState<string>('')
+  const [driverNameError, setDriverNameError] = useState<string>('')
+  const [isDriverNameValid, setIsDriverNameValid] = useState<boolean>(false)
 
-  const router = useRouter()
+  const [carNumber, setCarNumber] = useState<string>('')
+  const [carNumberError, setCarNumberError] = useState<string>('')
+  const [isCarNumberValid, setIsCarNumberValid] = useState<boolean>(false)
+
+  //const router = useRouter()
   const [spinner, setSpinner] = useState<boolean>(false)
   const [barnData, setBarnData] = useState({} as IBarnItem)
   const [userSelectedDate, setUserSelectedDate] = useState<string>('')
@@ -44,14 +51,38 @@ const AddBarn: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
     const validateForm = () => {
       let isValid = true
 
+      if (senderName.length <= 3) {
+        setSenderNameError('3 simvolunun daxil etməlisiniz.')
+        setIsSenderNameValid(false)
+        isValid = false
+      }
+
+      if (driverName.length <= 3) {
+        setDriverNameError('3 simvolunun daxil etməlisiniz.')
+        setIsDriverNameValid(false)
+        isValid = false
+      }
+
+      if (carNumber.length <= 3) {
+        setCarNumberError('3 simvolunun daxil etməlisiniz.')
+        setIsCarNumberValid(false)
+        isValid = false
+      }
+
       // Проверка даты
-      if (dateFormater(userSelectedDate) === 'Invalid Date') {
-        setDateError('Yanlış Tarix')
+      if (userSelectedDate) {
+        if (dateFormater(userSelectedDate) === 'Invalid Date') {
+          setDateError('Yanlış Tarix')
+          setIsDateValid(false)
+          isValid = false
+        } else {
+          setDateError('')
+          setIsDateValid(true)
+        }
+      } else {
+        setDateError('Lütfən, tarix daxil edin.')
         setIsDateValid(false)
         isValid = false
-      } else {
-        setDateError('')
-        setIsDateValid(true)
       }
 
       // Проверка местоположений
@@ -96,6 +127,9 @@ const AddBarn: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
     newStock,
     usedStock,
     brokenStock,
+    senderName.length,
+    driverName.length,
+    carNumber.length,
   ])
 
   useEffect(() => {
@@ -129,7 +163,7 @@ const AddBarn: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    const formData: IStocksBarn = {
+    const formData: IStocksAddBarn = {
       barnId,
       userSelectedDate: dateFormater(userSelectedDate),
       fromLocation,
@@ -137,6 +171,9 @@ const AddBarn: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
       newStock: +newStock,
       usedStock: +usedStock,
       brokenStock: +brokenStock,
+      senderName,
+      driverName,
+      carNumber,
     }
 
     console.log(formData)
@@ -157,7 +194,7 @@ const AddBarn: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
       setSpinner(false)
     } finally {
       setSpinner(false)
-      router.push('/my/barn')
+      //router.push('/my/barn')
     }
   }
 
@@ -176,6 +213,70 @@ const AddBarn: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
             {locationError}
           </div>
         )}
+        {/* senderName */}
+        <div className={styles.form__locations}>
+          <div className={styles.form_group}>
+            <div style={{ color: 'red' }}>şəxsin adı {senderNameError}</div>
+            <label>
+              Materialı sizə göndərən şəxsin adı
+              {handleIconSwitch(isSenderNameValid)}
+            </label>
+
+            <input
+              className={styles.form_group__adress}
+              required
+              type="text"
+              value={senderName}
+              onChange={(e) =>
+                handleInputChange(e, setSenderName, setIsSenderNameValid)
+              }
+            />
+          </div>
+        </div>
+
+        {/* driverName  2 */}
+        <div className={styles.form__locations}>
+          <div className={styles.form_group}>
+            <div style={{ color: 'red' }}>Sürücü adı {driverNameError}</div>
+            <label>
+              Sürücü adı
+              {handleIconSwitch(isDriverNameValid)}
+            </label>
+
+            <input
+              className={styles.form_group__adress}
+              required
+              type="text"
+              value={driverName}
+              onChange={(e) =>
+                handleInputChange(e, setDriverName, setIsDriverNameValid)
+              }
+            />
+          </div>
+        </div>
+
+        {/* carNumber  3 */}
+        <div className={styles.form__locations}>
+          <div className={styles.form_group}>
+            <div style={{ color: 'red' }}>Maşının nömrəsi {carNumberError}</div>
+            <label>
+              Maşının nömrəsi 🚛
+              {handleIconSwitch(isCarNumberValid)}
+            </label>
+
+            <input
+              className={styles.form_group__adress}
+              required
+              type="text"
+              value={carNumber}
+              onChange={(e) =>
+                handleInputChange(e, setCarNumber, setIsCarNumberValid)
+              }
+            />
+          </div>
+        </div>
+
+        {/* bed */}
         <div className={styles.form__locations}>
           <div className={styles.form_group}>
             <label>

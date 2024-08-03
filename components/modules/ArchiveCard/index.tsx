@@ -29,6 +29,8 @@ export interface ArchiveData {
   carNumber: string | null
   createdAt: string
   updatedAt: string
+  senderName: string
+  recipientName: string
 }
 
 interface ArchiveCardProps {
@@ -61,6 +63,8 @@ const ArchiveCard: React.FC<ArchiveCardProps> = ({ data }) => {
     carNumber,
     createdAt,
     updatedAt,
+    senderName,
+    recipientName,
   } = data
 
   return (
@@ -177,6 +181,14 @@ const ArchiveCard: React.FC<ArchiveCardProps> = ({ data }) => {
         <div className={styles.item}>
           <span className={styles.key}>Sürücü adı:</span>
           <span className={styles.value}>{driverName || 'yoxdur'}</span>
+        </div>
+        <div className={styles.item}>
+          <span className={styles.key}>göndərənin adı:</span>
+          <span className={styles.value}>{senderName || 'yoxdur'}</span>
+        </div>
+        <div className={styles.item}>
+          <span className={styles.key}>alıcı adı:</span>
+          <span className={styles.value}>{recipientName || 'yoxdur'}</span>
         </div>
         <div className={styles.item}>
           <span className={styles.key}>Avtomobil nömrəsi:</span>
