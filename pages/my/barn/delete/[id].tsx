@@ -43,7 +43,7 @@ const DeleteBarn = () => {
     }
 
     installBarn()
-  }, [asPath, barnId, query])
+  }, [asPath, barnId, query, router])
 
   const handleDelete = async () => {
     if (barnId) {
