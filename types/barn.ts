@@ -48,12 +48,16 @@ export interface IStocksBarn {
   newStock: number
   usedStock: number
   brokenStock: number
+  driverName: string
+  carNumber: string
 }
 
 export interface IStocksAddBarn extends IStocksBarn {
   senderName: string
-  driverName: string
-  carNumber: string
+}
+
+export interface IStocksReduceBarn extends IStocksBarn {
+  recipientName: string
 }
 
 export interface IStocksLostBarn {

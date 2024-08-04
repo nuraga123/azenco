@@ -38,9 +38,9 @@ const AddBarn: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
   const [isFromLocationValid, setIsFromLocationValid] = useState<boolean>(false)
   const [isToLocationValid, setIsToLocationValid] = useState<boolean>(false)
 
-  const [newStock, setNewStock] = useState<string>('0')
-  const [usedStock, setUsedStock] = useState<string>('0')
-  const [brokenStock, setBrokenStock] = useState<string>('0')
+  const [newStock, setNewStock] = useState<string>('')
+  const [usedStock, setUsedStock] = useState<string>('')
+  const [brokenStock, setBrokenStock] = useState<string>('')
 
   const [stockError, setStockError] = useState<string>('')
   const [isStockValid, setIsStockValid] = useState<boolean>(false)
@@ -52,21 +52,30 @@ const AddBarn: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
       let isValid = true
 
       if (senderName.length <= 3) {
-        setSenderNameError('3 simvolunun daxil etməlisiniz.')
+        setSenderNameError('şəxsin adı 3 simvolunun daxil etməlisiniz.')
         setIsSenderNameValid(false)
         isValid = false
+      } else {
+        setSenderNameError('')
+        setIsSenderNameValid(true)
       }
 
       if (driverName.length <= 3) {
-        setDriverNameError('3 simvolunun daxil etməlisiniz.')
+        setDriverNameError('Sürücü adı  3 simvolunun daxil etməlisiniz.')
         setIsDriverNameValid(false)
         isValid = false
+      } else {
+        setDriverNameError('')
+        setIsDriverNameValid(true)
       }
 
-      if (carNumber.length <= 3) {
-        setCarNumberError('3 simvolunun daxil etməlisiniz.')
+      if (carNumber.length <= 5) {
+        setCarNumberError('Maşının nömrəsi  5 simvolunun daxil etməlisiniz.')
         setIsCarNumberValid(false)
         isValid = false
+      } else {
+        setCarNumberError('')
+        setIsCarNumberValid(true)
       }
 
       // Проверка даты
@@ -208,15 +217,10 @@ const AddBarn: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
   return (
     <div className={styles.barn_form}>
       <form className={styles.form} onSubmit={onSubmit}>
-        {locationError && (
-          <div style={{ color: 'red', textAlign: 'center' }}>
-            {locationError}
-          </div>
-        )}
         {/* senderName */}
         <div className={styles.form__locations}>
           <div className={styles.form_group}>
-            <div style={{ color: 'red' }}>şəxsin adı {senderNameError}</div>
+            <div style={{ color: 'red' }}>{senderNameError}</div>
             <label>
               Materialı sizə göndərən şəxsin adı
               {handleIconSwitch(isSenderNameValid)}
@@ -237,7 +241,7 @@ const AddBarn: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
         {/* driverName  2 */}
         <div className={styles.form__locations}>
           <div className={styles.form_group}>
-            <div style={{ color: 'red' }}>Sürücü adı {driverNameError}</div>
+            <div style={{ color: 'red' }}>{driverNameError}</div>
             <label>
               Sürücü adı
               {handleIconSwitch(isDriverNameValid)}
@@ -258,7 +262,7 @@ const AddBarn: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
         {/* carNumber  3 */}
         <div className={styles.form__locations}>
           <div className={styles.form_group}>
-            <div style={{ color: 'red' }}>Maşının nömrəsi {carNumberError}</div>
+            <div style={{ color: 'red' }}>{carNumberError}</div>
             <label>
               Maşının nömrəsi 🚛
               {handleIconSwitch(isCarNumberValid)}
@@ -277,6 +281,12 @@ const AddBarn: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
         </div>
 
         {/* bed */}
+
+        {locationError && (
+          <div style={{ color: 'red', textAlign: 'center' }}>
+            {locationError}
+          </div>
+        )}
         <div className={styles.form__locations}>
           <div className={styles.form_group}>
             <label>
@@ -367,7 +377,7 @@ const AddBarn: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
         <div className={styles.form_group}>
           {dateError && <div style={{ color: 'red' }}>{dateError}</div>}
           <label htmlFor="userSelectedDate">
-            Alınma tarix?
+            Materialın qəbul tarixi və vaxtı
             {handleIconSwitch(isDateValid)}
           </label>
           <input

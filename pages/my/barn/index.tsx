@@ -36,7 +36,13 @@ const MyBarn = () => {
       setLoading(true)
       try {
         const data = await getBarnByUserId(userIdResult)
-        if (data) setBarn({ ...data })
+        if (data.message === `Нетy Амбаров !`) {
+          toast.warning('Material yoxdur')
+          return
+        } else {
+          setBarn({ ...data })
+          return
+        }
       } catch (error) {
         toast.error((error as Error).message)
         console.log((error as Error).message)
@@ -68,9 +74,13 @@ const MyBarn = () => {
         <h1 className={styles.barn__title}>Anbardar: {username}</h1>
       </div>
 
-      <div className={styles.barn__wrapper_table}>
-        <BarnTable barn={barn} />
-      </div>
+      {barn?.barns?.length ? (
+        <div className={styles.barn__wrapper_table}>
+          <BarnTable barn={barn} />
+        </div>
+      ) : (
+        'Material yoxdur'
+      )}
     </Layout>
   )
 }

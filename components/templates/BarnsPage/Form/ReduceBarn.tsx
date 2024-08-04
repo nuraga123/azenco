@@ -4,7 +4,7 @@ import { TiTick, TiTimes } from 'react-icons/ti'
 import { toast } from 'react-toastify'
 
 import { dateFormater } from '@/utils/dateFormater'
-import { IBarnItem, IStocksBarn } from '@/types/barn'
+import { IBarnItem, IStocksReduceBarn } from '@/types/barn'
 import { getBarnById, postReduceStocksBarn } from '@/app/api/barn'
 import ReduceMaterialComponent from '../MaterialComponent/ReduceMaterial'
 
@@ -12,6 +12,23 @@ import styles from '@/styles/barn/form/index.module.scss'
 import spinnerStyles from '@/styles/spinner/index.module.scss'
 
 const ReduceBarn: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
+  // add
+  const [recipientName, setRecipientName] = useState<string>('')
+  const [recipientNameError, setRecipientNameError] = useState<string>('')
+  const [isRecipientNameValid, setIsRecipientNameValid] =
+    useState<boolean>(false)
+  // car
+  // const [isAze, setIsAze] = useState<'yes' | 'no' | ''>('')
+  // const [isOpenAze, setIsOpenAze] = useState(true)
+  const [driverName, setDriverName] = useState<string>('')
+  const [driverNameError, setDriverNameError] = useState<string>('')
+  const [isDriverNameValid, setIsDriverNameValid] = useState<boolean>(false)
+
+  const [carNumber, setCarNumber] = useState<string>('')
+  const [carNumberError, setCarNumberError] = useState<string>('')
+  const [isCarNumberValid, setIsCarNumberValid] = useState<boolean>(false)
+
+  //
   const router = useRouter()
   const [spinner, setSpinner] = useState<boolean>(false)
   const [barnData, setBarnData] = useState({} as IBarnItem)
@@ -25,9 +42,9 @@ const ReduceBarn: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
   const [isFromLocationValid, setIsFromLocationValid] = useState<boolean>(false)
   const [isToLocationValid, setIsToLocationValid] = useState<boolean>(false)
 
-  const [newStock, setNewStock] = useState<string>('0')
-  const [usedStock, setUsedStock] = useState<string>('0')
-  const [brokenStock, setBrokenStock] = useState<string>('0')
+  const [newStock, setNewStock] = useState<string>('')
+  const [usedStock, setUsedStock] = useState<string>('')
+  const [brokenStock, setBrokenStock] = useState<string>('')
 
   const [stockError, setStockError] = useState<string>('')
   const [isStockValid, setIsStockValid] = useState<boolean>(false)
@@ -38,14 +55,47 @@ const ReduceBarn: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
     const validateForm = () => {
       let isValid = true
 
-      // Проверка даты
-      if (dateFormater(userSelectedDate) === 'Invalid Date') {
-        setDateError('Yanlış Tarix')
-        setIsDateValid(false)
+      if (recipientName.length <= 3) {
+        setRecipientNameError('şəxsin adı 3 simvolunun daxil etməlisiniz.')
+        setIsRecipientNameValid(false)
         isValid = false
       } else {
-        setDateError('')
-        setIsDateValid(true)
+        setRecipientNameError('')
+        setIsRecipientNameValid(true)
+      }
+
+      if (driverName.length <= 3) {
+        setDriverNameError('Sürücü adı  3 simvolunun daxil etməlisiniz.')
+        setIsDriverNameValid(false)
+        isValid = false
+      } else {
+        setDriverNameError('')
+        setIsDriverNameValid(true)
+      }
+
+      if (carNumber.length <= 5) {
+        setCarNumberError('Maşının nömrəsi  5 simvolunun daxil etməlisiniz.')
+        setIsCarNumberValid(false)
+        isValid = false
+      } else {
+        setCarNumberError('')
+        setIsCarNumberValid(true)
+      }
+
+      // Проверка даты
+      if (userSelectedDate) {
+        if (dateFormater(userSelectedDate) === 'Invalid Date') {
+          setDateError('Yanlış Tarix')
+          setIsDateValid(false)
+          isValid = false
+        } else {
+          setDateError('')
+          setIsDateValid(true)
+        }
+      } else {
+        setDateError('Lütfən, tarix daxil edin.')
+        setIsDateValid(false)
+        isValid = false
       }
 
       // Проверка местоположений
@@ -58,7 +108,7 @@ const ReduceBarn: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
         setIsFromLocationValid(true)
       }
 
-      if (toLocation.trim() === '') {
+      if (toLocation.length < 3) {
         setLocationError('Lütfən, hər iki ünvanı daxil edin.')
         setIsToLocationValid(false)
         isValid = false
@@ -71,22 +121,20 @@ const ReduceBarn: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
       const totalStock = +newStock + +usedStock + +brokenStock
 
       if (totalStock <= 0) {
-        setStockError('Ən azı 1 ədəd material yazın !')
+        setStockError('0-dan çox yazın!')
         setIsStockValid(false)
         isValid = false
       } else if (+newStock > +barnData.newStock) {
-        setStockError('Anbardan daha çox yeni material götürdünüz !')
+        setStockError('Yeni material olduğundan çoxunu götürdünüz!')
         setIsStockValid(false)
       } else if (+usedStock > +barnData.usedStock) {
         isValid = false
         setIsStockValid(false)
-        setStockError(
-          'Anbardan daha çox istifadə edilmiş material götürdünüz !'
-        )
+        setStockError('istifadə edilmiş material olduğundan çoxunu götürdünüz!')
         setIsStockValid(false)
         isValid = false
       } else if (+brokenStock > +barnData.brokenStock) {
-        setStockError('Anbardan daha yararsız material götürdünüz !')
+        setStockError('Yararsız material olduğundan çoxunu götürdünüz!')
         setIsStockValid(false)
         isValid = false
       } else if (isNaN(+newStock) || isNaN(+usedStock) || isNaN(+brokenStock)) {
@@ -113,6 +161,9 @@ const ReduceBarn: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
     barnData.newStock,
     barnData.usedStock,
     barnData.brokenStock,
+    recipientName.length,
+    driverName.length,
+    carNumber.length,
   ])
 
   useEffect(() => {
@@ -146,7 +197,7 @@ const ReduceBarn: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    const formData: IStocksBarn = {
+    const formData: IStocksReduceBarn = {
       barnId,
       userSelectedDate: dateFormater(userSelectedDate),
       fromLocation,
@@ -154,6 +205,9 @@ const ReduceBarn: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
       newStock: +newStock,
       usedStock: +usedStock,
       brokenStock: +brokenStock,
+      recipientName,
+      driverName,
+      carNumber,
     }
 
     console.log(formData)
@@ -188,11 +242,75 @@ const ReduceBarn: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
   return (
     <div className={styles.barn_form}>
       <form className={styles.form} onSubmit={onSubmit}>
+        {/* senderName */}
+        <div className={styles.form__locations}>
+          <div className={styles.form_group}>
+            <div style={{ color: 'red' }}>{recipientNameError}</div>
+            <label>
+              {`Materialı kimə göndərirsiniz ? (alıcının adını yazın)`}
+              {handleIconSwitch(isRecipientNameValid)}
+            </label>
+
+            <input
+              className={styles.form_group__adress}
+              required
+              type="text"
+              value={recipientName}
+              onChange={(e) =>
+                handleInputChange(e, setRecipientName, setIsRecipientNameValid)
+              }
+            />
+          </div>
+        </div>
+
+        {/* driverName  2 */}
+        <div className={styles.form__locations}>
+          <div className={styles.form_group}>
+            <div style={{ color: 'red' }}>{driverNameError}</div>
+            <label>
+              Sürücü adı
+              {handleIconSwitch(isDriverNameValid)}
+            </label>
+
+            <input
+              className={styles.form_group__adress}
+              required
+              type="text"
+              value={driverName}
+              onChange={(e) =>
+                handleInputChange(e, setDriverName, setIsDriverNameValid)
+              }
+            />
+          </div>
+        </div>
+
+        {/* carNumber  3 */}
+        <div className={styles.form__locations}>
+          <div className={styles.form_group}>
+            <div style={{ color: 'red' }}>{carNumberError}</div>
+            <label>
+              Maşının nömrəsi 🚛
+              {handleIconSwitch(isCarNumberValid)}
+            </label>
+
+            <input
+              className={styles.form_group__adress}
+              required
+              type="text"
+              value={carNumber}
+              onChange={(e) =>
+                handleInputChange(e, setCarNumber, setIsCarNumberValid)
+              }
+            />
+          </div>
+        </div>
+
         {locationError && (
           <div style={{ color: 'red', textAlign: 'center' }}>
             {locationError}
           </div>
         )}
+
         <div className={styles.form__locations}>
           <div className={styles.form_group}>
             <label>
@@ -294,12 +412,12 @@ const ReduceBarn: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
             </div>
           )}
         </div>
-
         {/* дата */}
         <div className={styles.form_group}>
           {dateError && <div style={{ color: 'red' }}>{dateError}</div>}
           <label htmlFor="userSelectedDate">
-            Materialı nə vaxt göndərmisiniz ?{handleIconSwitch(isDateValid)}
+            Materialın göndərilmə tarixi və vaxtı
+            {handleIconSwitch(isDateValid)}
           </label>
           <input
             className={styles.form_group__date}

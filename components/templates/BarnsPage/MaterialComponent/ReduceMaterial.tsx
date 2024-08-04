@@ -89,7 +89,7 @@ const ReduceMaterial = ({
     console.log('sum')
     console.log(sum)
 
-    return +sum * +price
+    return Number(+sum * +price).toFixed(2)
   }
 
   const TableBarnElement = ({
@@ -173,22 +173,22 @@ const ReduceMaterial = ({
           <TableBarnElement
             title={'Yeni məbləğ'}
             value={+newTotalPrice}
-            dynamicValue={dynamicPrice(+newStock, newStockDynamic)}
+            dynamicValue={+dynamicPrice(+newStock, +newStockDynamic)}
           />
           <TableBarnElement
             title={'İstifadə olunmuş məbləğ'}
             value={+usedTotalPrice}
-            dynamicValue={dynamicPrice(+usedStock, usedStockDynamic)}
+            dynamicValue={+dynamicPrice(+usedStock, +usedStockDynamic)}
           />
           <TableBarnElement
             title={'Zədələnmiş məbləğ'}
             value={+brokenTotalPrice}
-            dynamicValue={dynamicPrice(+brokenStock, brokenStockDynamic)}
+            dynamicValue={+dynamicPrice(+brokenStock, +brokenStockDynamic)}
           />
           <TableBarnElement
             title={'Ümumi məbləğ'}
             value={+totalPrice}
-            dynamicValue={dynamicPrice(+totalStockResult, 0)}
+            dynamicValue={+dynamicPrice(+totalStockResult, 0)}
           />
         </tbody>
       </table>

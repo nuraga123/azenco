@@ -24,6 +24,9 @@ function BanrnUserIdPage() {
     ? router.query.userId[0]
     : router.query.userId || '0'
 
+  console.log('userId')
+  console.log(userId)
+
   const [loading, setLoading] = useState(true)
 
   const [barn, setBarn] = useState<IBarnResponse>({
@@ -36,12 +39,15 @@ function BanrnUserIdPage() {
   const { id, username } = useStore($user)
   const { userIdStorage } = getLocalStorageUser()
   const userIdResult = +id || +userIdStorage || 0
+  console.log('userIdResult')
+  console.log(userIdResult)
 
   useEffect(() => {
     const getAnbarServer = async () => {
       setLoading(true)
       try {
-        const data = await getBarnByUserId(userIdResult)
+        const data = await getBarnByUserId(+userId)
+        console.log(data)
         if (data) setBarn({ ...data })
       } catch (error) {
         toast.error((error as Error).message)
@@ -52,7 +58,7 @@ function BanrnUserIdPage() {
     }
 
     getAnbarServer()
-  }, [userIdResult])
+  }, [userId, userIdResult])
 
   // Отображаем спиннер, если происходит загрузка или контент не должен загружаться
   if (loading || !shouldLoadContent) {
