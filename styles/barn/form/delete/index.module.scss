@@ -4,8 +4,8 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5); /* Черный цвет с прозрачностью */
-  z-index: 999; /* Задает слой ниже модального окна */
+  background-color: rgba(0, 0, 0, 0.671);
+  z-index: 999;
 }
 
 .wrapper__btn {
@@ -95,26 +95,24 @@
   }
 }
 
-// styles/barn/index.module.scss
-
 .deleteModal {
   position: fixed;
-  top: 50%;
+  top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: #fff;
-  padding: 20px;
+  background-color: #efa;
+  padding: 40px 20px 10px 20px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   z-index: 1000;
-  width: 300px;
+  width: 400px;
   text-align: center;
 }
 
 .deleteModal h3 {
   font-size: 1.25rem;
   color: #333;
-  margin-bottom: 20px;
+  margin-bottom: 40px;  
 }
 
 .deleteModal__actions {

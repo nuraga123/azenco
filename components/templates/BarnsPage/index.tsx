@@ -7,6 +7,7 @@ import { getBarnsUsernameFx } from '@/app/api/barn'
 
 import spinnerStyles from '@/styles/spinner/index.module.scss'
 import styles from '@/styles/anbar/index.module.scss'
+import BackBtn from '@/components/elements/btn/BackBtn'
 
 const BarnsPage = () => {
   const [spinner, setSpinner] = useState<boolean>(false)
@@ -35,6 +36,7 @@ const BarnsPage = () => {
 
   return (
     <div className={styles.anbar}>
+      <BackBtn />
       <h1 className={styles.title}>Anbar Səhifəsi</h1>
       <div className={styles.anbar__items}>
         {spinner ? (

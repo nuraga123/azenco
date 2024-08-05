@@ -1,69 +1,49 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import Link from 'next/link'
 import { toast } from 'react-toastify'
-import { useStore } from 'effector-react'
 
 import { getBarnByUserId } from '@/app/api/barn'
 import Layout from '@/components/layout/Layout'
-import BarnTable from '@/components/modules/Barn/Table/BarnTable'
-import { $user } from '@/context/user'
-import useRedirectByUserCheck from '@/hooks/useRedirectByUserCheck'
-import { getLocalStorageUser } from '@/localStorageUser'
-import { IBarnResponse } from '@/types/barn'
+import BackBtn from '@/components/elements/btn/BackBtn'
+import { IBarnItem } from '@/types/barn'
 
 import spinnerStyles from '@/styles/spinner/index.module.scss'
-import styles from '@/styles/barn/table/index.module.scss'
-import '@/styles/globals.css'
+import styles from '@/styles/barn/order/index.module.scss'
 
-function BanrnUserIdPage() {
-  const { shouldLoadContent } = useRedirectByUserCheck()
+function BarnUserIdPage() {
   const router = useRouter()
-
-  const userId = Array.isArray(router.query.userId)
-    ? router.query.userId[0]
-    : router.query.userId || '0'
-
-  console.log('userId')
-  console.log(userId)
+  const userId = Number(router.query.userId) || 0
 
   const [loading, setLoading] = useState(true)
-
-  const [barn, setBarn] = useState<IBarnResponse>({
+  const [userBarnsData, setUserBarnsData] = useState<{
+    barns: IBarnItem[]
+    error__message: ''
+    message: ''
+  }>({
     barns: [],
+    error__message: '',
     message: '',
-    error_message: '',
   })
 
-  // Получаем ID пользовате
-  const { id, username } = useStore($user)
-  const { userIdStorage } = getLocalStorageUser()
-  const userIdResult = +id || +userIdStorage || 0
-  console.log('userIdResult')
-  console.log(userIdResult)
-
   useEffect(() => {
-    const getAnbarServer = async () => {
+    const fetchBarns = async () => {
       setLoading(true)
       try {
-        const data = await getBarnByUserId(+userId)
-        console.log(data)
-        if (data) setBarn({ ...data })
+        const data = await getBarnByUserId(userId)
+        if (data && data.barns) setUserBarnsData(data)
       } catch (error) {
         toast.error((error as Error).message)
-        console.log((error as Error).message)
       } finally {
         setLoading(false)
       }
     }
 
-    getAnbarServer()
-  }, [userId, userIdResult])
+    fetchBarns()
+  }, [userId])
 
-  // Отображаем спиннер, если происходит загрузка или контент не должен загружаться
-  if (loading || !shouldLoadContent) {
+  if (loading) {
     return (
-      <Layout title={`Anbar | ${username}`}>
+      <Layout title="Anbar">
         <div
           className={spinnerStyles.spinner}
           style={{ width: '100px', height: '100px', top: '40%' }}
@@ -73,34 +53,62 @@ function BanrnUserIdPage() {
   }
 
   return (
-    <>
-      {shouldLoadContent && (
-        <Layout title={'Anbar'}>
-          <h1 className={styles.barn__title}>Anbardar: {username}</h1>
-          {+userId && barn ? (
-            <BarnTable barn={barn} />
-          ) : (
-            <div
-              style={{
-                margin: '10px auto',
-                width: 300,
-                height: 100,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-              }}
-            >
-              <h1>Анбар не найден</h1>
-              <Link href={'/my'}>
-                <button>Вернитесь в свой анбар</button>
-              </Link>
-            </div>
-          )}
-        </Layout>
+    <Layout title="Anbar">
+      <BackBtn />
+      <h1 className={styles.barn__title}>
+        Anbardar:{' '}
+        {userBarnsData?.barns?.length > 0
+          ? userBarnsData.barns[0]?.username
+          : 'yoxdur'}
+      </h1>
+      {userBarnsData?.barns?.length > 0 ? (
+        <table className={styles.barnTable}>
+          <thead>
+            <tr>
+              <th className={styles.wrapper__btn}>Sifariş</th>
+              <th className={styles.azencoCode}>Azenco Kodu</th>
+              <th className={styles.name}>Məhsulun adı</th>
+              <th>Yeni miqdarı</th>
+              <th>İşlənmiş miqdarı</th>
+              <th>Yararsız miqdarı</th>
+              <th>Ümumi miqdar</th>
+              <th>Qiymət</th>
+              <th>Yerləşmə</th>
+            </tr>
+          </thead>
+          <tbody>
+            {userBarnsData?.barns?.map((barn: IBarnItem) => (
+              <tr key={barn.id}>
+                <td className={styles.wrapper__btn}>
+                  <button onClick={() => console.log('Order')}>
+                    sifariş edin
+                  </button>
+                </td>
+                <td className={styles.azencoCode}>{barn?.azencoCode}</td>
+                <td className={styles.name}>
+                  <b>{barn?.productName}</b>
+                </td>
+                <td>{+barn?.newStock === 0 ? 'yoxdur' : +barn?.newStock}</td>
+                <td>{+barn?.usedStock === 0 ? 'yoxdur' : +barn?.usedStock}</td>
+                <td>
+                  {+barn?.brokenStock === 0 ? 'yoxdur' : +barn?.brokenStock}
+                </td>
+                <td>
+                  <b>{+barn?.totalStock}</b>
+                </td>
+                <td>
+                  <b>{+barn?.price}</b>
+                </td>
+                <td>{barn?.location}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <div>Анбар не найден</div>
       )}
-    </>
+    </Layout>
   )
 }
 
-export default BanrnUserIdPage
+export default BarnUserIdPage
