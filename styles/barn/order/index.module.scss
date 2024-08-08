@@ -1,3 +1,13 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.671);
+  z-index: 999;
+}
+
 .barnTable {
   width: 100%;
   border-collapse: collapse;
@@ -56,4 +66,125 @@
       background-color: #45a049;
     }
   }
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #ffffff;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  z-index: 1000;
+  width: 400px;
+  max-width: 90%;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333333;
+}
+
+.modal form {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal label {
+  font-size: 16px;
+  margin-bottom: 8px;
+  color: #555555;
+}
+
+.modal input {
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  margin: 15px 5px;
+}
+
+.modal input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.no_stocks {
+  background-color: yellow;
+  padding: 10px;
+  border-radius: 10px;
+  text-align: center;
+  margin: 10px;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.modal button {
+  padding: 10px;
+  font-size: 18px;
+  border: none;
+  border-radius: 5px;
+  color: #ffffff;
+  background-color: #007bff;
+  cursor: pointer;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  width: max-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px;
+
+  &:disabled {
+    color: #000000;
+    background-color: #555555;
+  }
+}
+
+.modal button[type='button'] {
+  border-radius: 50%;
+  background-color: red;
+  color: #fff;
+  border: 1px solid;
+}
+
+.modal button:hover {
+  background-color: #0056b3;
+}
+
+.modal button[type='button']:hover {
+  background-color: rgb(255, 255, 255);
+  color: #ff0000;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.key {
+  font-weight: bold;
+  color: #333;
+  flex: 1;
+}
+
+.value {
+  flex: 2;
+  text-align: right;
+  color: #555;
 }

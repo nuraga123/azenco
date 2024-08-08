@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
+import { GrClose } from 'react-icons/gr'
 
 import { getBarnByUserId } from '@/app/api/barn'
 import Layout from '@/components/layout/Layout'
 import BackBtn from '@/components/elements/btn/BackBtn'
-import { IBarnItem } from '@/types/barn'
+import { IBarnItem, IBarnResponse } from '@/types/barn'
 
 import spinnerStyles from '@/styles/spinner/index.module.scss'
 import styles from '@/styles/barn/order/index.module.scss'
@@ -15,15 +16,18 @@ function BarnUserIdPage() {
   const userId = Number(router.query.userId) || 0
 
   const [loading, setLoading] = useState(true)
-  const [userBarnsData, setUserBarnsData] = useState<{
-    barns: IBarnItem[]
-    error__message: ''
-    message: ''
-  }>({
+  const [userBarnsData, setUserBarnsData] = useState<IBarnResponse>({
     barns: [],
-    error__message: '',
+    error_message: '',
     message: '',
   })
+
+  const [toggleModal, setToggleModal] = useState(false)
+  const [orderBarn, setOrderBarn] = useState<IBarnItem | null>(null)
+  const [newStock, setNewStock] = useState('')
+  const [usedStock, setUsedStock] = useState('')
+  const [brokenStock, setBrokenStock] = useState('')
+  const [isDisabled, setIsDisabled] = useState(true)
 
   useEffect(() => {
     const fetchBarns = async () => {
@@ -40,6 +44,72 @@ function BarnUserIdPage() {
 
     fetchBarns()
   }, [userId])
+
+  useEffect(() => {
+    if (orderBarn) {
+      const totalQuantity =
+        (+newStock || 0) + (+usedStock || 0) + (+brokenStock || 0)
+      setIsDisabled(totalQuantity <= 0)
+    }
+  }, [newStock, usedStock, brokenStock, orderBarn])
+
+  const handleNewStockChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = Number(e.target.value)
+    if (value < 0) {
+      toast.error('0-dan az ola bilməz')
+      return
+    }
+    if (orderBarn && value > +orderBarn.newStock) {
+      toast.error('mövcud ehtiyatı keçir')
+      return
+    }
+    setNewStock(value.toString())
+  }
+
+  const handleUsedStockChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = Number(e.target.value)
+    if (value < 0) {
+      toast.error('0-dan az ola bilməz')
+      return
+    }
+    if (orderBarn && value > +orderBarn.usedStock) {
+      toast.error('mövcud ehtiyatı keçir')
+      return
+    }
+    setUsedStock(value.toString())
+  }
+
+  const handleBrokenStockChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = Number(e.target.value)
+    if (value < 0) {
+      toast.error('0-dan az ola bilməz')
+      return
+    }
+    if (orderBarn && value > +orderBarn.brokenStock) {
+      toast.error('mövcud ehtiyatı keçir')
+      return
+    }
+    setBrokenStock(value.toString())
+  }
+
+  const handleOrderSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    if (orderBarn) {
+      const newNewStock = Math.max(+orderBarn.newStock - +newStock, 0)
+      const newUsedStock = Math.max(+orderBarn.usedStock - +usedStock, 0)
+      const newBrokenStock = Math.max(+orderBarn.brokenStock - +brokenStock, 0)
+
+      setOrderBarn({
+        ...orderBarn,
+        newStock: `${newNewStock}`,
+        usedStock: `${newUsedStock}`,
+        brokenStock: `${newBrokenStock}`,
+      })
+
+      setToggleModal(false)
+      toast.success('Order placed successfully!')
+    }
+  }
 
   if (loading) {
     return (
@@ -80,7 +150,15 @@ function BarnUserIdPage() {
             {userBarnsData?.barns?.map((barn: IBarnItem) => (
               <tr key={barn.id}>
                 <td className={styles.wrapper__btn}>
-                  <button onClick={() => console.log('Order')}>
+                  <button
+                    onClick={() => {
+                      setOrderBarn(barn)
+                      setNewStock('')
+                      setUsedStock('')
+                      setBrokenStock('')
+                      setToggleModal(true)
+                    }}
+                  >
                     sifariş edin
                   </button>
                 </td>
@@ -106,6 +184,143 @@ function BarnUserIdPage() {
         </table>
       ) : (
         <div>Анбар не найден</div>
+      )}
+
+      {toggleModal && orderBarn && (
+        <div className={styles.overlay}>
+          <div className={styles.modal}>
+            <div className={styles.header}>
+              <h1>Sifariş Forması</h1>
+              <button type="button" onClick={() => setToggleModal(false)}>
+                <GrClose className={styles.icon} />
+              </button>
+            </div>
+
+            <div>
+              <main>
+                <div className={styles.row}>
+                  <div className={styles.key}>Azenco Kodu:</div>
+                  <div className={styles.value}>{orderBarn?.azencoCode}</div>
+                </div>
+                <div className={styles.row}>
+                  <div className={styles.key}>Məhsulun adı:</div>
+                  <div className={styles.value}>
+                    <b>{orderBarn?.productName}</b>
+                  </div>
+                </div>
+                <div className={styles.row}>
+                  <div className={styles.key}>Yeni miqdarı:</div>
+                  <div className={styles.value}>
+                    {+orderBarn?.newStock === 0
+                      ? 'yoxdur'
+                      : +orderBarn?.newStock}
+                  </div>
+                </div>
+                <div className={styles.row}>
+                  <div className={styles.key}>İşlənmiş miqdarı:</div>
+                  <div className={styles.value}>
+                    {+orderBarn?.usedStock === 0
+                      ? 'yoxdur'
+                      : +orderBarn?.usedStock}
+                  </div>
+                </div>
+                <div className={styles.row}>
+                  <div className={styles.key}>Yararsız miqdarı:</div>
+                  <div className={styles.value}>
+                    {+orderBarn?.brokenStock === 0
+                      ? 'yoxdur'
+                      : +orderBarn?.brokenStock}
+                  </div>
+                </div>
+                <div className={styles.row}>
+                  <div className={styles.key}>Ümumi miqdar:</div>
+                  <div className={styles.value}>
+                    <b>{+orderBarn?.totalStock}</b>
+                  </div>
+                </div>
+                <div className={styles.row}>
+                  <div className={styles.key}>Qiymət:</div>
+                  <div className={styles.value}>
+                    <b>{+orderBarn?.price}</b>
+                  </div>
+                </div>
+                <div className={styles.row}>
+                  <div className={styles.key}>Yerləşmə:</div>
+                  <div className={styles.value}>{orderBarn?.location}</div>
+                </div>
+              </main>
+
+              <form onSubmit={handleOrderSubmit}>
+                {+orderBarn.newStock > 0 ? (
+                  <div>
+                    <label>
+                      Yeni miqdarı ({+orderBarn.newStock} mövcuddur)
+                    </label>
+                    <input
+                      type="number"
+                      value={newStock}
+                      onChange={handleNewStockChange}
+                      min="0"
+                    />
+                  </div>
+                ) : (
+                  <div className={styles.no_stocks}>
+                    yeni materiallar yoxdur
+                  </div>
+                )}
+
+                {+orderBarn.usedStock > 0 ? (
+                  <div>
+                    <label>
+                      İşlənmiş miqdarı ({+orderBarn.usedStock} mövcuddur)
+                    </label>
+                    <input
+                      type="number"
+                      value={usedStock}
+                      onChange={handleUsedStockChange}
+                      min="0"
+                    />
+                  </div>
+                ) : (
+                  <div className={styles.no_stocks}>
+                    işlənmiş materiallar yoxdur
+                  </div>
+                )}
+
+                {+orderBarn.brokenStock > 0 ? (
+                  <div>
+                    <label>
+                      Yararsız miqdarı ({+orderBarn.brokenStock} mövcuddur)
+                    </label>
+                    <input
+                      type="number"
+                      value={brokenStock}
+                      onChange={handleBrokenStockChange}
+                      min="0"
+                    />
+                  </div>
+                ) : (
+                  <div className={styles.no_stocks}>
+                    yararsız materiallar yoxdur
+                  </div>
+                )}
+
+                <div>
+                  <h1>
+                    <label>{`Ümumi miqdar: `}</label>
+                    {(+newStock || 0) +
+                      (+usedStock || 0) +
+                      (+brokenStock || 0)}{' '}
+                    {orderBarn.unit}
+                  </h1>
+                </div>
+                <button type="submit" disabled={isDisabled}>
+                  Sifarişi təsdiqlə
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
       )}
     </Layout>
   )
