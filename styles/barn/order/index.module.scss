@@ -78,8 +78,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
   z-index: 1000;
-  width: 400px;
-  max-width: 90%;
+  height: 550px;
 }
 
 .header {
@@ -94,15 +93,29 @@
   color: #333333;
 }
 
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 10px;
+}
+
 .modal form {
   display: flex;
   flex-direction: column;
+  border: 1px solid #333333;
+  border-radius: 10px;
+  padding: 10px;
+  width: 100%;
+  max-width: 300px;
+  margin-left: 40px;
 }
 
 .modal label {
   font-size: 16px;
   margin-bottom: 8px;
   color: #555555;
+  text-align: center;
 }
 
 .modal input {
@@ -170,21 +183,28 @@
   display: flex;
   justify-content: space-between;
   padding: 10px;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #b3b3b3;
+  align-items: center;
+  white-space: nowrap;
 
   &:last-child {
     border-bottom: none;
   }
 }
 
+.main {
+  width: 100%;
+  max-width: 300px;
+  border: 1px solid #333333;
+  border-radius: 10px;
+}
+
 .key {
   font-weight: bold;
   color: #333;
-  flex: 1;
 }
 
 .value {
-  flex: 2;
   text-align: right;
   color: #555;
 }

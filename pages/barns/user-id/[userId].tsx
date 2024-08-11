@@ -196,8 +196,8 @@ function BarnUserIdPage() {
               </button>
             </div>
 
-            <div>
-              <main>
+            <div className={styles.wrapper}>
+              <main className={styles.main}>
                 <div className={styles.row}>
                   <div className={styles.key}>Azenco Kodu:</div>
                   <div className={styles.value}>{orderBarn?.azencoCode}</div>
@@ -257,7 +257,7 @@ function BarnUserIdPage() {
                       Yeni miqdarı ({+orderBarn.newStock} mövcuddur)
                     </label>
                     <input
-                      type="number"
+                      type="text"
                       value={newStock}
                       onChange={handleNewStockChange}
                       min="0"
@@ -275,7 +275,7 @@ function BarnUserIdPage() {
                       İşlənmiş miqdarı ({+orderBarn.usedStock} mövcuddur)
                     </label>
                     <input
-                      type="number"
+                      type="text"
                       value={usedStock}
                       onChange={handleUsedStockChange}
                       min="0"
@@ -293,7 +293,7 @@ function BarnUserIdPage() {
                       Yararsız miqdarı ({+orderBarn.brokenStock} mövcuddur)
                     </label>
                     <input
-                      type="number"
+                      type="text"
                       value={brokenStock}
                       onChange={handleBrokenStockChange}
                       min="0"
