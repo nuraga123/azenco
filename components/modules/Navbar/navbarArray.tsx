@@ -5,6 +5,7 @@ import {
   AiOutlineHistory,
   AiOutlinePhone,
   AiOutlineFieldString,
+  AiOutlineShoppingCart,
 } from 'react-icons/ai'
 
 interface INavbarElement {
@@ -23,6 +24,11 @@ export const navbarArray: INavbarElement[] = [
     href: '/barns',
     title: 'Anbarlar',
     icon: <AiOutlineDatabase />,
+  },
+  {
+    href: '/orders',
+    title: 'Sifarişlər',
+    icon: <AiOutlineShoppingCart />,
   },
   {
     href: '/archive',

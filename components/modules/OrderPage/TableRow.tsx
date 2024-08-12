@@ -16,6 +16,7 @@ const TableRow: React.FC<TableRowProps> = ({ order }) => (
     <td className={styles.tableCell}>{order.price}</td>
     <td className={styles.tableCell}>{order.totalPrice}</td>
     <td className={styles.tableCell}>{order.unit}</td>
+    <td className={styles.tableCell}>{order.info}</td>
   </tr>
 )
 
