@@ -5,12 +5,11 @@ import { useStore } from 'effector-react'
 
 import { getOrders } from '@/app/api/order'
 import { $user } from '@/context/user'
-
-import styles from '@/styles/order/index.module.scss'
-
 import { IOrders } from '@/types/order'
 import OrderTable from '@/components/modules/OrderPage/OrderTable'
 import BackBtn from '@/components/elements/btn/BackBtn'
+
+import styles from '@/styles/order/index.module.scss'
 
 const OrderPage = () => {
   const user = useStore($user)

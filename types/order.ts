@@ -1,3 +1,5 @@
+import { IBarnItem } from './barn'
+
 export interface IOrderItem {
   id: number
   status: string
@@ -46,4 +48,27 @@ export type IOrdersResponse = IOrdersSuccess | IOrdersError
 export interface IOrders {
   orders?: IOrderItem[]
   error_message?: string
+}
+
+export interface IOrderBase {
+  newStock: string
+  usedStock: string
+  brokenStock: string
+  clientMessage: string
+  clientLocation: string
+  handleNewStockChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  handleUsedStockChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  handleBrokenStockChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  handleOrderSubmit: (e: React.FormEvent<HTMLFormElement>) => void
+  handleCLientLocationChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  handleClientMessageChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  isDisabled: boolean
+  spinner: boolean
+  errorsMessageArr: string[]
+}
+
+export interface IOrderModal extends IOrderBase {
+  currentBarn: IBarnItem
+  toggleModal: boolean
+  closeBtn: () => void
 }

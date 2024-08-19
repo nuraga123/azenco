@@ -1,92 +1,157 @@
 import React from 'react'
 import { GrClose } from 'react-icons/gr'
-import styles from '@/styles/barn/order/index.module.scss'
+
+import { IOrderModal } from '@/types/order'
+import ReduceMaterial from '@/components/templates/BarnsPage/MaterialComponent/ReduceMaterial'
 import OrderForm from './OrderForm'
-import { IBarnItem } from '@/types/barn'
+import styles from '@/styles/barn/order/index.module.scss'
 
-interface Props {
-  orderBarn: IBarnItem | null
-  toggleModal: boolean
-  setToggleModal: (value: boolean) => void
-  handleOrderSubmit: (e: React.FormEvent<HTMLFormElement>) => void
-  newStock: string
-  usedStock: string
-  brokenStock: string
-  handleNewStockChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-  handleUsedStockChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-  handleBrokenStockChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-  isDisabled: boolean
-}
-
-const OrderModal: React.FC<Props> = ({
-  orderBarn,
+const OrderModal: React.FC<IOrderModal> = ({
+  currentBarn,
   toggleModal,
-  setToggleModal,
+  closeBtn,
   handleOrderSubmit,
   newStock,
   usedStock,
   brokenStock,
+  clientLocation,
+  clientMessage,
+  handleCLientLocationChange,
+  handleClientMessageChange,
   handleNewStockChange,
   handleUsedStockChange,
   handleBrokenStockChange,
   isDisabled,
-}) =>
-  toggleModal &&
-  orderBarn && (
-    <div className={styles.overlay}>
-      <div className={styles.modal}>
-        <div className={styles.header}>
-          <h1>Sifariş Forması</h1>
-          <button type="button" onClick={() => setToggleModal(false)}>
-            <GrClose className={styles.icon} />
-          </button>
-        </div>
-        <div className={styles.wrapper}>
-          <main className={styles.main}>
-            <div className={styles.row}>
-              <div className={styles.key}>Azenco Kodu:</div>
-              <div className={styles.value}>{orderBarn.azencoCode}</div>
-            </div>
-            <div className={styles.row}>
-              <div className={styles.key}>Məhsulun adı:</div>
-              <div className={styles.value}>
-                <b>{orderBarn.productName}</b>
-              </div>
-            </div>
-            <div className={styles.row}>
-              <div className={styles.key}>Yeni miqdarı:</div>
-              <div className={styles.value}>
-                {+orderBarn.newStock === 0 ? 'yoxdur' : +orderBarn.newStock}
-              </div>
-            </div>
-            <div className={styles.row}>
-              <div className={styles.key}>İşlənmiş miqdarı:</div>
-              <div className={styles.value}>
-                {+orderBarn.usedStock === 0 ? 'yoxdur' : +orderBarn.usedStock}
-              </div>
-            </div>
-            <div className={styles.row}>
-              <div className={styles.key}>Yararsız miqdarı:</div>
-              <div className={styles.value}>
-                {+orderBarn.brokenStock === 0
-                  ? 'yoxdur'
-                  : +orderBarn.brokenStock}
-              </div>
-            </div>
-          </main>
-          <OrderForm
-            newStock={newStock}
-            usedStock={usedStock}
-            brokenStock={brokenStock}
-            handleNewStockChange={handleNewStockChange}
-            handleUsedStockChange={handleUsedStockChange}
-            handleBrokenStockChange={handleBrokenStockChange}
-            handleOrderSubmit={handleOrderSubmit}
-            isDisabled={isDisabled}
-          />
-        </div>
-      </div>
+  spinner,
+  errorsMessageArr,
+}) => {
+  console.log('')
+
+  /*
+  const RowComponent = ({
+    text,
+    values,
+  }: {
+    text: string
+    values: number | string | JSX.Element
+  }) => (
+    <div className={styles.row}>
+      <div className={styles.key}>{text}</div>
+      <div className={styles.value}>{values}</div>
     </div>
   )
+  */
+
+  return (
+    <div>
+      {toggleModal && currentBarn ? (
+        <div className={styles.overlay}>
+          <div className={styles.modal}>
+            <div className={styles.header}>
+              <h1>Sifariş Forması</h1>
+              <button
+                type="button"
+                onClick={closeBtn}
+                className={styles.btn__close}
+              >
+                <GrClose className={styles.icon} />
+              </button>
+            </div>
+            <div className={styles.wrapper}>
+              <main className={styles.main}>
+                <ReduceMaterial
+                  barn={currentBarn}
+                  newStockDynamic={+newStock}
+                  usedStockDynamic={+usedStock}
+                  brokenStockDynamic={+brokenStock}
+                />
+
+                {/*
+                <RowComponent text="Anbardar: " values={currentBarn.username} />
+
+                <RowComponent
+                  text="Məhsulun yeri: "
+                  values={currentBarn.location}
+                />
+
+                <RowComponent
+                  text="Azenco Kodu: "
+                  values={currentBarn.azencoCode}
+                />
+
+                <RowComponent
+                  text="Məhsulun adı: "
+                  values={currentBarn.productName}
+                />
+
+                <RowComponent
+                  text="Yeni miqdarı: "
+                  values={
+                    <b>
+                      {+currentBarn.newStock === 0
+                        ? 'yoxdur'
+                        : +currentBarn.newStock}
+                    </b>
+                  }
+                />
+
+                <RowComponent
+                  text="İşlənmiş miqdarı: "
+                  values={
+                    <b>
+                      {+currentBarn.usedStock === 0
+                        ? 'yoxdur'
+                        : +currentBarn.usedStock}
+                    </b>
+                  }
+                />
+
+                <RowComponent
+                  text="Yararsız miqdarı: "
+                  values={
+                    <b>
+                      {+currentBarn.brokenStock === 0
+                        ? 'yoxdur'
+                        : +currentBarn.brokenStock}
+                    </b>
+                  }
+                />
+
+                <RowComponent
+                  text="Ümümi miqdarı: "
+                  values={+currentBarn.totalStock}
+                />
+
+                <RowComponent text="ölçü vahidi: " values={currentBarn.unit} />
+
+                <RowComponent text="Qiymət: " values={+currentBarn.price} />
+              */}
+              </main>
+
+              <OrderForm
+                errorsMessageArr={errorsMessageArr}
+                spinner={spinner}
+                newStock={newStock}
+                usedStock={usedStock}
+                brokenStock={brokenStock}
+                handleNewStockChange={handleNewStockChange}
+                handleUsedStockChange={handleUsedStockChange}
+                handleBrokenStockChange={handleBrokenStockChange}
+                handleOrderSubmit={handleOrderSubmit}
+                isDisabled={isDisabled}
+                clientMessage={clientMessage}
+                clientLocation={clientLocation}
+                handleCLientLocationChange={handleCLientLocationChange}
+                handleClientMessageChange={handleClientMessageChange}
+              />
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div />
+      )}
+    </div>
+  )
+}
 
 export default OrderModal

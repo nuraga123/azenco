@@ -8,12 +8,13 @@ function BarnUserIdPage() {
   const { query } = useRouter()
   const { shouldLoadContent } = useRedirectByUserCheck()
 
-  console.log(query)
+  console.log(query.userId)
+  const userId = Number(query.userId)
 
   return (
     <>
       {shouldLoadContent ? (
-        <Layout title="Anbar">{<BarnPageOrder userId={11} />}</Layout>
+        <Layout title="Anbar">{<BarnPageOrder userId={userId} />}</Layout>
       ) : (
         <div />
       )}

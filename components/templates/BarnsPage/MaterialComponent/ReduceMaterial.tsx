@@ -37,11 +37,11 @@ const ReduceMaterial = ({
   } = barn
 
   const newStockResult = useMemo(() => {
-    if (+newStock - +newStockDynamic > -0.001) {
+    if (+newStock - +newStockDynamic > -0.01) {
       console.log(+newStock - +newStockDynamic)
       return +newStock - +newStockDynamic
     } else {
-      if (+newStockDynamic !== 0) {
+      if (+newStockDynamic > -0.01) {
         toast.warning('çox yeni material götürdünüz !')
       }
 
@@ -50,7 +50,7 @@ const ReduceMaterial = ({
   }, [newStock, newStockDynamic])
 
   const usedStockResult = useMemo(() => {
-    if (+usedStock - +usedStockDynamic > -0.001) {
+    if (+usedStock - +usedStockDynamic > -0.01) {
       return +usedStock - +usedStockDynamic
     } else {
       if (+usedStockDynamic !== 0) {
@@ -112,7 +112,7 @@ const ReduceMaterial = ({
           </b>
         ) : (
           <b>
-            <i>{+dynamicValue > -1 ? dynamicValue : value}</i>
+            <i>{+dynamicValue > -0.01 ? +dynamicValue : +value}</i>
           </b>
         )}
       </td>
@@ -153,7 +153,7 @@ const ReduceMaterial = ({
           <TableBarnElement
             title={'Yeni miqdar'}
             value={+newStock}
-            dynamicValue={newStockResult}
+            dynamicValue={+newStockResult}
           />
           <TableBarnElement
             title={'İstifadə olunmuş miqdar'}
@@ -173,7 +173,11 @@ const ReduceMaterial = ({
           <TableBarnElement
             title={'Yeni məbləğ'}
             value={+newTotalPrice}
-            dynamicValue={+dynamicPrice(+newStock, +newStockDynamic)}
+            dynamicValue={
+              +newStock < +newStockDynamic
+                ? 'olmaz'
+                : +dynamicPrice(+newStock, +newStockDynamic)
+            }
           />
           <TableBarnElement
             title={'İstifadə olunmuş məbləğ'}

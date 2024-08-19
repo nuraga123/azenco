@@ -4,84 +4,65 @@ import React, { useEffect, useState } from 'react'
 
 import barnImg from '@/public/img/garage-icon.jpg'
 import { getBarnsUsernameFx } from '@/app/api/barn'
+import BackBtn from '@/components/elements/btn/BackBtn'
 
 import spinnerStyles from '@/styles/spinner/index.module.scss'
-import styles from '@/styles/anbar/index.module.scss'
-import BackBtn from '@/components/elements/btn/BackBtn'
+import styles from '@/styles/barns/index.module.scss'
 
 const BarnsPage = () => {
   const [spinner, setSpinner] = useState<boolean>(false)
-
   const [barnsUsername, setBarnsUsername] = useState<
-    [{ username: string; userId: number }]
-  >([{ username: '', userId: 0 }])
+    { username: string; userId: number }[]
+  >([])
 
   useEffect(() => {
-    const getAnbarServer = async () => {
+    const fetchBarnsUsername = async () => {
+      setSpinner(true)
       try {
-        setSpinner(true)
         const { usernames } = await getBarnsUsernameFx()
         if (usernames) setBarnsUsername(usernames)
       } catch (error) {
-        console.log((error as Error).message)
+        console.error('xəta baş verdi: ', error)
       } finally {
         setSpinner(false)
       }
     }
 
-    getAnbarServer()
+    fetchBarnsUsername()
   }, [])
 
-  console.log(barnsUsername)
-
   return (
-    <div className={styles.anbar}>
+    <div className={styles.barns}>
       <BackBtn />
       <h1 className={styles.title}>Anbar Səhifəsi</h1>
-      <div className={styles.anbar__items}>
+      <div className={styles.items}>
         {spinner ? (
-          <div
-            className={spinnerStyles.spinner}
-            style={{
-              position: 'fixed',
-              top: '50%',
-              left: '50%',
-              background: 'gray',
-            }}
-          />
-        ) : barnsUsername?.length ? (
-          barnsUsername.map(
-            (
-              barn: {
-                username: string
-                userId: number
-              },
-              index: number
-            ) => (
-              <Link
-                key={index}
-                href={`/barns/user-id/${barn?.userId}`}
-                passHref
-                legacyBehavior
-              >
-                <a className={styles.anbar__item}>
-                  <div className={styles.container}>
-                    <Image
-                      src={barnImg.src}
-                      alt="barn-img"
-                      width={50}
-                      height={35}
-                    />
-                    <div>
-                      {`${index + 1}) Anbar: `} <b>{barn.username}</b>
-                    </div>
+          <div className={spinnerStyles.spinner} />
+        ) : barnsUsername.length ? (
+          barnsUsername.map(({ username, userId }) => (
+            <Link
+              key={userId}
+              href={`/barns/user-id/${userId}`}
+              passHref
+              legacyBehavior
+            >
+              <a className={styles.item}>
+                <div className={styles.item__container}>
+                  <Image
+                    src={barnImg.src}
+                    alt="barn-img"
+                    width={50}
+                    height={35}
+                  />
+                  <div>
+                    Anbardar: <b>{username}</b>
                   </div>
-                </a>
-              </Link>
-            )
-          )
+                </div>
+              </a>
+            </Link>
+          ))
         ) : (
-          <h3 className={styles.title}>{'Anbar Siyahısı Boşdur...'}</h3>
+          <h3 className={styles.title}>Anbar Siyahısı Boşdur...</h3>
         )}
       </div>
     </div>

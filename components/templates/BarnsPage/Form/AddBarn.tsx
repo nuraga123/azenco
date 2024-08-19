@@ -1,14 +1,15 @@
+import { toast } from 'react-toastify'
+import { useRouter } from 'next/router'
 import React, { useState, useEffect } from 'react'
+import { TiTick, TiTimes } from 'react-icons/ti'
+
 import { dateFormater } from '@/utils/dateFormater'
 import { IBarnItem, IStocksAddBarn } from '@/types/barn'
-import { TiTick, TiTimes } from 'react-icons/ti'
 import { getBarnById, postAddStocksBarn } from '@/app/api/barn'
 import AddMaterialComponent from '../MaterialComponent/AddMaterial'
 
 import styles from '@/styles/barn/form/index.module.scss'
 import spinnerStyles from '@/styles/spinner/index.module.scss'
-import { toast } from 'react-toastify'
-// import { useRouter } from 'next/router'
 
 const AddBarn: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
   const [senderName, setSenderName] = useState<string>('')
@@ -25,7 +26,7 @@ const AddBarn: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
   const [carNumberError, setCarNumberError] = useState<string>('')
   const [isCarNumberValid, setIsCarNumberValid] = useState<boolean>(false)
 
-  //const router = useRouter()
+  const router = useRouter()
   const [spinner, setSpinner] = useState<boolean>(false)
   const [barnData, setBarnData] = useState({} as IBarnItem)
   const [userSelectedDate, setUserSelectedDate] = useState<string>('')
@@ -50,9 +51,10 @@ const AddBarn: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
   useEffect(() => {
     const validateForm = () => {
       let isValid = true
+      const messageAze = 'daxil etməlisiniz'
 
       if (senderName.length <= 3) {
-        setSenderNameError('şəxsin adı 3 simvolunun daxil etməlisiniz.')
+        setSenderNameError(`şəxsin adı ${messageAze}`)
         setIsSenderNameValid(false)
         isValid = false
       } else {
@@ -61,7 +63,7 @@ const AddBarn: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
       }
 
       if (driverName.length <= 3) {
-        setDriverNameError('Sürücü adı  3 simvolunun daxil etməlisiniz.')
+        setDriverNameError(`Sürücü adı ${messageAze}`)
         setIsDriverNameValid(false)
         isValid = false
       } else {
@@ -70,7 +72,7 @@ const AddBarn: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
       }
 
       if (carNumber.length <= 5) {
-        setCarNumberError('Maşının nömrəsi  5 simvolunun daxil etməlisiniz.')
+        setCarNumberError(`Maşının nömrəsi  ${messageAze}`)
         setIsCarNumberValid(false)
         isValid = false
       } else {
@@ -89,14 +91,14 @@ const AddBarn: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
           setIsDateValid(true)
         }
       } else {
-        setDateError('Lütfən, tarix daxil edin.')
+        setDateError(`Lütfən, ünvanı ${messageAze}`)
         setIsDateValid(false)
         isValid = false
       }
 
       // Проверка местоположений
-      if (fromLocation.length < 3) {
-        setLocationError('Lütfən, hər iki ünvanı daxil edin.')
+      if (fromLocation.length < 3 || toLocation.length < 3) {
+        setLocationError(`Lütfən, hər iki ünvanı  ${messageAze}`)
         setIsFromLocationValid(false)
         isValid = false
       } else {
@@ -105,7 +107,7 @@ const AddBarn: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
       }
 
       if (toLocation.trim() === '') {
-        setLocationError('Lütfən, hər iki ünvanı daxil edin.')
+        setLocationError(`Lütfən, ünvanı ${messageAze}`)
         setIsToLocationValid(false)
         isValid = false
       } else {
@@ -203,7 +205,7 @@ const AddBarn: React.FC<{ barnId: number }> = ({ barnId = 0 }) => {
       setSpinner(false)
     } finally {
       setSpinner(false)
-      //router.push('/my/barn')
+      router.push('/my/barn')
     }
   }
 

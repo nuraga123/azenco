@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { toast } from 'react-toastify'
-import { useRouter } from 'next/router'
 
 import { createNewOrder } from '@/app/api/order'
 import { getBarnByUserId } from '@/app/api/barn'
@@ -8,117 +7,199 @@ import { IBarnItem, IBarnResponse } from '@/types/barn'
 import BarnTable from '@/components/modules/BarnsPage/Order/BarnTable'
 import OrderModal from '@/components/modules/BarnsPage/Order/OrderModal'
 import Spinner from '@/components/modules/Spinner/Spinner'
+import { getLocalStorageUser } from '@/localStorageUser'
+import { useStore } from 'effector-react'
+import { $user } from '@/context/user'
+
+import styles from '@/styles/barns/order/index.module.scss'
+import { AxiosError } from 'axios'
 
 const BarnPageOrder = ({ userId }: { userId: number }) => {
-  console.log('userId')
-  console.log(userId)
+  const { id } = useStore($user)
+  const clientId: number = +getLocalStorageUser().userIdStorage || +id
+
   const [barns, setBarns] = useState<IBarnResponse>({
     barns: [],
     message: '',
     error_message: '',
   })
 
-  console.log(barns)
-  const [loading, setLoading] = useState(true)
-  const [orderBarn, setOrderBarn] = useState<IBarnItem | null>(null)
+  const [loading, setLoading] = useState(false)
+  const [spinner, setSpinner] = useState(false)
+  const [errorsMessageArr, setErrorsMessageArr] = useState<string[]>([])
+  const [currentBarn, setCurrentBarn] = useState<IBarnItem>({} as IBarnItem)
   const [toggleModal, setToggleModal] = useState(false)
   const [newStock, setNewStock] = useState('')
   const [usedStock, setUsedStock] = useState('')
   const [brokenStock, setBrokenStock] = useState('')
+  const [clientMessage, setClientMessage] = useState('')
+  const [clientLocation, setClientLocation] = useState('')
   const [isDisabled, setIsDisabled] = useState(true)
 
-  useEffect(() => {
+  useMemo(() => {
     const loadBarn = async () => {
       try {
-        const data = await getBarnByUserId(11)
-        if (data) {
-          setLoading(false)
-          console.log(data)
-          return setBarns(data)
+        setLoading(true)
+        const barnsData = await getBarnByUserId(userId)
+        if (barnsData) {
+          setBarns(barnsData)
+        } else {
+          toast.warning('Məlumat yoxdur')
         }
       } catch (error) {
         toast.warning(error as string)
-        setLoading(false)
       } finally {
         setLoading(false)
       }
     }
 
     loadBarn()
-  }, [barns])
+  }, [userId])
 
   const handleOrderClick = (barn: IBarnItem) => {
-    setOrderBarn(barn)
+    setCurrentBarn(barn)
     setToggleModal(true)
   }
 
-  const handleOrderSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    try {
-      await createNewOrder({
-        barnId: orderBarn!.id,
-        newStock: +newStock,
-        usedStock: +usedStock,
-        brokenStock: +brokenStock,
-        clientId: 0,
-        clientLocation: '',
-      })
-      toast.success('Sifariş təsdiqləndi!')
-      setToggleModal(false)
-      setNewStock('')
-      setUsedStock('')
-      setBrokenStock('')
-    } catch (error) {
-      toast.error('Sifarişdə xəta baş verdi.')
-    }
+  const resetStocks = () => {
+    setNewStock('')
+    setUsedStock('')
+    setBrokenStock('')
+    setClientLocation('')
+    setClientMessage('')
+  }
+
+  const closeBtn = () => {
+    resetStocks()
+    setToggleModal(false)
   }
 
   const handleNewStockChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewStock(e.target.value)
-    validateForm()
   }
 
   const handleUsedStockChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsedStock(e.target.value)
-    validateForm()
   }
 
   const handleBrokenStockChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setBrokenStock(e.target.value)
-    validateForm()
   }
 
-  const validateForm = () => {
-    const newStockValue = Number(newStock)
-    const usedStockValue = Number(usedStock)
-    const brokenStockValue = Number(brokenStock)
-    const isAnyFieldEmpty = !newStock || !usedStock || !brokenStock
-    const isTotalQuantityValid =
-      newStockValue + usedStockValue + brokenStockValue > 0
-    setIsDisabled(isAnyFieldEmpty || !isTotalQuantityValid)
+  const handleClientLocationChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setClientLocation(e.target.value)
+  }
+
+  const handleClientMessageChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setClientMessage(e.target.value)
+  }
+
+  useEffect(() => {
+    const validateForm = () => {
+      const newStockValue = Number(newStock)
+      const usedStockValue = Number(usedStock)
+      const brokenStockValue = Number(brokenStock)
+
+      const errorsArr: string[] = []
+
+      if (+currentBarn.newStock < +newStockValue) {
+        errorsArr.push('Çox yəni material götürdünüz!')
+      }
+
+      if (+currentBarn.usedStock < +usedStockValue) {
+        errorsArr.push('Çox istifadəyə olunmuş material götürdünüz!')
+      }
+
+      if (+currentBarn.brokenStock < +brokenStockValue) {
+        errorsArr.push('Çox yararsız material götürdünüz!')
+      }
+
+      const isTotalQuantityValid =
+        +newStockValue + +usedStockValue + +brokenStockValue <= 0
+
+      if (isTotalQuantityValid) {
+        errorsArr.push('0-dan çox sifariş verməlisiniz')
+      }
+
+      if (clientLocation.length < 2) {
+        errorsArr.push('Məkan ən azı 2 simvoldan ibarət olmalıdır')
+      }
+
+      setErrorsMessageArr(errorsArr)
+      return errorsArr.length > 0
+    }
+
+    setIsDisabled(validateForm())
+  }, [
+    newStock,
+    usedStock,
+    brokenStock,
+    clientLocation,
+    currentBarn.newStock,
+    currentBarn.usedStock,
+    currentBarn.brokenStock,
+  ])
+
+  const handleOrderSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+
+    try {
+      setSpinner(true)
+      const res = await createNewOrder({
+        clientId,
+        clientLocation,
+        clientMessage,
+        barnId: currentBarn.id,
+        newStock: +newStock,
+        usedStock: +usedStock,
+        brokenStock: +brokenStock,
+      })
+
+      console.log(res)
+    } catch (error) {
+      toast.error((error as AxiosError).message)
+    } finally {
+      setSpinner(false)
+      resetStocks()
+    }
   }
 
   return (
-    <div>
+    <div className={styles.container}>
       {loading ? (
         <Spinner />
       ) : (
         <>
-          {barns?.barns.length && (
+          <h3 className={styles.info}>
+            Anbardar: <i>{barns.barns[0]?.username || 'N/A'}</i>
+          </h3>
+
+          {barns.barns.length > 0 && (
             <BarnTable barns={barns.barns} onOrderClick={handleOrderClick} />
           )}
+
           <OrderModal
-            orderBarn={orderBarn || null}
+            spinner={spinner}
             toggleModal={toggleModal}
-            setToggleModal={setToggleModal}
-            handleOrderSubmit={handleOrderSubmit}
+            currentBarn={currentBarn}
+            isDisabled={isDisabled}
             newStock={newStock}
             usedStock={usedStock}
             brokenStock={brokenStock}
+            clientLocation={clientLocation}
+            clientMessage={clientMessage}
+            errorsMessageArr={errorsMessageArr}
+            closeBtn={closeBtn}
+            handleOrderSubmit={handleOrderSubmit}
             handleNewStockChange={handleNewStockChange}
             handleUsedStockChange={handleUsedStockChange}
             handleBrokenStockChange={handleBrokenStockChange}
-            isDisabled={isDisabled}
+            handleCLientLocationChange={handleClientLocationChange}
+            handleClientMessageChange={handleClientMessageChange}
           />
         </>
       )}

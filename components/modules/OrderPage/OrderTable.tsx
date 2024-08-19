@@ -2,6 +2,7 @@ import React from 'react'
 import TableHeader from './TableHeader'
 import TableRow from './TableRow'
 import { IOrderItem } from '@/types/order'
+
 import styles from '@/styles/order/index.module.scss'
 
 interface TableProps {
