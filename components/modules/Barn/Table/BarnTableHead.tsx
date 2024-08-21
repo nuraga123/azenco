@@ -7,7 +7,7 @@ const BarnTableHead = () => {
   return (
     <thead>
       <tr>
-        <th className={styles.title__main} colSpan={3}>
+        <th className={styles.title__main} colSpan={3} rowSpan={2}>
           Əməliyyatlar
         </th>
 
@@ -28,11 +28,6 @@ const BarnTableHead = () => {
         </th>
       </tr>
       <tr>
-        {/* Əməliyyatlar */}
-        <th className={styles.title}>artırmaq</th>
-        <th className={styles.title}>azaltmaq</th>
-        <th className={styles.title}>silinmə</th>
-
         {/* Əsas */}
         <th className={styles.title}>ID</th>
         <th className={styles.title}>Azenco Kodu</th>

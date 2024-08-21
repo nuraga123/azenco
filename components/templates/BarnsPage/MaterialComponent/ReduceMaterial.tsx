@@ -41,8 +41,10 @@ const ReduceMaterial = ({
       console.log(+newStock - +newStockDynamic)
       return +newStock - +newStockDynamic
     } else {
-      if (+newStockDynamic > -0.01) {
-        toast.warning('çox yeni material götürdünüz !')
+      if (newStockDynamic !== 0) {
+        if (+newStockDynamic > -0.01) {
+          toast.warning('çox yeni material götürdünüz !')
+        }
       }
 
       return +newStock
