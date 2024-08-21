@@ -1,18 +1,19 @@
 import { useEffect, useMemo, useState } from 'react'
 import { toast } from 'react-toastify'
+import { useStore } from 'effector-react'
+import { AxiosError } from 'axios'
 
-import { createNewOrder } from '@/app/api/order'
 import { getBarnByUserId } from '@/app/api/barn'
+import { createNewOrder } from '@/app/api/order'
 import { IBarnItem, IBarnResponse } from '@/types/barn'
 import BarnTable from '@/components/modules/BarnsPage/Order/BarnTable'
 import OrderModal from '@/components/modules/BarnsPage/Order/OrderModal'
 import Spinner from '@/components/modules/Spinner/Spinner'
+import BackBtn from '@/components/elements/btn/BackBtn'
 import { getLocalStorageUser } from '@/localStorageUser'
-import { useStore } from 'effector-react'
 import { $user } from '@/context/user'
 
 import styles from '@/styles/barns/order/index.module.scss'
-import { AxiosError } from 'axios'
 
 const BarnPageOrder = ({ userId }: { userId: number }) => {
   const { id } = useStore($user)
@@ -174,9 +175,12 @@ const BarnPageOrder = ({ userId }: { userId: number }) => {
         <Spinner />
       ) : (
         <>
-          <h3 className={styles.info}>
-            Anbardar: <i>{barns.barns[0]?.username || 'N/A'}</i>
-          </h3>
+          <div className={styles.head}>
+            <BackBtn />
+            <h3 className={styles.info}>
+              Anbardar: <i>{barns.barns[0]?.username || 'N/A'}</i>
+            </h3>
+          </div>
 
           {barns.barns.length > 0 && (
             <BarnTable barns={barns.barns} onOrderClick={handleOrderClick} />

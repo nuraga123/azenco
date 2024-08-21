@@ -14,7 +14,9 @@ function BarnUserIdPage() {
   return (
     <>
       {shouldLoadContent ? (
-        <Layout title="Anbar">{<BarnPageOrder userId={userId} />}</Layout>
+        <Layout title="Anbar">
+          <BarnPageOrder userId={userId} />
+        </Layout>
       ) : (
         <div />
       )}

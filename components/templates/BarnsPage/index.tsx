@@ -6,8 +6,8 @@ import barnImg from '@/public/img/garage-icon.jpg'
 import { getBarnsUsernameFx } from '@/app/api/barn'
 import BackBtn from '@/components/elements/btn/BackBtn'
 
-import spinnerStyles from '@/styles/spinner/index.module.scss'
 import styles from '@/styles/barns/index.module.scss'
+import spinnerStyles from '@/styles/spinner/index.module.scss'
 
 const BarnsPage = () => {
   const [spinner, setSpinner] = useState<boolean>(false)
@@ -33,8 +33,10 @@ const BarnsPage = () => {
 
   return (
     <div className={styles.barns}>
-      <BackBtn />
-      <h1 className={styles.title}>Anbar Səhifəsi</h1>
+      <div className={styles.head}>
+        <BackBtn />
+        <h1 className={styles.title}>Anbar Səhifəsi</h1>
+      </div>
       <div className={styles.items}>
         {spinner ? (
           <div className={spinnerStyles.spinner} />
