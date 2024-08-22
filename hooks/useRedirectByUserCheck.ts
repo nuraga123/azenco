@@ -3,6 +3,7 @@ import { setUser } from '@/context/user'
 import { getLocalStorageUser, removeLocalStorageUser } from '@/localStorageUser'
 import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
+import { toast } from 'react-toastify'
 
 const useRedirectByUserCheck = (isAuthPage = false) => {
   const [shouldLoadContent, setShouldLoadContent] = useState(false)
@@ -28,10 +29,7 @@ const useRedirectByUserCheck = (isAuthPage = false) => {
         // Если это страница аутентификации
         if (isAuthPage) {
           // Если токен истек или ошибка JsonWebTokenError, удаляем токен и перенаправляем на страницу входа
-          if (
-            user?.name === 'TokenExpiredError' ||
-            user?.name === 'JsonWebTokenError'
-          ) {
+          if (user?.message) {
             removeLocalStorageUser()
             if (!isRedirecting) {
               // Если не происходит редирект, выполняем его
@@ -62,10 +60,8 @@ const useRedirectByUserCheck = (isAuthPage = false) => {
 
         // Если это не страница аутентификации
         // Если токен истек или ошибка JsonWebTokenError, перенаправляем на страницу входа
-        if (
-          user?.name === 'TokenExpiredError' ||
-          user?.name === 'JsonWebTokenError'
-        ) {
+        if (user?.message) {
+          toast.error(user?.message)
           if (!isRedirecting) {
             // Если не происходит редирект, выполняем его
             setIsRedirecting(true)

@@ -26,7 +26,7 @@ const Layout = ({ children, title }: ILayoutProps) => {
           >
             <header className={styles.header}>
               <LogoImg />
-              <h1 className={styles.header__title}>Azenco</h1>
+              <h1 className={styles.header__title}>AZENCO ASC</h1>
               <ProfileDropDown />
             </header>
             <main className={styles.main}>{children}</main>

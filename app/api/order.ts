@@ -89,7 +89,30 @@ export const sendBarnUser = createEffect(
       const { data } = await api.post('order/send-barn-user', sendBarnUserDto)
       return data
     } catch (error) {
-      console.error(error)
+      console.log(error)
+      return { error_message: (error as AxiosError).message }
+    }
+  }
+)
+
+export const getMyOrders = createEffect(
+  async ({
+    clientId,
+    clientUserName,
+  }: {
+    clientId: number
+    clientUserName: string
+  }) => {
+    try {
+      const { data } = await api.post('order/my', {
+        clientId,
+        clientUserName,
+      })
+      console.log(data)
+
+      return data
+    } catch (error) {
+      console.log(error)
       return { error_message: (error as AxiosError).message }
     }
   }

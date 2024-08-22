@@ -1,4 +1,6 @@
+import Head from '@/components/elements/Head/Head'
 import Layout from '@/components/layout/Layout'
+import MyOrdersPage from '@/components/templates/OrderPage/MyOrdersPage'
 import useRedirectByUserCheck from '@/hooks/useRedirectByUserCheck'
 import '@/styles/globals.css'
 
@@ -9,7 +11,8 @@ const MyOrder = () => {
     <>
       {shouldLoadContent && (
         <Layout title={'Mənim sifarişlərim'}>
-          Mənim sifarişlərim {/* <MyOrderPage /> */}
+          <Head headTitle={'Mənim sifarişlərim'} />
+          <MyOrdersPage />
         </Layout>
       )}
     </>

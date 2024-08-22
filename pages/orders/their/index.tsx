@@ -10,7 +10,7 @@ const TheirOrder = () => {
       {shouldLoadContent && (
         <Layout title={'Sifariş'}>
           {/* <TheirOrderPage /> */}
-          digər anbar-istifadəçilərdən gələn sifarişlər
+          Anbar işçilərinin sifarişləri
         </Layout>
       )}
     </>

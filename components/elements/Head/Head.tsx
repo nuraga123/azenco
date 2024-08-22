@@ -5,7 +5,6 @@ const Head = ({ headTitle }: { headTitle: string }) => (
   <div
     style={{
       width: '100%',
-      maxWidth: 1200,
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',

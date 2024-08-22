@@ -14,16 +14,17 @@ const OrderPage = () => {
       <div className={styles.container}>
         <div className={styles.wrapper__btn}>
           <button
-            className={styles.my}
+            className={`${styles.btn} ${styles.btn__my}`}
             onClick={() => router.push(`${asPath}/my`)}
           >
             Mənim sifarişlərim
           </button>
+
           <button
-            className={styles.their}
+            className={`${styles.btn} ${styles.btn__their}`}
             onClick={() => router.push(`${asPath}/their`)}
           >
-            digər anbar-istifadəçilərdən gələn sifarişlər
+            Digər anbar-istifadəçilərdən gələn sifarişlər
           </button>
         </div>
       </div>
