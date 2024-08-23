@@ -6,7 +6,7 @@ import LogoImg from '@/components/elements/LogoImg/LogoImg'
 import styles from '@/styles/layout/index.module.scss'
 
 const Layout = ({ children, title }: ILayoutProps) => {
-  const mainWidth = +window?.innerWidth - 200
+  console.log()
 
   return (
     <>
@@ -20,10 +20,7 @@ const Layout = ({ children, title }: ILayoutProps) => {
       <div className={styles.container}>
         <div className={styles.wrapper}>
           <Navbar />
-          <div
-            className={styles.wrapper__content}
-            style={{ maxWidth: mainWidth || 1000 }}
-          >
+          <div className={styles.wrapper__content}>
             <header className={styles.header}>
               <LogoImg />
               <h1 className={styles.header__title}>AZENCO ASC</h1>

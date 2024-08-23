@@ -9,6 +9,26 @@
   font-size: 18px;
 }
 
+.thead {
+  position: sticky;
+  top: 40px;
+  white-space: nowrap;
+  text-align: center;
+  width: max-content;
+
+  &__tr {
+    position: sticky;
+    top: 40px;
+    border-bottom: 5px solid black;
+  }
+  
+  &__th {
+    position: sticky;
+    top: 40px;
+    border-bottom: 5px solid black;
+  }
+}
+
 .table th,
 .table td {
   border: 1px solid #ddd;

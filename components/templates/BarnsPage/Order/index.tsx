@@ -160,6 +160,10 @@ const BarnPageOrder = ({ userId }: { userId: number }) => {
         brokenStock: +brokenStock,
       })
 
+      if (res.message) {
+        toast.success(res.message)
+      }
+
       console.log(res)
     } catch (error) {
       toast.error((error as AxiosError).message)

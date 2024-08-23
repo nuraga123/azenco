@@ -77,13 +77,13 @@ const Archive = () => {
     <Layout title={`Anbar | ${username}`}>
       <div className={styles.archive}>
         <table className={styles.table}>
-          <thead>
-            <tr>
-              <th>İstifadəçi adı</th>
-              <th>Hərəkət növü</th>
-              <th>Təsviri</th>
-              <th>İstifadəçinin seçdiyi tarix</th>
-              <th>
+          <thead className={styles.thead}>
+            <tr className={styles.thead__tr}>
+              <th className={styles.thead__th}>İstifadəçi adı</th>
+              <th className={styles.thead__th}>Hərəkət növü</th>
+              <th className={styles.thead__th}>Təsviri</th>
+              <th className={styles.thead__th}>İstifadəçinin seçdiyi tarix</th>
+              <th className={styles.thead__th}>
                 <span className={styles.icon}>🗃️</span>
               </th>
             </tr>
