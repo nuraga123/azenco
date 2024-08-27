@@ -2,8 +2,7 @@ import { createEffect } from 'effector-next'
 
 import api from '@/app/axiosClient'
 import { getLocalStorageUser } from '@/localStorageUser'
-import { ICreateBarnProduct, ITransferSend } from '@/types/anbar'
-import { IStocksBarn } from '@/types/barn'
+import { IFindBarnsOfProductData, IStocksBarn, ICreateBarn } from '@/types/barn'
 
 export const getBarnByUserId = createEffect(async (id: number) => {
   try {
@@ -65,28 +64,10 @@ export const getAnbarOneFx = createEffect(async (url: string) => {
 
 // create new barn
 export const createBarnProductFx = createEffect(
-  async (newBarn: ICreateBarnProduct) => {
+  async (newBarn: ICreateBarn) => {
     try {
       const { tokenStorage } = getLocalStorageUser()
       const { data } = await api.post('/barn/create', newBarn, {
-        headers: {
-          Authorization: `Bearer ${tokenStorage}`,
-        },
-      })
-
-      console.log(data)
-      return data
-    } catch (error) {
-      console.log(error)
-    }
-  }
-)
-
-export const productsAnbarSendToUserFx = createEffect(
-  async ({ url, transfer }: ITransferSend) => {
-    try {
-      const { tokenStorage } = getLocalStorageUser()
-      const { data } = await api.post(url, transfer, {
         headers: {
           Authorization: `Bearer ${tokenStorage}`,
         },
@@ -149,3 +130,22 @@ export const deleteMaterialBarn = createEffect(async (barnId: number) => {
     console.log(error)
   }
 })
+
+export const postFindBarnsOfProductFx = createEffect(
+  async (productData: IFindBarnsOfProductData) => {
+    try {
+      const { tokenStorage } = getLocalStorageUser()
+
+      const { data } = await api.post(`barn/find-barns`, productData, {
+        headers: {
+          Authorization: `Bearer ${tokenStorage}`,
+        },
+      })
+
+      console.log(data)
+      return data
+    } catch (error) {
+      console.log(error)
+    }
+  }
+)

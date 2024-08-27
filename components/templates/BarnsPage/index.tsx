@@ -11,6 +11,7 @@ import spinnerStyles from '@/styles/spinner/index.module.scss'
 
 const BarnsPage = () => {
   const [spinner, setSpinner] = useState<boolean>(false)
+
   const [barnsUsername, setBarnsUsername] = useState<
     { username: string; userId: number }[]
   >([])
@@ -56,6 +57,7 @@ const BarnsPage = () => {
                     width={50}
                     height={35}
                   />
+
                   <div>
                     Anbardar: <b>{username}</b>
                   </div>

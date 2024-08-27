@@ -1,0 +1,57 @@
+.barns {
+  padding: 20px;
+
+  .head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  .title {
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+  }
+
+  .details {
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f1f1f1;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    .infoLabel {
+      flex: 1.1;
+      font-size: 18px;
+      font-weight: bold;
+      color: #555;
+    }
+
+    .infoContent {
+      flex: 2;
+      font-size: 18px;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+
+      div {
+        margin-right: 10px;
+
+        strong {
+          font-weight: bold;
+          color: #0070f3;
+        }
+      }
+    }
+  }
+
+  .items {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+}

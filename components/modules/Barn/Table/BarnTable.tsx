@@ -4,6 +4,7 @@ import BarnTableHead from './BarnTableHead'
 
 import styles from '@/styles/barn/table/index.module.scss'
 import ModalBtn from '../ModalBtn'
+import { $setFind_barns } from '@/context/find_barns'
 
 const BarnTable = ({ barn }: { barn: IBarnResponse }) => {
   const [openModal, setOpenModal] = useState(false)
@@ -12,6 +13,17 @@ const BarnTable = ({ barn }: { barn: IBarnResponse }) => {
   const handleSelectModal = (id: number) => {
     setOpenModal(true)
     setSelectedBarnId(id)
+
+    const currentBarn = barn?.barns?.filter((el) => +el?.id === +id)
+    console.log('currentBarn')
+    console.log(currentBarn)
+    const { productId, azencoCode, productName } = currentBarn[0]
+
+    $setFind_barns({
+      productId,
+      azencoCode,
+      productName,
+    })
   }
 
   const handleCloseModal = () => {

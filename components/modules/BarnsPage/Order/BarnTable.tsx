@@ -11,7 +11,7 @@ const BarnTable: React.FC<Props> = ({ barns, onOrderClick }) => (
   <table className={styles.barnTable}>
     <thead>
       <tr>
-        <th className={styles.wrapper__btn}>Sifariş</th>
+        <th className={styles.btn__title}>Sifariş</th>
         <th className={styles.azencoCode}>Azenco Kodu</th>
         <th className={styles.name}>Məhsulun adı</th>
         <th>Yeni miqdarı</th>
@@ -25,9 +25,10 @@ const BarnTable: React.FC<Props> = ({ barns, onOrderClick }) => (
     <tbody>
       {barns?.map((barn) => (
         <tr key={barn.id}>
-          <td className={styles.wrapper__btn}>
+          <td className={`${styles.btns}`}>
             <button onClick={() => onOrderClick(barn)}>sifariş edin</button>
           </td>
+
           <td className={styles.azencoCode}>{barn.azencoCode}</td>
           <td className={styles.name}>
             <b>{barn.productName}</b>

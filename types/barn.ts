@@ -95,3 +95,23 @@ export interface IBarnFormData {
   brokenStock: string
   movementType: string
 }
+
+export interface IFindBarnsOfProductData {
+  productId: number
+  azencoCode: string
+  productName: string
+}
+
+export interface ICreateBarn {
+  userId: number
+  productId: number
+  senderName: string
+  driverName: string
+  carNumber: string
+  fromLocation: string
+  location: string
+  userSelectedDate: string
+  newStock: number
+  usedStock: number
+  brokenStock: number
+}

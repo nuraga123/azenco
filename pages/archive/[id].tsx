@@ -1,4 +1,3 @@
-// pages/archive/[id].tsx
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { findArchiveById } from '@/app/api/archive'
@@ -50,6 +49,7 @@ const ArchiveItem: React.FC = () => {
       </Layout>
     )
   }
+
   return (
     <Layout title={`Arxiv | məlumatlari yoxdur`}>
       <BackBtn />

@@ -66,7 +66,7 @@ const ModalBtn = ({ selectedBarnId, handleClose }: ModalBtnProps) => {
                 className: styles.add,
                 text: '"Azenco" anbarlardan göndərilən',
                 subtext: '',
-                onClick: () => navigation('/barns'),
+                onClick: () => navigation('/barns/find'),
               },
               {
                 className: styles.order,

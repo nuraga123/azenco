@@ -5,6 +5,7 @@ import { toast } from 'react-toastify'
 import { getBarnByUserId } from '@/app/api/barn'
 import Layout from '@/components/layout/Layout'
 import BarnTable from '@/components/modules/Barn/Table/BarnTable'
+import BackBtn from '@/components/elements/btn/BackBtn'
 import { $user } from '@/context/user'
 import useRedirectByUserCheck from '@/hooks/useRedirectByUserCheck'
 import { getLocalStorageUser } from '@/localStorageUser'
@@ -13,7 +14,6 @@ import { IBarnResponse } from '@/types/barn'
 import spinnerStyles from '@/styles/spinner/index.module.scss'
 import styles from '@/styles/barn/index.module.scss'
 import '@/styles/globals.css'
-import BackBtn from '@/components/elements/btn/BackBtn'
 
 const MyBarn = () => {
   const { shouldLoadContent } = useRedirectByUserCheck()
@@ -36,6 +36,7 @@ const MyBarn = () => {
       setLoading(true)
       try {
         const data = await getBarnByUserId(userIdResult)
+
         if (data.message === `Нетy Амбаров !`) {
           toast.warning('Material yoxdur')
           return

@@ -1,31 +1,24 @@
-import { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { useStore } from 'effector-react'
 import { AxiosError } from 'axios'
+import Image from 'next/image'
 
-import { getBarnByUserId } from '@/app/api/barn'
-import { createNewOrder } from '@/app/api/order'
-import { IBarnItem, IBarnResponse } from '@/types/barn'
-import BarnTable from '@/components/modules/BarnsPage/Order/BarnTable'
+import { IBarnItem } from '@/types/barn'
+import barnImg from '@/public/img/garage-icon.jpg'
 import OrderModal from '@/components/modules/BarnsPage/Order/OrderModal'
-import Spinner from '@/components/modules/Spinner/Spinner'
-import BackBtn from '@/components/elements/btn/BackBtn'
-import { getLocalStorageUser } from '@/localStorageUser'
+import BarnTable from '@/components/modules/BarnsPage/Order/BarnTable'
+
+import { createNewOrder } from '@/app/api/order'
 import { $user } from '@/context/user'
+import { getLocalStorageUser } from '@/localStorageUser'
 
-import styles from '@/styles/barns/order/index.module.scss'
+import styles from '@/styles/barn/card/index.module.scss'
 
-const BarnPageOrder = ({ userId }: { userId: number }) => {
+const BarnCard = ({ barn }: { barn: IBarnItem }) => {
   const { id } = useStore($user)
   const clientId: number = +getLocalStorageUser().userIdStorage || +id
 
-  const [barns, setBarns] = useState<IBarnResponse>({
-    barns: [],
-    message: '',
-    error_message: '',
-  })
-
-  const [loading, setLoading] = useState(false)
   const [spinner, setSpinner] = useState(false)
   const [errorsMessageArr, setErrorsMessageArr] = useState<string[]>([])
   const [currentBarn, setCurrentBarn] = useState<IBarnItem>({} as IBarnItem)
@@ -36,26 +29,6 @@ const BarnPageOrder = ({ userId }: { userId: number }) => {
   const [clientMessage, setClientMessage] = useState('')
   const [clientLocation, setClientLocation] = useState('')
   const [isDisabled, setIsDisabled] = useState(true)
-
-  useMemo(() => {
-    const loadBarn = async () => {
-      try {
-        setLoading(true)
-        const barnsData = await getBarnByUserId(userId)
-        if (barnsData) {
-          setBarns(barnsData)
-        } else {
-          toast.warning('Məlumat yoxdur')
-        }
-      } catch (error) {
-        toast.warning(error as string)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    loadBarn()
-  }, [userId])
 
   const handleOrderClick = (barn: IBarnItem) => {
     setCurrentBarn(barn)
@@ -174,45 +147,42 @@ const BarnPageOrder = ({ userId }: { userId: number }) => {
   }
 
   return (
-    <div className={styles.container}>
-      {loading ? (
-        <Spinner />
-      ) : (
-        <>
-          <div className={styles.head}>
-            <BackBtn />
-            <h3 className={styles.info}>
-              Anbardar: <i>{barns.barns[0]?.username}</i>
-            </h3>
-          </div>
+    <div className={styles.card}>
+      <div className={styles.head}>
+        <Image src={barnImg.src} alt="barn-img" width={50} height={35} />
+        <div className={styles.header}>
+          {`Anbardar: `}
+          <strong>{barn.username}</strong>
+        </div>
+      </div>
+      <div className={styles.info}>
+        <BarnTable barns={[barn]} onOrderClick={handleOrderClick} />
+      </div>
 
-          {barns.barns.length > 0 && (
-            <BarnTable barns={barns.barns} onOrderClick={handleOrderClick} />
-          )}
-
-          <OrderModal
-            spinner={spinner}
-            toggleModal={toggleModal}
-            currentBarn={currentBarn}
-            isDisabled={isDisabled}
-            newStock={newStock}
-            usedStock={usedStock}
-            brokenStock={brokenStock}
-            clientLocation={clientLocation}
-            clientMessage={clientMessage}
-            errorsMessageArr={errorsMessageArr}
-            closeBtn={closeBtn}
-            handleOrderSubmit={handleOrderSubmit}
-            handleNewStockChange={handleNewStockChange}
-            handleUsedStockChange={handleUsedStockChange}
-            handleBrokenStockChange={handleBrokenStockChange}
-            handleCLientLocationChange={handleClientLocationChange}
-            handleClientMessageChange={handleClientMessageChange}
-          />
-        </>
-      )}
+      <div>
+        <OrderModal
+          barnUsername={barn.username}
+          spinner={spinner}
+          toggleModal={toggleModal}
+          currentBarn={currentBarn}
+          isDisabled={isDisabled}
+          newStock={newStock}
+          usedStock={usedStock}
+          brokenStock={brokenStock}
+          clientLocation={clientLocation}
+          clientMessage={clientMessage}
+          errorsMessageArr={errorsMessageArr}
+          closeBtn={closeBtn}
+          handleOrderSubmit={handleOrderSubmit}
+          handleNewStockChange={handleNewStockChange}
+          handleUsedStockChange={handleUsedStockChange}
+          handleBrokenStockChange={handleBrokenStockChange}
+          handleCLientLocationChange={handleClientLocationChange}
+          handleClientMessageChange={handleClientMessageChange}
+        />
+      </div>
     </div>
   )
 }
 
-export default BarnPageOrder
+export default BarnCard

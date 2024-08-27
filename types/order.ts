@@ -71,4 +71,5 @@ export interface IOrderModal extends IOrderBase {
   currentBarn: IBarnItem
   toggleModal: boolean
   closeBtn: () => void
+  barnUsername?: string
 }

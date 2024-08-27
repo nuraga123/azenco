@@ -24,23 +24,9 @@ const OrderModal: React.FC<IOrderModal> = ({
   isDisabled,
   spinner,
   errorsMessageArr,
+  barnUsername,
 }) => {
   console.log('')
-
-  /*
-  const RowComponent = ({
-    text,
-    values,
-  }: {
-    text: string
-    values: number | string | JSX.Element
-  }) => (
-    <div className={styles.row}>
-      <div className={styles.key}>{text}</div>
-      <div className={styles.value}>{values}</div>
-    </div>
-  )
-  */
 
   return (
     <div>
@@ -49,6 +35,8 @@ const OrderModal: React.FC<IOrderModal> = ({
           <div className={styles.modal}>
             <div className={styles.header}>
               <h1>Sifariş Forması</h1>
+              <h2>{`Anbardar: ${barnUsername}`}</h2>
+
               <button
                 type="button"
                 onClick={closeBtn}
@@ -65,67 +53,6 @@ const OrderModal: React.FC<IOrderModal> = ({
                   usedStockDynamic={+usedStock}
                   brokenStockDynamic={+brokenStock}
                 />
-
-                {/*
-                <RowComponent text="Anbardar: " values={currentBarn.username} />
-
-                <RowComponent
-                  text="Məhsulun yeri: "
-                  values={currentBarn.location}
-                />
-
-                <RowComponent
-                  text="Azenco Kodu: "
-                  values={currentBarn.azencoCode}
-                />
-
-                <RowComponent
-                  text="Məhsulun adı: "
-                  values={currentBarn.productName}
-                />
-
-                <RowComponent
-                  text="Yeni miqdarı: "
-                  values={
-                    <b>
-                      {+currentBarn.newStock === 0
-                        ? 'yoxdur'
-                        : +currentBarn.newStock}
-                    </b>
-                  }
-                />
-
-                <RowComponent
-                  text="İşlənmiş miqdarı: "
-                  values={
-                    <b>
-                      {+currentBarn.usedStock === 0
-                        ? 'yoxdur'
-                        : +currentBarn.usedStock}
-                    </b>
-                  }
-                />
-
-                <RowComponent
-                  text="Yararsız miqdarı: "
-                  values={
-                    <b>
-                      {+currentBarn.brokenStock === 0
-                        ? 'yoxdur'
-                        : +currentBarn.brokenStock}
-                    </b>
-                  }
-                />
-
-                <RowComponent
-                  text="Ümümi miqdarı: "
-                  values={+currentBarn.totalStock}
-                />
-
-                <RowComponent text="ölçü vahidi: " values={currentBarn.unit} />
-
-                <RowComponent text="Qiymət: " values={+currentBarn.price} />
-              */}
               </main>
 
               <OrderForm
