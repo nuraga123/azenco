@@ -115,3 +115,10 @@ export interface ICreateBarn {
   usedStock: number
   brokenStock: number
 }
+
+export interface IMaterialComponentProps {
+  barn: IBarnItem
+  newStockDynamic?: number
+  usedStockDynamic?: number
+  brokenStockDynamic?: number
+}

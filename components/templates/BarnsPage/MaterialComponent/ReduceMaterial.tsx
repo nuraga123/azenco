@@ -1,15 +1,8 @@
 import React, { useState, useMemo } from 'react'
-import { IBarnItem } from '@/types/barn'
+import { toast } from 'react-toastify'
+import { IMaterialComponentProps } from '@/types/barn'
 
 import styles from '@/styles/barn/material/index.module.scss'
-import { toast } from 'react-toastify'
-
-export interface IMaterialComponentProps {
-  barn: IBarnItem
-  newStockDynamic?: number
-  usedStockDynamic?: number
-  brokenStockDynamic?: number
-}
 
 const ReduceMaterial = ({
   barn,

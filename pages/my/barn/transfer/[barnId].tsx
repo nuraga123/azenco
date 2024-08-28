@@ -1,35 +1,41 @@
 import React, { useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
+import { useRouter } from 'next/router'
+
+import { getUsersNamesServer } from '@/app/api/auth'
+import { getBarnById } from '@/app/api/barn'
 import { IBarnItem } from '@/types/barn'
 import Layout from '@/components/layout/Layout'
+import ReduceMaterial from '@/components/templates/BarnsPage/MaterialComponent/ReduceMaterial'
 
 import styles from '@/styles/transfer/index.module.scss'
-import ReduceMaterial from '@/components/templates/BarnsPage/MaterialComponent/ReduceMaterial'
-import { useRouter } from 'next/router'
-import { getBarnById } from '@/app/api/barn'
-import { getUsersNamesServer } from '@/app/api/auth'
-import { setUser } from '@/context/user'
-import { toast } from 'react-toastify'
 
 const TransferMaterialOfBarns = () => {
   const router = useRouter()
+  const [newStock, setNewStock] = useState('')
+  const [usedStock, setUsedStock] = useState('')
+  const [brokenStock, setBrokenStock] = useState('')
 
-  const [barnIdQuery, setBarnIdQuery] = useState<number | null>(null)
+  const [barnIdQuery, setBarnIdQuery] = useState<number>(0)
   const [barnItem, setBarnItem] = useState<IBarnItem>()
   const [users, setUsers] = useState<string[]>([])
-  const [selectedUser, setSelectedUser] = useState<string | null>(null)
+  const [filteredUsers, setFilteredUsers] = useState<string[]>([])
+  const [selectedUser, setSelectedUser] = useState<string>('')
   const [driverName, setDriverName] = useState<string>('')
   const [carNumber, setCarNumber] = useState<string>('')
-  const [isAzerbaijaniNumber, setIsAzerbaijaniNumber] = useState<boolean>(true)
-  const [sendAmount, setSendAmount] = useState<string>('')
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
 
   useEffect(() => {
     const loadUser = async () => {
       const usersData = await getUsersNamesServer()
-
       console.log(usersData)
 
-      if (usersData.length > 0) setUsers(usersData)
-      else toast.error('not users')
+      if (usersData.length > 0) {
+        setUsers(usersData)
+        setFilteredUsers(usersData)
+      } else {
+        toast.error('No users')
+      }
 
       return
     }
@@ -56,21 +62,20 @@ const TransferMaterialOfBarns = () => {
   }, [barnIdQuery])
 
   const handleUserSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // Реализовать логику поиска пользователя
-    e.preventDefault()
+    const searchValue = e.target.value.toLowerCase()
+    const filtered = users.filter((user) =>
+      user.toLowerCase().includes(searchValue)
+    )
+    setFilteredUsers(filtered)
   }
 
   const handleSend = () => {
-    if (!barnItem) return
-    const totalStock = parseFloat(barnItem.totalStock)
-    const amountToSend = parseFloat(sendAmount)
-
-    if (amountToSend <= 0 || amountToSend > totalStock) {
-      alert('Miqdar düzgün deyil')
-      return
-    }
-
     // Реализовать логику отправки материала
+  }
+
+  const resetBarnUsername = () => {
+    setIsModalOpen(true)
+    setSelectedUser('')
   }
 
   return (
@@ -79,26 +84,27 @@ const TransferMaterialOfBarns = () => {
       <h1>Anbarların Transfer Materialı Göndərmə Formasi</h1>
       <br />
 
-      <div>
-        <ul>{users?.length > 0 && users.map((name) => <li>{name}</li>)}</ul>
-      </div>
       <div className={styles.transfer}>
         <div className={styles.left}>
-          <h2>Anbar istifadəçisini seçin </h2>
-          <input
-            type="text"
-            placeholder="İstifadəçi axtarın"
-            onChange={handleUserSearch}
-            className={styles.searchInput}
-          />
+          <button
+            className={styles.selectUserBtn}
+            onClick={() => setIsModalOpen(true)}
+          >
+            Anbardar seçin
+          </button>
+
           {selectedUser && (
             <div className={styles.selectedUser}>
-              Seçilmiş Anbar: <strong>{selectedUser}</strong>
+              Siz anbar sahibi seçdiniz: <strong>{selectedUser}</strong>
+              <button className={styles.editBtn} onClick={resetBarnUsername}>
+                dəyişmək
+              </button>
             </div>
           )}
+
           <div className={styles.driverInfo}>
             <label>
-              Sürücünün adı:
+              <div className={styles.text}>Sürücünün adı</div>
               <input
                 type="text"
                 value={driverName}
@@ -106,8 +112,9 @@ const TransferMaterialOfBarns = () => {
                 placeholder="Sürücünün adı"
               />
             </label>
+
             <label>
-              Maşın nömrəsi:
+              <div className={styles.text}>Maşın nömrəsi</div>
               <input
                 type="text"
                 value={carNumber}
@@ -115,34 +122,94 @@ const TransferMaterialOfBarns = () => {
                 placeholder="Maşın nömrəsi"
               />
             </label>
-            <label>
-              Azərbaycan nömrəsi?
-              <input
-                type="checkbox"
-                checked={isAzerbaijaniNumber}
-                onChange={() => setIsAzerbaijaniNumber(!isAzerbaijaniNumber)}
-              />
-            </label>
           </div>
+
           <div className={styles.sendAmount}>
             <label>
-              Göndəriləcək miqdar:
+              <div className={styles.text}>Yeni miqdar</div>
               <input
-                type="number"
-                value={sendAmount}
-                onChange={(e) => setSendAmount(e.target.value)}
-                placeholder="Miqdar"
+                type="text"
+                value={newStock}
+                onChange={(e) => setNewStock(e.target.value)}
+                placeholder="Yeni Miqdar"
+              />
+            </label>
+
+            <label>
+              <div className={styles.text}>İşlənmiş miqdar</div>
+              <input
+                type="text"
+                value={usedStock}
+                onChange={(e) => setUsedStock(e.target.value)}
+                placeholder="İşlənmiş Miqdar"
+              />
+            </label>
+
+            <label>
+              <div className={styles.text}>Yararsız miqdar</div>
+              <input
+                type="text"
+                value={brokenStock}
+                onChange={(e) => setBrokenStock(e.target.value)}
+                placeholder="Yararsız Miqdar"
               />
             </label>
           </div>
+
           <button onClick={handleSend} className={styles.sendBtn}>
             Göndər
           </button>
         </div>
         <div className={styles.right}>
-          {barnItem && <ReduceMaterial barn={barnItem} />}
+          {barnItem && (
+            <ReduceMaterial
+              barn={barnItem}
+              newStockDynamic={+newStock}
+              usedStockDynamic={+usedStock}
+              brokenStockDynamic={+brokenStock}
+            />
+          )}
         </div>
       </div>
+
+      {isModalOpen && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modal}>
+            <div className={styles.modal__head}>
+              <input
+                type="text"
+                placeholder="anbardarın adını yazın"
+                onChange={handleUserSearch}
+                className={styles.searchInput}
+              />
+
+              <button
+                className={styles.closeBtn}
+                onClick={() => setIsModalOpen(false)}
+              >
+                X
+              </button>
+            </div>
+
+            <ul className={styles.userWrapper}>
+              <h2>Anbardar seçin</h2>
+              {filteredUsers.length > 0 &&
+                filteredUsers.map((name, index) => (
+                  <li
+                    className={styles.userItem}
+                    key={name}
+                    onClick={() => {
+                      setSelectedUser(name)
+                      setIsModalOpen(false)
+                    }}
+                  >
+                    {`${index + 1}) ${name}`}
+                  </li>
+                ))}
+            </ul>
+          </div>
+        </div>
+      )}
     </Layout>
   )
 }

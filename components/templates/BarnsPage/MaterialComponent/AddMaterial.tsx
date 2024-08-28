@@ -1,14 +1,7 @@
 import React, { useState, useMemo } from 'react'
-import { IBarnItem } from '@/types/barn'
+import { IMaterialComponentProps } from '@/types/barn'
 
 import styles from '@/styles/barn/material/index.module.scss'
-
-export interface IMaterialComponentProps {
-  barn: IBarnItem
-  newStockDynamic: number
-  usedStockDynamic: number
-  brokenStockDynamic: number
-}
 
 const AddMaterial = ({
   barn,
