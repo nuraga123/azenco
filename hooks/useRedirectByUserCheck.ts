@@ -6,10 +6,10 @@ import { useEffect, useRef, useState } from 'react'
 import { toast } from 'react-toastify'
 
 const useRedirectByUserCheck = (isAuthPage = false) => {
-  const [shouldLoadContent, setShouldLoadContent] = useState(false)
-  const [isRedirecting, setIsRedirecting] = useState(false) // Добавляем состояние для контроля редиректов
   const router = useRouter()
   const shouldCheckAuth = useRef(true)
+  const [isRedirecting, setIsRedirecting] = useState(false)
+  const [shouldLoadContent, setShouldLoadContent] = useState(false)
 
   useEffect(() => {
     const checkUser = async () => {
@@ -17,7 +17,7 @@ const useRedirectByUserCheck = (isAuthPage = false) => {
 
       if (tokenStorage) {
         const user = await getTokenFx(tokenStorage)
-        console.log('user')
+        console.log('user token Storage')
         console.log(user)
 
         // Если запрос к серверу вернул 'not server', перенаправляем на страницу 404
@@ -35,8 +35,8 @@ const useRedirectByUserCheck = (isAuthPage = false) => {
               // Если не происходит редирект, выполняем его
               setIsRedirecting(true)
               router.push('/login')
+              return
             }
-            return
           }
 
           // Если нет пользователя, перенаправляем на страницу входа
@@ -45,8 +45,8 @@ const useRedirectByUserCheck = (isAuthPage = false) => {
               // Если не происходит редирект, выполняем его
               setIsRedirecting(true)
               router.push('/login')
+              return
             }
-            return
           }
 
           // Если пользователь авторизован, перенаправляем на главную страницу пользователя
@@ -54,8 +54,8 @@ const useRedirectByUserCheck = (isAuthPage = false) => {
             // Если не происходит редирект, выполняем его
             setIsRedirecting(true)
             router.push('/my')
+            return
           }
-          return
         }
 
         // Если это не страница аутентификации
@@ -66,8 +66,8 @@ const useRedirectByUserCheck = (isAuthPage = false) => {
             // Если не происходит редирект, выполняем его
             setIsRedirecting(true)
             router.push('/login')
+            return
           }
-          return
         }
 
         // Если пользователь существует, сохраняем его данные и показываем контент
@@ -83,6 +83,7 @@ const useRedirectByUserCheck = (isAuthPage = false) => {
           // Если не происходит редирект, выполняем его
           setIsRedirecting(true)
           router.push('/login')
+          return
         }
       }
     }
@@ -90,8 +91,9 @@ const useRedirectByUserCheck = (isAuthPage = false) => {
     if (shouldCheckAuth.current) {
       shouldCheckAuth.current = false
       checkUser()
+      return
     }
-  }, [isAuthPage, router, isRedirecting]) // Добавляем isRedirecting в зависимости
+  }, [isAuthPage, router, isRedirecting])
 
   return { shouldLoadContent }
 }

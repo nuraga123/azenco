@@ -28,16 +28,15 @@ const TransferMaterialOfBarns = () => {
   useEffect(() => {
     const loadUser = async () => {
       const usersData = await getUsersNamesServer()
-      console.log(usersData)
 
       if (usersData.length > 0) {
         setUsers(usersData)
         setFilteredUsers(usersData)
+        return
       } else {
         toast.error('No users')
+        return
       }
-
-      return
     }
 
     loadUser()
@@ -63,9 +62,11 @@ const TransferMaterialOfBarns = () => {
 
   const handleUserSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const searchValue = e.target.value.toLowerCase()
+
     const filtered = users.filter((user) =>
       user.toLowerCase().includes(searchValue)
     )
+
     setFilteredUsers(filtered)
   }
 
@@ -76,6 +77,11 @@ const TransferMaterialOfBarns = () => {
   const resetBarnUsername = () => {
     setIsModalOpen(true)
     setSelectedUser('')
+  }
+
+  const handleFilteredUser = (name: string) => {
+    setSelectedUser(name)
+    setIsModalOpen(false)
   }
 
   return (
@@ -156,7 +162,11 @@ const TransferMaterialOfBarns = () => {
             </label>
           </div>
 
-          <button onClick={handleSend} className={styles.sendBtn}>
+          <button
+            onClick={handleSend}
+            className={styles.sendBtn}
+            disabled={true}
+          >
             Göndər
           </button>
         </div>
@@ -196,12 +206,9 @@ const TransferMaterialOfBarns = () => {
               {filteredUsers.length > 0 &&
                 filteredUsers.map((name, index) => (
                   <li
+                    key={index + 1}
                     className={styles.userItem}
-                    key={name}
-                    onClick={() => {
-                      setSelectedUser(name)
-                      setIsModalOpen(false)
-                    }}
+                    onClick={() => handleFilteredUser(name)}
                   >
                     {`${index + 1}) ${name}`}
                   </li>

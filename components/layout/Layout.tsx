@@ -3,6 +3,8 @@ import { ILayoutProps } from '@/types/common'
 import ProfileDropDown from '../modules/Header/ProfileDropDown'
 import Navbar from '../modules/Navbar'
 import LogoImg from '@/components/elements/LogoImg/LogoImg'
+import ServerStatusComponent from '../elements/AuthPage/ServerStatusComponent'
+
 import styles from '@/styles/layout/index.module.scss'
 
 const Layout = ({ children, title }: ILayoutProps) => {
@@ -22,8 +24,11 @@ const Layout = ({ children, title }: ILayoutProps) => {
           <Navbar />
           <div className={styles.wrapper__content}>
             <header className={styles.header}>
-              <LogoImg />
-              <h1 className={styles.header__title}>AZENCO ASC</h1>
+              <ServerStatusComponent>{''}</ServerStatusComponent>
+              <div className={styles.classFlex}>
+                <LogoImg />
+                <h1 className={styles.header__title}>AZENCO ASC</h1>
+              </div>
               <ProfileDropDown />
             </header>
             <main className={styles.main}>{children}</main>

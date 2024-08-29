@@ -3,9 +3,8 @@ import Head from 'next/head'
 
 import useRedirectByUserCheck from '@/hooks/useRedirectByUserCheck'
 import AuthPage from '@/components/templates/AuthPage/AuthPage'
-import HeaderAuth from '@/components/elements/AuthPage/HeaderAuth'
+import ServerStatusComponent from '@/components/elements/AuthPage/ServerStatusComponent'
 
-import '@/styles/globals.css'
 import styles from '@/styles/auth/index.module.scss'
 
 function Login() {
@@ -26,11 +25,11 @@ function Login() {
         <link rel="icon" type="image/svg" sizes="32x32" href="/img/logo.svg" />
       </Head>
 
-      <HeaderAuth>
+      <ServerStatusComponent>
         <button className={styles.button} onClick={switchIsLogin}>
           {isLogin ? TextRegister : TextLogin}
         </button>
-      </HeaderAuth>
+      </ServerStatusComponent>
 
       <AuthPage isLogin={isLogin} />
     </>
