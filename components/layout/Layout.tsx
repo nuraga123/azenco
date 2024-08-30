@@ -6,6 +6,8 @@ import LogoImg from '@/components/elements/LogoImg/LogoImg'
 import ServerStatusComponent from '../elements/AuthPage/ServerStatusComponent'
 
 import styles from '@/styles/layout/index.module.scss'
+import BackBtn from '../elements/btn/BackBtn'
+import ReloadBtn from '../elements/btn/ReloadBtn'
 
 const Layout = ({ children, title }: ILayoutProps) => {
   console.log()
@@ -24,6 +26,9 @@ const Layout = ({ children, title }: ILayoutProps) => {
           <Navbar />
           <div className={styles.wrapper__content}>
             <header className={styles.header}>
+              <BackBtn />
+              <ReloadBtn />
+              <br />
               <ServerStatusComponent>{''}</ServerStatusComponent>
               <div className={styles.classFlex}>
                 <LogoImg />

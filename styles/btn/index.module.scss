@@ -22,3 +22,40 @@
     }
   }
 }
+
+.reload {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px; // Размер кнопки
+  height: 40px; // Высота кнопки
+  background-color: #007bff; // Синий фон
+  border: none;
+  border-radius: 50%; // Круглая форма кнопки
+  color: #fff; // Цвет иконки
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    animation: spin 1s linear infinite; // Постоянное вращение
+    background-color: #0056b3; // Цвет фона при наведении
+    animation-duration: 1s; // Ускоряем вращение при наведении
+  }
+
+  &:active {
+    background-color: #004080; // Цвет фона при нажатии
+  }
+
+  &:focus {
+    outline: none; // Убираем обводку при фокусе
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(-360deg);
+  }
+}

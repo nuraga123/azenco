@@ -100,6 +100,7 @@ export interface IFindBarnsOfProductData {
   productId: number
   azencoCode: string
   productName: string
+  deleteName: string
 }
 
 export interface ICreateBarn {

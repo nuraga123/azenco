@@ -10,5 +10,6 @@ export const $find_barns = find_barns
     productId: 0,
     azencoCode: '',
     productName: '',
+    deleteName: '',
   })
   .on($setFind_barns, (_, find) => find)

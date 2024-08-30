@@ -11,8 +11,13 @@ import { $find_barns } from '@/context/find_barns'
 import { IBarnItem } from '@/types/barn'
 
 import styles from '@/styles/barns/find/index.module.scss'
+import { $user } from '@/context/user'
+import { getLocalStorageUser } from '@/localStorageUser'
 
 const FindBarnsPage = () => {
+  const { username } = useStore($user)
+  const { usernameStorage } = getLocalStorageUser()
+  const deleteName = username || usernameStorage
   const router = useRouter()
   const { azencoCode, productId, productName } = useStore($find_barns)
 
@@ -27,6 +32,7 @@ const FindBarnsPage = () => {
           productId,
           productName,
           azencoCode,
+          deleteName,
         })
 
         setBarns(dataBarns.barns || [])
@@ -39,7 +45,7 @@ const FindBarnsPage = () => {
     }
 
     fetchBarns()
-  }, [azencoCode, productId, productName])
+  }, [azencoCode, deleteName, productId, productName])
 
   if (!productName) {
     toast.warning('Anbar tapılmadı')
