@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useStore } from 'effector-react'
-import { postOtherOrders, confirmBarnUser, cancelOrderBarnUser } from '@/app/api/order'
+import {
+  postOtherOrders,
+  confirmBarnUser,
+  cancelOrderBarnUser,
+} from '@/app/api/order'
 import { $user } from '@/context/user'
 import { getLocalStorageUser } from '@/localStorageUser'
 import styles from '@/styles/order/their/index.module.scss'
@@ -35,7 +39,7 @@ const TheirOrderPage: React.FC = () => {
   }
 
   const handleCancelOrder = async (orderId: number) => {
-    await cancelOrderBarnUser(orderId)
+    await cancelOrderBarnUser(orderId, barnUserId)
     setTheirOrder(theirOrder.filter((order) => order.id !== orderId))
   }
 
