@@ -27,7 +27,6 @@ export const singInFx = createEffect(
     console.log(data)
     if (data) {
       setUser(data)
-      toast.success('Proqrama daxil oldunuz!')
       return data
     }
   }
@@ -53,6 +52,7 @@ export const checkUserAuthFx = createEffect(async (url: string) => {
 export const logoutFx = createEffect(async (url: string) => {
   try {
     await api.get(url)
+    return 'out'
   } catch (error) {
     toast.error((error as Error).message)
   }

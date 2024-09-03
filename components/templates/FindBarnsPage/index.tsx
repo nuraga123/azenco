@@ -4,7 +4,6 @@ import { useStore } from 'effector-react'
 import { toast } from 'react-toastify'
 
 import { postFindBarnsOfProductFx } from '@/app/api/barn'
-import BackBtn from '@/components/elements/btn/BackBtn'
 import BarnCard from '@/components/modules/BarnCard/index'
 import Spinner from '@/components/modules/Spinner/Spinner'
 import { $find_barns } from '@/context/find_barns'
@@ -35,6 +34,10 @@ const FindBarnsPage = () => {
           deleteName,
         })
 
+        if (dataBarns?.error_message) {
+          toast.warning(dataBarns.error_message)
+        }
+
         setBarns(dataBarns.barns || [])
       } catch (error) {
         console.error('Xəta baş verdi: ', error)
@@ -60,8 +63,7 @@ const FindBarnsPage = () => {
   return (
     <div className={styles.barns}>
       <div className={styles.head}>
-        <BackBtn />
-        <h1 className={styles.title}>Anbar Səhifəsi</h1>
+        <h1 className={styles.title}>Axtarılan Materialın tapılan Anbarları</h1>
       </div>
 
       <div className={styles.details}>
@@ -80,9 +82,11 @@ const FindBarnsPage = () => {
       </div>
 
       <div className={styles.items}>
-        {barns.map((barn: IBarnItem) => (
-          <BarnCard key={barn.id} barn={barn} />
-        ))}
+        {barns.length === 0 ? (
+          <h1>Anbarlar yoxdur !</h1>
+        ) : (
+          barns.map((barn: IBarnItem) => <BarnCard key={barn.id} barn={barn} />)
+        )}
       </div>
     </div>
   )

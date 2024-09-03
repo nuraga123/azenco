@@ -27,19 +27,11 @@
   &__title {
     font-size: 28px;
     font-weight: bold;
-    margin-bottom: 20px;
+    margin: 20px;
     color: #333;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-    position: relative;
     text-align: center;
-
-    &::after {
-      content: '';
-      display: block;
-      height: 4px;
-      background-color: #0070f3;
-      margin: 10px auto 0;
-    }
+    border-bottom: 3px solid #014796;
   }
 
   &__wrapper {
@@ -47,9 +39,12 @@
     justify-content: space-between;
     gap: 20px;
     align-items: stretch;
+    max-width: 1200px;
+    width: 100%;
   }
 
   button {
+    white-space: nowrap;
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
@@ -115,6 +110,54 @@
 
     &:hover {
       background-color: #014796;
+    }
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .barn {
+    padding: 10px;
+
+    &__header {
+      margin-bottom: 5px;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    &__container {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    &__wrapper_table {
+      padding: 1px;
+      border-width: 1px;
+    }
+
+    &__title {
+      font-size: 20px;
+      letter-spacing: 1px;
+      margin: 15px auto;
+      width: 180px;
+    }
+
+    &__wrapper {
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+    }
+
+    &__btn_back,
+    &__btn_add {
+      padding: 8px 12px;
+      font-size: 16px;
+      width: 150px;
     }
   }
 }

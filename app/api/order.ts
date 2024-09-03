@@ -29,6 +29,11 @@ export interface SendBarnUserDto {
   barnUserId: number
 }
 
+export interface IOtherOrder {
+  barnUsername: string
+  barnUserId: number
+}
+
 // Запросы
 
 // Получение всех заказов
@@ -82,6 +87,22 @@ export const confirmBarnUser = createEffect(
   }
 )
 
+// Подтверждение пользователя склада
+export const cancelOrderBarnUser = createEffect(
+  async (confirmBarnUserDto: ConfirmBarnUserDto) => {
+    try {
+      const { data } = await api.post(
+        'order/confirm-barn-user',
+        confirmBarnUserDto
+      )
+      return data
+    } catch (error) {
+      console.error(error)
+      return { error_message: (error as AxiosError).message }
+    }
+  }
+)
+
 // Отправка заказа пользователю склада
 export const sendBarnUser = createEffect(
   async (sendBarnUserDto: SendBarnUserDto) => {
@@ -107,6 +128,23 @@ export const getMyOrders = createEffect(
       const { data } = await api.post('order/my', {
         clientId,
         clientUserName,
+      })
+      console.log(data)
+
+      return data
+    } catch (error) {
+      console.log(error)
+      return { error_message: (error as AxiosError).message }
+    }
+  }
+)
+
+export const postOtherOrders = createEffect(
+  async ({ barnUserId, barnUsername }: IOtherOrder) => {
+    try {
+      const { data } = await api.post('order/other', {
+        barnUserId,
+        barnUsername,
       })
       console.log(data)
 

@@ -2,6 +2,7 @@ import { useRouter } from 'next/router'
 import { forwardRef } from 'react'
 import { useStore } from 'effector-react'
 import { AnimatePresence, motion } from 'framer-motion'
+import { toast } from 'react-toastify'
 
 import { logoutFx } from '@/app/api/auth'
 import { IWrappedComponentProps } from '@/types/common'
@@ -13,7 +14,6 @@ import { withClickOutside } from '@/utils/withClickOutside'
 import { getLocalStorageUser, removeLocalStorageUser } from '@/localStorageUser'
 
 import styles from '@/styles/profileDropDown/index.module.scss'
-import { toast } from 'react-toastify'
 
 const ProfileDropDown = forwardRef<HTMLDivElement, IWrappedComponentProps>(
   ({ open, setOpen }, ref) => {

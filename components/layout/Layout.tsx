@@ -4,13 +4,14 @@ import ProfileDropDown from '../modules/Header/ProfileDropDown'
 import Navbar from '../modules/Navbar'
 import LogoImg from '@/components/elements/LogoImg/LogoImg'
 import ServerStatusComponent from '../elements/AuthPage/ServerStatusComponent'
-
-import styles from '@/styles/layout/index.module.scss'
 import BackBtn from '../elements/btn/BackBtn'
 import ReloadBtn from '../elements/btn/ReloadBtn'
 
+import styles from '@/styles/layout/index.module.scss'
+
 const Layout = ({ children, title }: ILayoutProps) => {
   console.log()
+  const MaxWidth = window.innerWidth > 400 ? true : false
 
   return (
     <>
@@ -26,15 +27,22 @@ const Layout = ({ children, title }: ILayoutProps) => {
           <Navbar />
           <div className={styles.wrapper__content}>
             <header className={styles.header}>
-              <BackBtn />
-              <ReloadBtn />
+              <div className={styles.header__left}>
+                <BackBtn />
+                <br />
+                <ReloadBtn />
+                <br />
+
+                {MaxWidth && <ServerStatusComponent />}
+              </div>
               <br />
-              <ServerStatusComponent>{''}</ServerStatusComponent>
               <div className={styles.classFlex}>
-                <LogoImg />
+                {MaxWidth && <LogoImg />}
                 <h1 className={styles.header__title}>AZENCO ASC</h1>
               </div>
-              <ProfileDropDown />
+              <div>
+                <ProfileDropDown />
+              </div>
             </header>
             <main className={styles.main}>{children}</main>
           </div>

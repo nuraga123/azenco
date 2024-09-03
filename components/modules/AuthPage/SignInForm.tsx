@@ -12,9 +12,12 @@ import PasswordInput from '@/components/elements/AuthPage/PasswordInput'
 
 import styles from '@/styles/auth/index.module.scss'
 import spinnerStyles from '@/styles/spinner/index.module.scss'
+import { toast } from 'react-toastify'
 
 const SignInForm = () => {
   const [spinner, setSpinner] = useState(false)
+  const [userError, setUserError] = useState('')
+
   const [names, setNames] = useState<string[]>([])
   const {
     register,
@@ -34,25 +37,31 @@ const SignInForm = () => {
         username: data.name,
         password: data.password,
       })
-      resetField('name')
-      resetField('password')
 
-      if (userData?.user) {
-        const userDataOne = userData.user
+      const { token, userId, username, email, error_message } = userData.user
+      const checkUserSuccess = token && userId && username && email
 
-        localStorage.setItem('token', userDataOne.token)
-        localStorage.setItem('userId', userDataOne.userId)
-        localStorage.setItem('username', userDataOne.username)
-        localStorage.setItem('email', userDataOne.email)
+      if (error_message) {
+        toast.error(error_message)
+        setUserError(error_message)
+      } else if (checkUserSuccess) {
+        localStorage.setItem('token', token)
+        localStorage.setItem('userId', userId)
+        localStorage.setItem('username', username)
+        localStorage.setItem('email', email)
 
         setUser({
-          id: userDataOne.userId,
-          username: userDataOne.username,
-          email: userDataOne.email,
+          id: +userId,
+          username,
+          email,
         })
 
+        toast.success('Proqrama daxil oldunuz!')
         router.push('/my')
       }
+
+      resetField('name')
+      resetField('password')
 
       router.push('/')
     } catch (error) {
@@ -85,6 +94,18 @@ const SignInForm = () => {
       />
       <br />
       <PasswordInput register={register} errors={errors} />
+
+      {userError && (
+        <h3
+          style={{
+            textAlign: 'center',
+            color: 'red',
+          }}
+        >
+          {userError}
+        </h3>
+      )}
+
       <div>
         <button
           className={`${styles.form__button} ${styles.button} ${styles.submit}`}

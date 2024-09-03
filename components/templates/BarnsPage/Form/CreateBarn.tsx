@@ -7,9 +7,8 @@ import SearchProductsComponent from '@/components/modules/ProductsPage/SearchPro
 import ProductTable from '@/components/modules/ProductsPage/ProductTable'
 import BarnModal from '@/components/modules/BarnsPage/Modal'
 import SortButtons from '@/components/templates/SortButtons/SortButtons'
-import BackBtn from '@/components/elements/btn/BackBtn'
 
-import productsStyles from '@/styles/products/index.module.scss'
+import styles from '@/styles/products/index.module.scss'
 import spinnerStyles from '@/styles/spinner/index.module.scss'
 
 const CreateBarn = () => {
@@ -55,9 +54,7 @@ const CreateBarn = () => {
     setResultSearch({ products: [] })
   }
 
-  const handleSortChange = (newSortBy: 'asc' | 'desc') => {
-    setSortBy(newSortBy)
-  }
+  const handleSortChange = (newSortBy: 'asc' | 'desc') => setSortBy(newSortBy)
 
   const countProducts: string = `${
     resultSearch?.products?.length === 0 ||
@@ -72,8 +69,11 @@ const CreateBarn = () => {
   }
 
   return (
-    <div className={productsStyles.container}>
-      <BackBtn />
+    <div className={styles.container}>
+      <h2 className={styles.title}>
+        Anbara material əlavə etmək üçün material axtarış forması
+      </h2>
+
       <SearchProductsComponent
         searchType={searchType}
         searchValue={searchValue}
@@ -96,8 +96,8 @@ const CreateBarn = () => {
         </div>
       ) : (
         countProducts && (
-          <div className={productsStyles.barn__result__container}>
-            <div className={productsStyles.totalCount}>
+          <div className={styles.barn__result__container}>
+            <div className={styles.totalCount}>
               Cəmi: <b>{countProducts}</b> material tapildi
             </div>
 

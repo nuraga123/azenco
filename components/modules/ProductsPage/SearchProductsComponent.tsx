@@ -1,6 +1,7 @@
 import { ChangeEvent } from 'react'
-import styles from '@/styles/products/search.module.scss'
 import { ISearchProducts } from '@/types/products'
+
+import styles from '@/styles/products/search.module.scss'
 
 const SearchProductsComponent = ({
   searchType,

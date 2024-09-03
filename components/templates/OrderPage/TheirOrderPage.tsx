@@ -1,97 +1,86 @@
 import React, { useEffect, useState } from 'react'
 import { useStore } from 'effector-react'
-import { getMyOrders } from '@/app/api/order'
+import { postOtherOrders, confirmBarnUser, cancelOrderBarnUser } from '@/app/api/order'
 import { $user } from '@/context/user'
 import { getLocalStorageUser } from '@/localStorageUser'
-import styles from '@/styles/order/my/index.module.scss'
+import styles from '@/styles/order/their/index.module.scss'
+import { IOrderItem } from '@/types/order'
 
-interface Order {
-  id: number
-  status: string
-  clientId: number
-  clientUserName: string
-  clientMessage: string
-  barnUsername: string
-  barnUserId: number
-  BarnUserMessage: string
-  barnId: number
-  productName: string
-  azencoCode: string
-  newStock: string
-  usedStock: string
-  brokenStock: string
-  totalStock: string
-  lostNewStock: string
-  lostUsedStock: string
-  lostBrokenStock: string
-  lostTotalStock: string
-  price: string
-  totalPrice: string
-  unit: string
-  barnLocation: string
-  clientLocation: string
-  driverName: string
-  carNumber: string
-  info: string
-  productId: number
-  createdAt: string
-  updatedAt: string
-}
-
-const MyOrdersPage: React.FC = () => {
+const TheirOrderPage: React.FC = () => {
   const { username, id } = useStore($user)
   const { userIdStorage, usernameStorage } = getLocalStorageUser()
-  const clientId = +id || +userIdStorage
-  const clientUserName = username || usernameStorage
+  const barnUserId = +id || +userIdStorage
+  const barnUsername = username || usernameStorage
 
-  const [myOrders, setMyOrders] = useState<Order[]>([])
+  const [theirOrder, setTheirOrder] = useState<IOrderItem[]>([])
 
   useEffect(() => {
     const loadMyOrders = async () => {
-      const MyOrdersData = await getMyOrders({ clientId, clientUserName })
-      setMyOrders(MyOrdersData.orders || [])
+      const MyOrdersData = await postOtherOrders({
+        barnUsername,
+        barnUserId,
+      })
+      setTheirOrder(MyOrdersData.orders || [])
     }
 
     loadMyOrders()
-  }, [clientId, clientUserName])
+  }, [barnUserId, barnUsername])
+
+  const handleConfirmOrder = async (orderId: number) => {
+    await confirmBarnUser({
+      orderId,
+      barnUserId,
+    })
+    setTheirOrder(theirOrder.filter((order) => order.id !== orderId))
+  }
+
+  const handleCancelOrder = async (orderId: number) => {
+    await cancelOrderBarnUser(orderId)
+    setTheirOrder(theirOrder.filter((order) => order.id !== orderId))
+  }
 
   return (
     <div className={styles.ordersPage}>
-      <h1 className={styles.pageTitle}>My Orders</h1>
+      <h1 className={styles.pageTitle}>Подтверждение заказов</h1>
       <div className={styles.ordersContainer}>
-        {myOrders.map((order) => (
-          <div key={order.id} className={styles.orderCard}>
-            <h2 className={styles.orderTitle}>{order.info}</h2>
-            <p className={styles.orderInfo}>
-              <strong>Status:</strong> {order.status}
-            </p>
-            <p className={styles.orderInfo}>
-              <strong>Client:</strong> {order.clientUserName} ({'ID: '}
-              {order.clientId})
-            </p>
-            <p className={styles.orderInfo}>
-              <strong>Barn User:</strong> {order.barnUsername} ({'ID: '}
-              {order.barnUserId})
-            </p>
-            <p className={styles.orderInfo}>
-              <strong>Location:</strong> {order.barnLocation}
-            </p>
-            <p className={styles.orderInfo}>
-              <strong>Total Stock:</strong> {order.totalStock} {order.unit}
-            </p>
-            <p className={styles.orderInfo}>
-              <strong>Price:</strong> {order.price} AZN
-            </p>
-            <p className={styles.orderInfo}>
-              <strong>Total Price:</strong> {order.totalPrice} AZN
-            </p>
-            <p className={styles.orderInfo}>
-              <strong>product name: {order.productName}</strong>
-            </p>
-            <p className={styles.orderDate}>
-              <strong>Created At:</strong>{' '}
-              {new Date(order.createdAt).toLocaleString()}
-            </p>
+        {theirOrder.map((order: IOrderItem) => (
+          <div key={order.id} className={styles.orderRow}>
+            <span className={styles.orderId}>№ {order.id}</span>
+            <span className={styles.client}>
+              Клиент: {order.clientUserName}
+            </span>
+            <span className={styles.clientLocation}>
+              Откуда: {order.clientLocation}
+            </span>
+            <span className={styles.productName}>
+              Продукт: {order.productName}
+            </span>
+            <span className={styles.azencoCode}>Код: {order.azencoCode}</span>
+            <span className={styles.stock}>Кол-во: Новые {order.newStock}</span>
+            <span className={styles.stock}>
+              Кол-во: Старые {order.usedStock}
+            </span>
+            <span className={styles.stock}>
+              Кол-во: Сломанные {order.brokenStock}
+            </span>
+            <span className={styles.price}>Цена: {order.totalPrice} AZN</span>
+            <span className={styles.createdAt}>
+              Создан: {new Date(order.createdAt).toLocaleDateString()}
+            </span>
+            <div className={styles.orderActions}>
+              <button
+                className={styles.confirmButton}
+                onClick={() => handleConfirmOrder(order.id)}
+              >
+                Подтвердить
+              </button>
+              <button
+                className={styles.cancelButton}
+                onClick={() => handleCancelOrder(order.id)}
+              >
+                Отменить
+              </button>
+            </div>
           </div>
         ))}
       </div>
@@ -99,4 +88,4 @@ const MyOrdersPage: React.FC = () => {
   )
 }
 
-export default MyOrdersPage
+export default TheirOrderPage

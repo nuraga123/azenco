@@ -45,11 +45,11 @@ const MyBarn = () => {
           </div>
 
           <Link href={'/my/barn'} passHref legacyBehavior>
-            <button className={styles.barn__ok}>Anbar materiallari</button>
+            <button className={styles.barn__ok}>Anbar materiallar</button>
           </Link>
 
           <Link href={'/my/lost-barn'} passHref legacyBehavior>
-            <button className={styles.barn__not}>itirilmiş materiallar</button>
+            <button className={styles.barn__not}>Itirilmiş materiallar</button>
           </Link>
         </div>
       </div>

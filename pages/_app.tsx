@@ -18,8 +18,10 @@ function App({ Component, pageProps }: AppProps) {
   return (
     mounted && (
       <>
-        <NextNProgress options={{ showSpinner: false }} height={5} />
+        <NextNProgress options={{ showSpinner: true }} height={5} />
+
         <Component {...pageProps} />
+
         <ToastContainer
           position="top-right"
           hideProgressBar={false}

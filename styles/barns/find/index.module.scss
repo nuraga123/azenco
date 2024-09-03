@@ -4,8 +4,9 @@
   .head {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
+    justify-content: center;
+    margin: 20px 0;
+    border-bottom: 3px solid #0070f3;
   }
 
   .title {

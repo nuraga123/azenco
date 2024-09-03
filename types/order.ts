@@ -3,15 +3,24 @@ import { IBarnItem } from './barn'
 export interface IOrderItem {
   id: number
   status: string
+
   clientId: number
   clientUserName: string
   clientMessage: string
+  clientLocation: string
+
   barnUsername: string
   barnUserId: number
   barnUserMessage: string
   barnId: number
+  barnLocation: string
+
+  productId: number
   productName: string
   azencoCode: string
+  unit: string
+  price: string
+
   newStock: string
   usedStock: string
   brokenStock: string
@@ -20,15 +29,13 @@ export interface IOrderItem {
   lostUsedStock: string
   lostBrokenStock: string
   lostTotalStock: string
-  price: string
   totalPrice: string
-  unit: string
-  barnLocation: string
-  clientLocation: string
+
   driverName: string
   carNumber: string
+
   info: string
-  productId: number
+
   createdAt: string
   updatedAt: string
 }

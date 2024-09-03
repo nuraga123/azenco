@@ -59,3 +59,19 @@
     transform: rotate(-360deg);
   }
 }
+
+@media screen and (max-width: 400px) {
+  .btn {
+    font-size: 14px;
+    margin: 5px;
+    padding: 5px;
+  }
+
+  .reload {
+    font-size: 14px;
+    margin: 5px;
+    padding: 5px;
+    width: 30px; // Размер кнопки
+    height: 30px; // Высота кнопки
+  }
+}

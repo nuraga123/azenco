@@ -1,10 +1,12 @@
 import { useEffect, useState, ReactNode } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 import { getWorkingServer } from '@/app/api/auth'
 import styles from '@/styles/auth/header__auth.module.scss'
 
-const ServerStatusComponent = ({ children }: { children: ReactNode }) => {
+const ServerStatusComponent = ({ children = '' }: { children?: ReactNode }) => {
+  const router = useRouter()
   const [openServerBrn, setOpenServerBrn] = useState(false)
 
   const [serverStatus, setServerStatus] = useState<
@@ -23,6 +25,7 @@ const ServerStatusComponent = ({ children }: { children: ReactNode }) => {
             setServerStatus('running')
           } else {
             setServerStatus('offline')
+            router.push('404')
           }
         }, 5000)
       } catch (error) {
@@ -33,7 +36,7 @@ const ServerStatusComponent = ({ children }: { children: ReactNode }) => {
 
     const intervalId = setInterval(getServerStatus, 10000)
     return () => clearInterval(intervalId)
-  }, [serverStatus])
+  }, [router, serverStatus])
 
   return (
     <div className={styles.container}>
@@ -46,6 +49,7 @@ const ServerStatusComponent = ({ children }: { children: ReactNode }) => {
             className={`${styles.statusIndicator} ${styles.serverLoading}`}
           />
         )}
+
         {serverStatus === 'running' && (
           <div
             className={`${styles.statusIndicator} ${styles.serverRunning}`}
@@ -64,9 +68,9 @@ const ServerStatusComponent = ({ children }: { children: ReactNode }) => {
 
         {openServerBrn && (
           <Link
+            href={`${process.env.NEXT_PUBLIC_SERVER_URL}`}
             passHref
             legacyBehavior
-            href={`${process.env.NEXT_PUBLIC_SERVER_URL}`}
           >
             <a className={styles.btn} target="_blank" rel="noopener noreferrer">
               🖥️

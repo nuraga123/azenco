@@ -197,7 +197,7 @@ const BarnModal: React.FC<ModalProps> = ({ isOpen, onClose, product }) => {
             <div className={styles.li}>
               <div className={styles.label__container}>
                 <label className={styles.label__text}>
-                  Materialı sizə göndərən şəxsin adı
+                  {'1) Materialı sizə göndərən şəxsin adı'}
                 </label>
                 <span className={styles.icon}>
                   {senderName.length > 3 ? '✅' : '👨‍💼'}
@@ -214,7 +214,7 @@ const BarnModal: React.FC<ModalProps> = ({ isOpen, onClose, product }) => {
 
             <div className={styles.li}>
               <div className={styles.label__container}>
-                <label className={styles.label__text}>Sürücü adı</label>
+                <label className={styles.label__text}>{`2) Sürücü adı`}</label>
                 <span className={styles.icon}>
                   {driverName.length > 3 ? '✅' : '👨‍✈️'}
                 </span>
@@ -236,7 +236,7 @@ const BarnModal: React.FC<ModalProps> = ({ isOpen, onClose, product }) => {
                 <div>
                   <div>
                     <label style={{ display: 'flex' }}>
-                      {'Azərbaycan avtomobil nömrəsidir ? (12-AB-345) '}
+                      {'3) Azərbaycan avtomobil nömrəsidir ? (12-AB-345) '}
                       <AZ_FLAG_IMAGE />
                     </label>
                   </div>
@@ -270,7 +270,7 @@ const BarnModal: React.FC<ModalProps> = ({ isOpen, onClose, product }) => {
               <div className={styles.li}>
                 <div className={styles.label__container}>
                   <label>
-                    {`Maşının nömrəsi `}
+                    {`3) Maşının nömrəsi `}
                     {carNumber.length > 7 ? '✅' : '🚛'}
                   </label>
                   {showPic}
@@ -310,7 +310,7 @@ const BarnModal: React.FC<ModalProps> = ({ isOpen, onClose, product }) => {
             <div className={styles.li}>
               <div className={styles.label__container}>
                 <label className={styles.label__text}>
-                  Material hardan gəlir?
+                  {`4) Material hardan gəlir ?`}
                 </label>
                 <span className={styles.icon}>
                   {fromLocation.length > 3 ? '✅' : '🌍'}
@@ -327,7 +327,9 @@ const BarnModal: React.FC<ModalProps> = ({ isOpen, onClose, product }) => {
 
             <div className={styles.li}>
               <div className={styles.label__container}>
-                <label className={styles.label__text}>Material hardadır?</label>
+                <label className={styles.label__text}>
+                  {'5) Material hardadır ?'}
+                </label>
                 <span className={styles.icon}>
                   {location.length > 3 ? '✅' : '📌'}
                 </span>
@@ -344,7 +346,7 @@ const BarnModal: React.FC<ModalProps> = ({ isOpen, onClose, product }) => {
             <div className={styles.li}>
               <div className={styles.label__container}>
                 <label className={styles.label__text}>
-                  Materialı hansı tarixdə və saatda almısınız?
+                  {'6) Materialı hansı tarixdə və saatda almısınız ?'}
                 </label>
                 <span className={styles.icon}>
                   {userSelectedDate ? '✅' : '📅'}
@@ -361,9 +363,9 @@ const BarnModal: React.FC<ModalProps> = ({ isOpen, onClose, product }) => {
             <div className={styles.li}>
               <div className={styles.label__container}>
                 <label className={styles.label__text}>
-                  Yeni Materialın Miqdarı
+                  {`7) Yeni Materialın Miqdarı`}
                 </label>
-                <span className={styles.icon}>🆕📦</span>
+                <span className={styles.icon}>🆕 📦</span>
               </div>
               <input
                 type="text"
@@ -379,7 +381,7 @@ const BarnModal: React.FC<ModalProps> = ({ isOpen, onClose, product }) => {
                 <label className={styles.label__text}>
                   İşlənmiş Materialın Miqdarı
                 </label>
-                <span className={styles.icon}>🛠️📦</span>
+                <span className={styles.icon}>🛠️ 📦</span>
               </div>
               <input
                 type="text"
@@ -395,7 +397,7 @@ const BarnModal: React.FC<ModalProps> = ({ isOpen, onClose, product }) => {
                 <label className={styles.label__text}>
                   Yararsız Materialın Miqdarı
                 </label>
-                <span className={styles.icon}>❌📦</span>
+                <span className={styles.icon}>❌ 📦</span>
               </div>
               <input
                 type="text"
