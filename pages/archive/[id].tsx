@@ -4,7 +4,6 @@ import { findArchiveById } from '@/app/api/archive'
 import ArchiveCard, { ArchiveData } from '@/components/modules/ArchiveCard'
 import Layout from '@/components/layout/Layout'
 import Spinner from '@/components/modules/Spinner/Spinner'
-import BackBtn from '@/components/elements/btn/BackBtn'
 
 const ArchiveItem: React.FC = () => {
   const router = useRouter()
@@ -44,7 +43,6 @@ const ArchiveItem: React.FC = () => {
   if (data) {
     return (
       <Layout title={`Arxiv | ${data?.username}`}>
-        <BackBtn />
         <ArchiveCard data={data} />
       </Layout>
     )
@@ -52,7 +50,6 @@ const ArchiveItem: React.FC = () => {
 
   return (
     <Layout title={`Arxiv | məlumatlari yoxdur`}>
-      <BackBtn />
       <h1 style={{ textAlign: 'center' }}>
         Göstəriləcək arxivin məlumatlari yoxdur !
       </h1>

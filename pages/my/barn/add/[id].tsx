@@ -7,7 +7,6 @@ import { IBarnItem } from '@/types/barn'
 import useRedirectByUserCheck from '@/hooks/useRedirectByUserCheck'
 import Layout from '@/components/layout/Layout'
 import AddBarnForm from '@/components/templates/BarnsPage/Form/AddBarn'
-import BackBtn from '@/components/elements/btn/BackBtn'
 
 import spinnerStyles from '@/styles/spinner/index.module.scss'
 import styles from '@/styles/barn/index.module.scss'
@@ -54,7 +53,6 @@ const AddStocksBarn = () => {
     <Layout title="Anbara material əlavə edin">
       <div>
         <div className={styles.barn__header}>
-          <BackBtn />
           <h2 style={{ textAlign: 'center' }}>
             Anbarda materialın miqdarının artırılması formasının uçotu
           </h2>

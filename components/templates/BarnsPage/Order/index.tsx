@@ -9,7 +9,6 @@ import { IBarnItem, IBarnResponse } from '@/types/barn'
 import BarnTable from '@/components/modules/BarnsPage/Order/BarnTable'
 import OrderModal from '@/components/modules/BarnsPage/Order/OrderModal'
 import Spinner from '@/components/modules/Spinner/Spinner'
-import BackBtn from '@/components/elements/btn/BackBtn'
 import { getLocalStorageUser } from '@/localStorageUser'
 import { $user } from '@/context/user'
 
@@ -180,7 +179,6 @@ const BarnPageOrder = ({ userId }: { userId: number }) => {
       ) : (
         <>
           <div className={styles.head}>
-            <BackBtn />
             <h3 className={styles.info}>
               Anbardar: <i>{barns.barns[0]?.username}</i>
             </h3>

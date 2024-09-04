@@ -1,5 +1,4 @@
 import React from 'react'
-import BackBtn from '../btn/BackBtn'
 
 const Head = ({ headTitle }: { headTitle: string }) => (
   <div
@@ -15,7 +14,6 @@ const Head = ({ headTitle }: { headTitle: string }) => (
       border: '3px solid #dde1db',
     }}
   >
-    <BackBtn />
     <h2 style={{ textAlign: 'center', marginRight: 20 }}>
       Səhifə: {headTitle}
     </h2>

@@ -5,8 +5,8 @@ import { toast } from 'react-toastify'
 import HelpUser from '@/components/elements/HelpUser/HelpUser'
 import { updateUserPasswordServer } from '@/app/api/auth'
 import { getLocalStorageUser } from '@/localStorageUser'
-import BackBtn from '@/components/elements/btn/BackBtn'
 import styles from '@/styles/forgot__password/index.module.scss'
+import BackBtn from '@/components/elements/btn/BackBtn'
 
 export interface IForgotPassword {
   id: number
@@ -63,7 +63,6 @@ const ForgotPassword = () => {
       </Head>
       {adminCheck ? (
         <div className={styles.container}>
-          <BackBtn text="login menusina qayitmaq !" />
           <h2>Şifrəni unutmusunuz</h2>
           <form onSubmit={handleSubmit} className={styles.form}>
             <label>secret soz:</label>

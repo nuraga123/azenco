@@ -10,7 +10,6 @@ import ReduceBarnForm from '@/components/templates/BarnsPage/Form/ReduceBarn'
 
 import spinnerStyles from '@/styles/spinner/index.module.scss'
 import styles from '@/styles/barn/index.module.scss'
-import BackBtn from '@/components/elements/btn/BackBtn'
 
 const ReduceStocksBarn = () => {
   const { asPath, query } = useRouter()
@@ -54,7 +53,6 @@ const ReduceStocksBarn = () => {
     <Layout title={`Anbara material əlavə edin`}>
       <div>
         <div className={styles.barn__header}>
-          <BackBtn />
           <h2 style={{ textAlign: 'center' }}>
             Anbarda olan materialın miqdarının azaldılması formasının uçotu
           </h2>

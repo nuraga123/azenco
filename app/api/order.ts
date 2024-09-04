@@ -1,7 +1,6 @@
-// apiRequests.ts
 import { createEffect } from 'effector-next'
-import api from '@/app/axiosClient'
 import { AxiosError } from 'axios'
+import api from '@/app/axiosClient'
 
 // Интерфейсы для запросов
 export interface IOrderQuery {

@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react'
 
 import barnImg from '@/public/img/garage-icon.jpg'
 import { getBarnsUsernameFx } from '@/app/api/barn'
-import BackBtn from '@/components/elements/btn/BackBtn'
 
 import styles from '@/styles/barns/index.module.scss'
 import spinnerStyles from '@/styles/spinner/index.module.scss'
@@ -35,7 +34,6 @@ const BarnsPage = () => {
   return (
     <div className={styles.barns}>
       <div className={styles.head}>
-        <BackBtn />
         <h1 className={styles.title}>Anbar Səhifəsi</h1>
       </div>
       <div className={styles.items}>

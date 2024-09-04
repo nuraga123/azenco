@@ -53,6 +53,9 @@ const TheirOrderPage: React.FC = () => {
             <span className={styles.client}>
               Клиент: {order.clientUserName}
             </span>
+
+            <span className={styles.client}>Статус заказа: {order.status}</span>
+
             <span className={styles.clientLocation}>
               Откуда: {order.clientLocation}
             </span>
@@ -61,9 +64,7 @@ const TheirOrderPage: React.FC = () => {
             </span>
             <span className={styles.azencoCode}>Код: {order.azencoCode}</span>
             <span className={styles.stock}>Кол-во: Новые {order.newStock}</span>
-            <span className={styles.stock}>
-              Кол-во: Старые {order.usedStock}
-            </span>
+            <span className={styles.stock}>Кол-во: Б/У {order.usedStock}</span>
             <span className={styles.stock}>
               Кол-во: Сломанные {order.brokenStock}
             </span>

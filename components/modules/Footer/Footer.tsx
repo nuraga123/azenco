@@ -2,7 +2,6 @@ import React from 'react'
 import MarkerSvg from '@/components/elements/MarkerSvg/MarkerSvg'
 import PhoneSvg from '@/components/elements/PhoneSvg/PhoneSvg'
 import MailSvg from '@/components/elements/MailSvg/MailSvg'
-import BackBtn from '@/components/elements/btn/BackBtn'
 
 import styles from '@/styles/footer/index.module.scss'
 
@@ -62,8 +61,6 @@ const Footer = () => (
               </div>
             </li>
           </ul>
-
-          <BackBtn />
         </div>
       </div>
     </div>

@@ -10,7 +10,6 @@ import Layout from '@/components/layout/Layout'
 
 import spinnerStyles from '@/styles/spinner/index.module.scss'
 import styles from '@/styles/barn/form/delete/index.module.scss'
-import BackBtn from '@/components/elements/btn/BackBtn'
 import ReduceMaterial from '@/components/templates/BarnsPage/MaterialComponent/ReduceMaterial'
 
 const DeleteBarn = () => {
@@ -83,7 +82,6 @@ const DeleteBarn = () => {
     <Layout title="Anbara material əlavə edin">
       <div>
         <div className={styles.barn__header}>
-          <BackBtn />
           <h2>Anbarda olan materialın silinmə formasının uçotu</h2>
           <p>Anbardar: {barnData.username}</p>
         </div>
