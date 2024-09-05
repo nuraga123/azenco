@@ -8,9 +8,13 @@ const OrderTableHeader = () => (
       <th rowSpan={2}>№</th>
       <th rowSpan={2}>Sifariş Nömrəsi</th>
       <th rowSpan={2}>Sifarişin Statusu</th>
-      <th rowSpan={2}>Müştəri</th>
+
+      <th rowSpan={2} className={styles.no_wrap}>
+        Müştəri
+      </th>
+
       <th rowSpan={2}>Müştərinin Yerləşdiyi Yer</th>
-      <th rowSpan={2} className={styles.productName}>
+      <th rowSpan={2} className={styles.no_wrap}>
         Material Adı
       </th>
       <th rowSpan={2}>Azenco Kodu</th>
@@ -20,8 +24,9 @@ const OrderTableHeader = () => (
 
       <th rowSpan={2}>Ölçü Vahidi</th>
       <th rowSpan={2}>Qiymət (AZN)</th>
-      <th rowSpan={2}>Cəmi Qiymət</th>
-      <th rowSpan={2}>Yaradılıb</th>
+      <th rowSpan={2}>Cəmi Qiymət (AZN)</th>
+      <th rowSpan={2}>son tarix</th>
+      <th rowSpan={2}>Anbardarın mesajı</th>
     </tr>
     <tr>
       {/* Material miqdarı üçün alt başlıqlar */}

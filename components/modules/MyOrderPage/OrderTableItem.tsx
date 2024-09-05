@@ -1,6 +1,7 @@
 import React from 'react'
 import { IOrderItem } from '@/types/order'
 import styles from '@/styles/order/my/index.module.scss'
+import { formatDateTime } from '@/utils/formatDateTime'
 
 const OrderTableItem = ({
   order,
@@ -15,7 +16,7 @@ const OrderTableItem = ({
 
   return (
     <tr>
-      <td>{''}</td>
+      <td>1</td>
       <td>{` ${+index + 1}) `}</td>
 
       <td>
@@ -25,9 +26,9 @@ const OrderTableItem = ({
 
       <td>{order.status}</td>
 
-      <td>{order.barnUsername}</td>
+      <td className={styles.no_wrap}>{order.barnUsername}</td>
 
-      <td>{order.clientLocation}</td>
+      <td className={styles.no_wrap}>{order.clientLocation}</td>
 
       <td className={styles.productName}>{order.productName}</td>
 
@@ -36,12 +37,23 @@ const OrderTableItem = ({
       <td>{formatStock(+order.newStock)}</td>
       <td>{formatStock(+order.usedStock)}</td>
       <td>{formatStock(+order.brokenStock)}</td>
-      <td>{formatStock(+order.totalStock)}</td>
+      <td>
+        <strong>{formatStock(+order.totalStock)}</strong>
+      </td>
 
       <td>{order.unit}</td>
-      <td>{+order.price} AZN</td>
-      <td>{+order.totalPrice} AZN</td>
-      <td>{new Date(order.createdAt).toLocaleString()}</td>
+
+      <td>{+order.price}</td>
+
+      <td>
+        <strong>{+order.totalPrice}</strong>
+      </td>
+
+      <td>
+        {order.updatedAt
+          ? formatDateTime(order.updatedAt)
+          : formatDateTime(order.createdAt)}
+      </td>
     </tr>
   )
 }
