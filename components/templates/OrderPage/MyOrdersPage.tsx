@@ -5,7 +5,7 @@ import { $user } from '@/context/user'
 import { getLocalStorageUser } from '@/localStorageUser'
 import styles from '@/styles/order/my/index.module.scss'
 import { IOrderItem } from '@/types/order'
-import OrderTableList from '@/components/modules/MyOrderPage/OrderTableList'
+import OrderTableList from '@/components/modules/OrdersPage/OrderTableList'
 
 const MyOrdersPage: React.FC = () => {
   const { username, id } = useStore($user)
@@ -26,9 +26,8 @@ const MyOrdersPage: React.FC = () => {
 
   return (
     <div className={styles.ordersPage}>
-      <h1 className={styles.pageTitle}>Mənim Sifarişlərim</h1>
       <div className={styles.ordersContainer}>
-        <OrderTableList orders={myOrders} />
+        <OrderTableList orders={myOrders} type="clientUser" />
       </div>
     </div>
   )

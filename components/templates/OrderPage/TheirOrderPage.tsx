@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useStore } from 'effector-react'
-import {
-  postOtherOrders,
-  confirmBarnUser,
-  cancelOrderBarnUser,
-} from '@/app/api/order'
+import { postOtherOrders } from '@/app/api/order'
 import { $user } from '@/context/user'
 import { getLocalStorageUser } from '@/localStorageUser'
 import styles from '@/styles/order/their/index.module.scss'
 import { IOrderItem } from '@/types/order'
+import OrderTableList from '@/components/modules/OrdersPage/OrderTableList'
 
 const TheirOrderPage: React.FC = () => {
   const { username, id } = useStore($user)
@@ -30,64 +27,10 @@ const TheirOrderPage: React.FC = () => {
     loadMyOrders()
   }, [barnUserId, barnUsername])
 
-  const handleConfirmOrder = async (orderId: number) => {
-    await confirmBarnUser({
-      orderId,
-      barnUserId,
-    })
-    setTheirOrder(theirOrder.filter((order) => order.id !== orderId))
-  }
-
-  const handleCancelOrder = async (orderId: number) => {
-    await cancelOrderBarnUser(orderId, barnUserId)
-    setTheirOrder(theirOrder.filter((order) => order.id !== orderId))
-  }
-
   return (
     <div className={styles.ordersPage}>
-      <h1 className={styles.pageTitle}>Подтверждение заказов</h1>
       <div className={styles.ordersContainer}>
-        {theirOrder.map((order: IOrderItem) => (
-          <div key={order.id} className={styles.orderRow}>
-            <span className={styles.orderId}>№ {order.id}</span>
-            <span className={styles.client}>
-              Клиент: {order.clientUserName}
-            </span>
-
-            <span className={styles.client}>Статус заказа: {order.status}</span>
-
-            <span className={styles.clientLocation}>
-              Откуда: {order.clientLocation}
-            </span>
-            <span className={styles.productName}>
-              Продукт: {order.productName}
-            </span>
-            <span className={styles.azencoCode}>Код: {order.azencoCode}</span>
-            <span className={styles.stock}>Кол-во: Новые {order.newStock}</span>
-            <span className={styles.stock}>Кол-во: Б/У {order.usedStock}</span>
-            <span className={styles.stock}>
-              Кол-во: Сломанные {order.brokenStock}
-            </span>
-            <span className={styles.price}>Цена: {order.totalPrice} AZN</span>
-            <span className={styles.createdAt}>
-              Создан: {new Date(order.createdAt).toLocaleDateString()}
-            </span>
-            <div className={styles.orderActions}>
-              <button
-                className={styles.confirmButton}
-                onClick={() => handleConfirmOrder(order.id)}
-              >
-                Подтвердить
-              </button>
-              <button
-                className={styles.cancelButton}
-                onClick={() => handleCancelOrder(order.id)}
-              >
-                Отменить
-              </button>
-            </div>
-          </div>
-        ))}
+        <OrderTableList orders={theirOrder} type="barnUser" />
       </div>
     </div>
   )

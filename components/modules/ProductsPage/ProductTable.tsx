@@ -35,7 +35,7 @@ const ProductTable = ({ products, operation, addProduct }: IProducts) => {
             {products.map((product: IProduct, index: number) => (
               <div key={product.id} className={styles.tableRow}>
                 <div className={`${styles.td} ${styles.numList}`}>
-                  {`${index + 1})`}
+                  {` ${index + 1}) `}
                 </div>
                 <div className={`${styles.td} ${styles.small}`}>
                   {product.azencoCode}
