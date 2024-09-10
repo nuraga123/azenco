@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { IBarnItem, IBarnResponse } from '@/types/barn'
 import BarnTableHead from './BarnTableHead'
-
-import styles from '@/styles/barn/table/index.module.scss'
 import ModalBtn from '../ModalBtn'
 import { $setFind_barns } from '@/context/find_barns'
+
+import styles from '@/styles/barn/table/index.module.scss'
 
 const BarnTable = ({ barn }: { barn: IBarnResponse }) => {
   const [openModal, setOpenModal] = useState(false)
@@ -23,17 +23,14 @@ const BarnTable = ({ barn }: { barn: IBarnResponse }) => {
       productId,
       azencoCode,
       productName,
+      deleteName: '',
     })
   }
 
-  const handleCloseModal = () => {
-    setOpenModal(false)
-  }
+  const handleCloseModal = () => setOpenModal(false)
 
   return (
     <div>
-      <h1 className={styles.table_title}>Anbar materiallari</h1>
-
       <table className={styles.table}>
         <BarnTableHead />
 
@@ -44,9 +41,7 @@ const BarnTable = ({ barn }: { barn: IBarnResponse }) => {
                 <button
                   onClick={() => handleSelectModal(+el?.id)}
                   className={styles.btn}
-                >
-                  Hərəkətləri
-                </button>
+                />
               </td>
 
               <td>{el.id}</td>

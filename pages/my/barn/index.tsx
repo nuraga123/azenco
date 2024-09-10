@@ -11,10 +11,14 @@ import { getLocalStorageUser } from '@/localStorageUser'
 import { IBarnResponse } from '@/types/barn'
 
 import spinnerStyles from '@/styles/spinner/index.module.scss'
+import Head from '@/components/elements/Head/Head'
+import { $navbarIsOpen } from '@/context/navbar'
 import styles from '@/styles/barn/index.module.scss'
 
 const MyBarn = () => {
   const { shouldLoadContent } = useRedirectByUserCheck()
+
+  const navbarIsOpen = useStore($navbarIsOpen)
 
   const [loading, setLoading] = useState(true)
 
@@ -68,12 +72,20 @@ const MyBarn = () => {
   // Отображаем компонент AnbarItem только когда загрузка завершена и контент должен загружаться
   return (
     <Layout title={`Anbar | ${username}`}>
-      <div className={styles.barn__table}>
-        <h1 className={styles.barn__title}>Anbardar: {username}</h1>
+      <Head headTitle={`Mənim materiallarım`} />
+
+      <div className={styles.barn__title}>
+        Anbarınızda cəmi {barn?.barns?.length} material var
       </div>
 
       {barn?.barns?.length ? (
-        <div className={styles.barn__wrapper_table}>
+        <div
+          className={`${styles.barn__wrapper_table} ${
+            navbarIsOpen === 'open'
+              ? styles.barn__wrapper_table_open
+              : styles.barn__wrapper_table_close
+          }`}
+        >
           <BarnTable barn={barn} />
         </div>
       ) : (

@@ -8,6 +8,7 @@ import useRedirectByUserCheck from '@/hooks/useRedirectByUserCheck'
 import spinnerStyles from '@/styles/spinner/index.module.scss'
 import styles from '@/styles/barn/index.module.scss'
 import '@/styles/globals.css'
+import Head from '@/components/elements/Head/Head'
 
 const MyBarn = () => {
   const { shouldLoadContent } = useRedirectByUserCheck()
@@ -35,7 +36,7 @@ const MyBarn = () => {
   return (
     <Layout title={`Anbar | ${username}`}>
       <div className={styles.barn}>
-        <h1 className={styles.barn__title}>Anbardar: {username}</h1>
+        <Head headTitle={`Anbardar - ${username}`} />
 
         <div className={styles.barn__wrapper}>
           <div>

@@ -2,23 +2,27 @@ import React, { useState } from 'react'
 import { navbarArray } from './navbarArray'
 import NavbarItem from './NavbarItem'
 import styles from '@/styles/layout/index.module.scss'
+import { $setInOpenNavbar } from '@/context/navbar'
 
 const Navbar: React.FC = () => {
   const storageIsOpen =
     localStorage.getItem('isOpen') === 'open' ? 'open' : 'close'
-
-  const [isNavVisible, setIsNavVisible] = useState<boolean>(false)
   const [isOpen, setIsOpen] = useState<'close' | 'open'>(storageIsOpen)
 
+  const [isNavVisible, setIsNavVisible] = useState<boolean>(false)
+
   const toggleNavVisibility = () => setIsNavVisible((prev) => !prev)
+
   const handleToggle = () => {
     if (isOpen === 'open') {
       setIsOpen('close')
+      $setInOpenNavbar('close')
       localStorage.setItem('isOpen', 'close')
     }
 
     if (isOpen === 'close') {
       setIsOpen('open')
+      $setInOpenNavbar('open')
       localStorage.setItem('isOpen', 'open')
     }
   }

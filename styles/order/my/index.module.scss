@@ -1,10 +1,12 @@
 .tableContainer {
   margin: 20px;
-  overflow-x: auto;
+  border: 5px solid red;
+  overflow-x: scroll;
+  width: 100%;
+  max-width: 1200px;
 }
 
 .orderTable {
-  width: 100%;
   border-collapse: collapse;
   text-align: left;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);

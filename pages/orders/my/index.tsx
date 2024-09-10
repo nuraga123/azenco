@@ -11,8 +11,10 @@ const MyOrder = () => {
     <>
       {shouldLoadContent && (
         <Layout title={'Mənim sifarişlərim'}>
-          <Head headTitle={'Mənim sifarişlərim'} />
-          <MyOrdersPage />
+          <div>
+            <Head headTitle={'Mənim sifarişlərim'} />
+            <MyOrdersPage />
+          </div>
         </Layout>
       )}
     </>

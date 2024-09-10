@@ -35,6 +35,8 @@ const SearchProductsComponent = ({
     setPriceTo(event.target.value)
   }
 
+  const btnDisabledState = Boolean(!searchValue && !priceFrom && !priceTo)
+
   return (
     <div className={styles.searchContainer}>
       <div className={styles.topSection}>
@@ -75,14 +77,18 @@ const SearchProductsComponent = ({
             className={styles.priceInput}
           />
 
-          <button onClick={clearSearch} className={styles.clearButton}>
+          <button
+            onClick={clearSearch}
+            className={styles.clearButton}
+            disabled={btnDisabledState}
+          >
             Filtri silin
           </button>
         </div>
 
         <button
           onClick={searchProduct}
-          disabled={!searchValue && !priceFrom && !priceTo}
+          disabled={btnDisabledState}
           className={styles.searchButton}
         >
           Axtar

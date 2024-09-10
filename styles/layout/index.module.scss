@@ -22,6 +22,14 @@
   }
 }
 
+.main {
+  border: 1px solid #cccccc66;
+  background-color: #cccccc66;
+  margin: 10px;
+  border: 2px solid  #6c6c6c;
+  border-radius: 10px;
+}
+
 .nav {
   position: sticky;
   top: 0;
@@ -91,7 +99,6 @@
   position: sticky;
   top: 0;
   border-radius: 5px;
-  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -122,8 +129,6 @@
 
   &__content {
     width: 100%;
-    max-width: 1300px;
-    margin: 0 auto;
   }
 }
 

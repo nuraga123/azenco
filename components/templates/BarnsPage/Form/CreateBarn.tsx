@@ -8,8 +8,9 @@ import ProductTable from '@/components/modules/ProductsPage/ProductTable'
 import BarnModal from '@/components/modules/BarnsPage/Modal'
 import SortButtons from '@/components/templates/SortButtons/SortButtons'
 
-import styles from '@/styles/products/index.module.scss'
 import spinnerStyles from '@/styles/spinner/index.module.scss'
+import Head from '@/components/elements/Head/Head'
+import styles from '@/styles/products/index.module.scss'
 
 const CreateBarn = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -70,9 +71,7 @@ const CreateBarn = () => {
 
   return (
     <div className={styles.container}>
-      <h2 className={styles.title}>
-        Anbara material əlavə etmək üçün material axtarış forması
-      </h2>
+      <Head headTitle={`Material axtarış forması`} />
 
       <SearchProductsComponent
         searchType={searchType}
