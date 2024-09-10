@@ -11,6 +11,7 @@ const CarNumberInput = () => {
   }
 
   const handleInputChange = (e: string) => {
+    setValue(e)
     // Проверка формата номера
     if (checkAzerbaijanNumber(e)) {
       setIsAzerbaijan(true)
