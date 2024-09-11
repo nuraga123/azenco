@@ -3,9 +3,10 @@ import { useStore } from 'effector-react'
 import { postOtherOrders } from '@/app/api/order'
 import { $user } from '@/context/user'
 import { getLocalStorageUser } from '@/localStorageUser'
-import styles from '@/styles/order/their/index.module.scss'
-import { IOrderItem } from '@/types/order'
 import OrderTableList from '@/components/modules/OrdersPage/OrderTableList'
+import { IOrderItem } from '@/types/order'
+
+import styles from '@/styles/order/their/index.module.scss'
 
 const TheirOrderPage: React.FC = () => {
   const { username, id } = useStore($user)
@@ -21,6 +22,7 @@ const TheirOrderPage: React.FC = () => {
         barnUsername,
         barnUserId,
       })
+
       setTheirOrder(MyOrdersData.orders || [])
     }
 

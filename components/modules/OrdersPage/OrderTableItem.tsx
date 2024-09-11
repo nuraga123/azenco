@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { IOrderItem } from '@/types/order'
 import { formatDateTime } from '@/utils/formatDateTime'
 import styles from '@/styles/order/my/index.module.scss'
+import { confirmBarnUserFx } from '@/app/api/order'
+import { toast } from 'react-toastify'
 
 interface OrderTableItemProps {
   order: IOrderItem
@@ -24,9 +26,13 @@ const OrderTableItem = ({
     id,
     // взять с сервера
     status,
+
+    // barn
     barnUsername,
     barnLocation,
     barnUserMessage,
+    barnId,
+    barnUserId,
 
     createdAt,
     updatedAt,
@@ -44,14 +50,37 @@ const OrderTableItem = ({
     clientMessage,
   } = order
 
+  const [spinner, setSpinner] = useState(false)
   const formatStock = (stock: number) => (stock === 0 ? '🚫' : +stock)
   const isStringLength = (str: string) => (str.length === 0 ? '➖' : str)
 
-  const [confirmed, setConfirmed] = useState(order.status === 'confirmed')
+  const confirmed = order.status === 'anbardar_sifarişi_qəbul_etdi'
+  const userSelectDate = formatDateTime(new Date().toISOString())
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
+    try {
+      setSpinner(true)
+
+      // дополнительное поля для проверки клиента
+      const confirmedOrder = await confirmBarnUserFx({
+        orderId: id,
+        barnId,
+        barnUsername,
+        barnUserMessage,
+        barnUserId,
+        userSelectDate,
+      })
+
+      console.log(confirmedOrder)
+
+      toast.success(confirmedOrder?.message)
+    } catch (error) {
+      toast.error((error as Error).message)
+    } finally {
+      setSpinner(false)
+    }
+
     onConfirm(order.id)
-    setConfirmed(true)
   }
 
   const handleCancel = () => {
@@ -67,17 +96,18 @@ const OrderTableItem = ({
       <td>
         {type === 'clientUser' ? (
           <button onClick={handleDelete} className={styles.deleteButton}>
-            Удалить
+            Sil
           </button>
         ) : confirmed ? (
-          <button className={styles.sendButton}>Отправить</button>
+          <button className={styles.sendButton}>Göndər</button>
         ) : (
           <>
             <button onClick={handleConfirm} className={styles.confirmButton}>
-              Подтвердить
+              {spinner ? 'load' : 'Təsdiq edin'}
             </button>
+
             <button onClick={handleCancel} className={styles.cancelButton}>
-              Отменить
+              Ləğv et
             </button>
           </>
         )}

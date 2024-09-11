@@ -21,6 +21,10 @@ export interface NewOrderDto {
 export interface ConfirmBarnUserDto {
   orderId: number
   barnUserId: number
+  barnUserMessage: string
+  barnUsername: string
+  barnId: number
+  userSelectDate: string
 }
 
 export interface SendBarnUserDto {
@@ -71,7 +75,7 @@ export const createNewOrder = createEffect(async (newOrderDto: NewOrderDto) => {
 })
 
 // Подтверждение пользователя склада
-export const confirmBarnUser = createEffect(
+export const confirmBarnUserFx = createEffect(
   async (confirmBarnUserDto: ConfirmBarnUserDto) => {
     try {
       const { data } = await api.post(

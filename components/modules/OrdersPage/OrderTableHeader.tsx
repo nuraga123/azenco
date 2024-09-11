@@ -4,7 +4,7 @@ import styles from '@/styles/order/my/index.module.scss'
 const OrderTableHeader = ({ type }: { type: 'clientUser' | 'barnUser' }) => (
   <thead>
     <tr>
-      <th rowSpan={2}>действия</th>
+      <th rowSpan={2}>Əməliyyatlar</th>
       <th rowSpan={2}>№</th>
       <th colSpan={2}>Sifariş</th>
 
