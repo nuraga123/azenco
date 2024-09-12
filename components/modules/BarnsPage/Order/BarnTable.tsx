@@ -5,6 +5,7 @@ import styles from '@/styles/barn/order/index.module.scss'
 interface Props {
   barns: IBarnItem[]
   onOrderClick: (barn: IBarnItem) => void
+  type?: boolean
 }
 
 const BarnTable: React.FC<Props> = ({ barns, onOrderClick }) => (
@@ -12,6 +13,7 @@ const BarnTable: React.FC<Props> = ({ barns, onOrderClick }) => (
     <thead>
       <tr>
         <th className={styles.btn__title}>Sifariş</th>
+        <th className={styles.btn__title}>Anbardar</th>
         <th className={styles.azencoCode}>Azenco Kodu</th>
         <th className={styles.name}>Məhsulun adı</th>
         <th>Yeni miqdarı</th>
@@ -29,6 +31,7 @@ const BarnTable: React.FC<Props> = ({ barns, onOrderClick }) => (
             <button onClick={() => onOrderClick(barn)}>sifariş edin</button>
           </td>
 
+          <td className={styles.azencoCode}>{barn.username}</td>
           <td className={styles.azencoCode}>{barn.azencoCode}</td>
           <td className={styles.name}>
             <b>{barn.productName}</b>

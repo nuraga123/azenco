@@ -1,11 +1,25 @@
 import { createEffect } from 'effector-next'
 import { AxiosError } from 'axios'
 import api from '@/app/axiosClient'
+import { IOrderItem } from '@/types/order'
 
 // Интерфейсы для запросов
 export interface IOrderQuery {
   limit?: number
   offset?: number
+}
+
+interface IMessageAndErrorMessage {
+  message?: string
+  error_message?: string
+}
+
+export interface IOrderResponce extends IMessageAndErrorMessage {
+  order: IOrderItem
+}
+
+export interface IOrdersResponce extends IMessageAndErrorMessage {
+  orders: IOrderItem[]
 }
 
 export interface NewOrderDto {
@@ -19,10 +33,10 @@ export interface NewOrderDto {
 }
 
 export interface ConfirmBarnUserDto {
-  orderId: number
-  barnUserId: number
   barnUserMessage: string
+  orderId: number
   barnUsername: string
+  barnUserId: number
   barnId: number
   userSelectDate: string
 }
@@ -82,6 +96,7 @@ export const confirmBarnUserFx = createEffect(
         'order/confirm-barn-user',
         confirmBarnUserDto
       )
+      console.log('data')
       return data
     } catch (error) {
       console.error(error)

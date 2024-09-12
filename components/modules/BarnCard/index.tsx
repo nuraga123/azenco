@@ -2,10 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { useStore } from 'effector-react'
 import { AxiosError } from 'axios'
-import Image from 'next/image'
 
 import { IBarnItem } from '@/types/barn'
-import barnImg from '@/public/img/garage-icon.jpg'
 import OrderModal from '@/components/modules/BarnsPage/Order/OrderModal'
 import BarnTable from '@/components/modules/BarnsPage/Order/BarnTable'
 
@@ -148,13 +146,6 @@ const BarnCard = ({ barn }: { barn: IBarnItem }) => {
 
   return (
     <div className={styles.card}>
-      <div className={styles.head}>
-        <Image src={barnImg.src} alt="barn-img" width={50} height={35} />
-        <div className={styles.header}>
-          {`Anbardar: `}
-          <strong>{barn.username}</strong>
-        </div>
-      </div>
       <div className={styles.info}>
         <BarnTable barns={[barn]} onOrderClick={handleOrderClick} />
       </div>

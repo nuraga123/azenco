@@ -46,14 +46,12 @@ const OrderModal: React.FC<IOrderModal> = ({
               </button>
             </div>
             <div className={styles.wrapper}>
-              <main className={styles.main}>
-                <ReduceMaterial
-                  barn={currentBarn}
-                  newStockDynamic={+newStock}
-                  usedStockDynamic={+usedStock}
-                  brokenStockDynamic={+brokenStock}
-                />
-              </main>
+              <ReduceMaterial
+                barn={currentBarn}
+                newStockDynamic={+newStock}
+                usedStockDynamic={+usedStock}
+                brokenStockDynamic={+brokenStock}
+              />
 
               <OrderForm
                 errorsMessageArr={errorsMessageArr}

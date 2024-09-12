@@ -6,6 +6,7 @@ const nextConfig = {
       'www.boyaevi.az',
       'homeconcept.ru',
       'as2.ftcdn.net',
+      'avatars.mds.yandex.net',
     ],
   },
 }

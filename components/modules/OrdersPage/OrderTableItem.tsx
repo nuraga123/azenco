@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { IOrderItem } from '@/types/order'
 import { formatDateTime } from '@/utils/formatDateTime'
 import styles from '@/styles/order/my/index.module.scss'
-import { confirmBarnUserFx } from '@/app/api/order'
+import { confirmBarnUserFx, IOrderResponce } from '@/app/api/order'
 import { toast } from 'react-toastify'
 
 interface OrderTableItemProps {
@@ -62,16 +62,19 @@ const OrderTableItem = ({
       setSpinner(true)
 
       // дополнительное поля для проверки клиента
-      const confirmedOrder = await confirmBarnUserFx({
+      const confirmedOrder: IOrderResponce = await confirmBarnUserFx({
         orderId: id,
         barnId,
-        barnUsername,
-        barnUserMessage,
         barnUserId,
+        barnUsername,
         userSelectDate,
+        barnUserMessage,
       })
 
       console.log(confirmedOrder)
+
+      if (confirmedOrder?.error_message)
+        toast.warning(confirmedOrder?.error_message)
 
       toast.success(confirmedOrder?.message)
     } catch (error) {
