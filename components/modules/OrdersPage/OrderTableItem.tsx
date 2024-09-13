@@ -1,27 +1,49 @@
 import React, { useState } from 'react'
-import { IOrderItem } from '@/types/order'
-import { formatDateTime } from '@/utils/formatDateTime'
-import styles from '@/styles/order/my/index.module.scss'
-import { confirmBarnUserFx, IOrderResponce } from '@/app/api/order'
 import { toast } from 'react-toastify'
+
+import { confirmBarnUserFx, deleteOrderFromClientFx } from '@/app/api/order'
+import {
+  IMessageAndErrorMessage,
+  IOrderItem,
+  StatusOrderType,
+} from '@/types/order'
+import { formatDateTime } from '@/utils/formatDateTime'
+
+import styles from '@/styles/order/my/index.module.scss'
 
 interface OrderTableItemProps {
   order: IOrderItem
   type: 'clientUser' | 'barnUser'
   index: number
-  onConfirm: (orderId: number) => void
-  onCancel: (orderId: number) => void
-  onDelete: (orderId: number) => void
 }
 
-const OrderTableItem = ({
-  order,
-  type,
-  index,
-  onConfirm,
-  onCancel,
-  onDelete,
-}: OrderTableItemProps) => {
+const statusColorCurrent = (status: StatusOrderType) => {
+  if (status === 'yeni_sifariş') return 'gray'
+
+  if (status === 'müştəri_sifarişi_ləğv_etdi') return 'maroon'
+
+  if (status === 'sifariş_anbardar_tərəfindən_ləğv_edildi') return 'crimson'
+
+  if (status === 'anbardar_sifarişi_qəbul_etdi') return 'gold'
+
+  if (status === 'anbardar_tam_sifarişi_müştəriyə_göndərdi') return 'skyblue'
+
+  if (status === 'sifariş_uğurla_çatdırıldı') return 'limegreen'
+
+  if (status === 'anbardar_tam_sifarişi_müştəriyə_göndərməyib') return 'coral'
+
+  if (status === 'sifariş_itki_və_ziyanla_çatdırıldı') return 'firebrick'
+
+  if (status === 'sifariş_yararsız_çatdırıldı') return 'darkred'
+
+  if (status === 'sifariş_itki_ilə_çatdırıldı') return 'tomato'
+
+  if (status === 'sifariş_çatdırılmadı') return 'darkorange'
+
+  return ''
+}
+
+const OrderTableItem = ({ order, type, index }: OrderTableItemProps) => {
   const {
     id,
     // взять с сервера
@@ -40,11 +62,13 @@ const OrderTableItem = ({
     productName,
     totalStock,
     usedStock,
+    productId,
     azencoCode,
     brokenStock,
     unit,
     price,
     totalPrice,
+    clientId,
     clientUserName,
     clientLocation,
     clientMessage,
@@ -62,43 +86,55 @@ const OrderTableItem = ({
       setSpinner(true)
 
       // дополнительное поля для проверки клиента
-      const confirmedOrder: IOrderResponce = await confirmBarnUserFx({
-        orderId: id,
-        barnId,
-        barnUserId,
-        barnUsername,
-        userSelectDate,
-        barnUserMessage,
-      })
+      const { message, error_message }: IMessageAndErrorMessage =
+        await confirmBarnUserFx({
+          orderId: id,
+          barnId,
+          barnUserId,
+          barnUsername,
+          userSelectDate,
+          barnUserMessage,
+        })
 
-      console.log(confirmedOrder)
+      console.log(message)
 
-      if (confirmedOrder?.error_message)
-        toast.warning(confirmedOrder?.error_message)
+      if (error_message) toast.warning(error_message)
 
-      toast.success(confirmedOrder?.message)
+      if (message) toast.success(message)
     } catch (error) {
       toast.error((error as Error).message)
     } finally {
       setSpinner(false)
     }
-
-    onConfirm(order.id)
   }
 
-  const handleCancel = () => {
-    onCancel(order.id)
-  }
+  const handleCancel = () => {}
 
-  const handleDelete = () => {
-    onDelete(order.id)
+  const handleDeleteClient = async () => {
+    try {
+      setSpinner(true)
+      const { message } = await deleteOrderFromClientFx({
+        orderId: id,
+        clientId,
+        productId,
+        azencoCode,
+        productName,
+        clientUserName,
+      })
+
+      if (message) toast.success(message)
+    } catch (error) {
+      toast.error((error as Error).message)
+    } finally {
+      setSpinner(false)
+    }
   }
 
   return (
     <tr className={confirmed ? styles.confirmedRow : styles.orderRow}>
       <td>
         {type === 'clientUser' ? (
-          <button onClick={handleDelete} className={styles.deleteButton}>
+          <button onClick={handleDeleteClient} className={styles.deleteButton}>
             Sil
           </button>
         ) : confirmed ? (
@@ -117,12 +153,14 @@ const OrderTableItem = ({
       </td>
       <td>{` ${+index + 1}) `}</td>
 
-      <td>
+      <td className={styles.result}>
         {`Sifariş  № `}
         <strong>{+id}</strong>
       </td>
 
-      <td>{status}</td>
+      <td className={styles[statusColorCurrent(status)]}>
+        {status?.replaceAll('_', ' ')}
+      </td>
 
       <td>{type === 'clientUser' ? barnUsername : clientUserName}</td>
 

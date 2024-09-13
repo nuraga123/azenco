@@ -1,3 +1,18 @@
+$color-border: #808080;
+$color-white: #ffffff;
+$color-blue-background: #007bff;
+$color-gray: gray;
+$color-maroon: maroon;
+$color-crimson: crimson;
+$color-gold: gold;
+$color-skyblue: skyblue;
+$color-limegreen: limegreen;
+$color-coral: coral;
+$color-firebrick: firebrick;
+$color-darkred: darkred;
+$color-tomato: tomato;
+$color-darkorange: darkorange;
+
 .tableContainer {
   margin: 20px;
   overflow-x: scroll;
@@ -32,8 +47,58 @@
 }
 
 .orderTable td {
-  border: 1px solid #808080;
+  border: 1px solid black;
   padding: 10px;
+  letter-spacing: 2px;
+
+  &.blue {
+    color: $color-white;
+    background-color: $color-blue-background;
+  }
+
+  &.gray {
+    background-color: $color-gray;
+  }
+
+  &.maroon {
+    background-color: $color-maroon;
+  }
+
+  &.crimson {
+    background-color: $color-crimson;
+  }
+
+  &.gold {
+    background-color: $color-gold;
+  }
+
+  &.skyblue {
+    background-color: $color-skyblue;
+  }
+
+  &.limegreen {
+    background-color: $color-limegreen;
+  }
+
+  &.coral {
+    background-color: $color-coral;
+  }
+
+  &.firebrick {
+    background-color: $color-firebrick;
+  }
+
+  &.darkred {
+    background-color: $color-darkred;
+  }
+
+  &.tomato {
+    background-color: $color-tomato;
+  }
+
+  &.darkorange {
+    background-color: $color-darkorange;
+  }
 }
 
 .orderTable th {
@@ -52,10 +117,6 @@
 
 .orderTable tbody tr {
   background-color: red;
-}
-
-.orderTable tr:nth-child(even) td {
-  background-color: #f1f1f1;
 }
 
 .orderTable tr:hover td {
@@ -84,6 +145,20 @@
   border-radius: 10px;
 }
 
+.deleteButton {
+  background-color: $color-crimson;
+  color: $color-white;
+
+  &:hover {
+    background-color: $color-darkred;
+  }
+
+  &:disabled {
+    background-color: $color-gray;
+    cursor: not-allowed;
+  }
+}
+
 .confirmButton {
   background-color: green;
   color: white;
@@ -95,8 +170,9 @@
 }
 
 .deleteButton {
-  background-color: gray;
+  background-color: $color-crimson;
   color: white;
+  letter-spacing: 1px;
 }
 
 .sendButton {

@@ -35,9 +35,6 @@ const OrderTableList = ({
                 key={+order.id}
                 order={order}
                 index={index}
-                onConfirm={() => order.id}
-                onCancel={() => order.id}
-                onDelete={() => order.id}
               />
             ))}
           </tbody>
