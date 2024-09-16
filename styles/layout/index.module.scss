@@ -23,11 +23,11 @@
 }
 
 .main {
-  border: 1px solid #cccccc66;
   background-color: #cccccc66;
   margin: 10px;
   border: 2px solid  #6c6c6c;
   border-radius: 10px;
+  height: calc(100vh - 150px);
 }
 
 .nav {

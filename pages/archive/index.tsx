@@ -2,15 +2,14 @@ import { useState, useEffect } from 'react'
 import { useStore } from 'effector-react'
 import { useRouter } from 'next/router'
 
+import { getArchiveAll } from '@/app/api/archive'
 import Layout from '@/components/layout/Layout'
+import Spinner from '@/components/modules/Spinner/Spinner'
 import { $user } from '@/context/user'
 import useRedirectByUserCheck from '@/hooks/useRedirectByUserCheck'
 import { getLocalStorageUser } from '@/localStorageUser'
 
-import '@/styles/globals.css'
 import styles from '@/styles/archive/index.module.scss'
-import spinnerStyles from '@/styles/spinner/index.module.scss'
-import { getArchiveAll } from '@/app/api/archive'
 
 const Archive = () => {
   interface IArchiveElement {
@@ -64,11 +63,16 @@ const Archive = () => {
 
   if (loading || !shouldLoadContent) {
     return (
-      <Layout title={`Anbar | ${username}`}>
-        <div
-          className={spinnerStyles.spinner}
-          style={{ width: '100px', height: '100px', top: '40%' }}
-        />
+      <Layout title={`Anbar | Arxiv`}>
+        <div className={styles.wrapper__load}>
+          <Spinner
+            widthPX={100}
+            heightPX={100}
+            top={40}
+            left={50}
+            loadingText="Arxiv yüklənir"
+          />
+        </div>
       </Layout>
     )
   }
@@ -79,21 +83,21 @@ const Archive = () => {
         <table className={styles.table}>
           <thead className={styles.thead}>
             <tr className={styles.thead__tr}>
+              <th className={styles.thead__th}>№</th>
               <th className={styles.thead__th}>İstifadəçi adı</th>
               <th className={styles.thead__th}>Hərəkət növü</th>
               <th className={styles.thead__th}>Təsviri</th>
               <th className={styles.thead__th}>İstifadəçinin seçdiyi tarix</th>
-              <th className={styles.thead__th}>
-                <span className={styles.icon}>🗃️</span>
-              </th>
+              <th className={styles.thead__th}>daha ətraflı</th>
             </tr>
           </thead>
           <tbody>
             {archiveData.length ? (
-              archiveData.map((el) => (
+              archiveData.map((el, index) => (
                 <tr key={el.id}>
+                  <td>{`${index + 1}) `}</td>
                   <td>{el.username}</td>
-                  <td>{el.movementType}</td>
+                  <td>{el.movementType?.replaceAll('_', ' ')}</td>
                   <td className={styles.message}>{el.message}</td>
                   <td>{el.userSelectedDate}</td>
                   <td>
@@ -101,7 +105,7 @@ const Archive = () => {
                       className={styles.button}
                       onClick={() => router.push(`/archive/${[el.id]}`)}
                     >
-                      daha ətraflı
+                      🗃️
                     </button>
                   </td>
                 </tr>
