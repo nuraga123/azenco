@@ -29,7 +29,7 @@ const OrderTableList = ({
         <table className={styles.orderTable}>
           <OrderTableHeader type={type} />
           <tbody>
-            {orders.map((order: IOrderItem, index) => (
+            {orders.map((order: IOrderItem, index: number) => (
               <OrderTableItem
                 type={type}
                 key={+order.id}

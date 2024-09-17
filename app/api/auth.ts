@@ -95,7 +95,7 @@ export const getTokenFx = createEffect(async (token: string) => {
   }
 })
 
-export const getWorkingServer = createEffect(async () => {
+export const getWorkingServerFx = createEffect(async () => {
   try {
     const { data } = await api.get('/users/work')
 

@@ -7,6 +7,7 @@ import { getBarnsUsernameFx } from '@/app/api/barn'
 
 import styles from '@/styles/barns/index.module.scss'
 import spinnerStyles from '@/styles/spinner/index.module.scss'
+import Head from '@/components/elements/Head/Head'
 
 const BarnsPage = () => {
   const [spinner, setSpinner] = useState<boolean>(false)
@@ -33,9 +34,7 @@ const BarnsPage = () => {
 
   return (
     <div className={styles.barns}>
-      <div className={styles.head}>
-        <h1 className={styles.title}>Anbar Səhifəsi</h1>
-      </div>
+      <Head headTitle={'Anbarlar'} />
       <div className={styles.items}>
         {spinner ? (
           <div className={spinnerStyles.spinner} />

@@ -8,6 +8,7 @@ import {
   StatusOrderType,
 } from '@/types/order'
 import { formatDateTime } from '@/utils/formatDateTime'
+import Spinner from '../Spinner/Spinner'
 
 import styles from '@/styles/order/my/index.module.scss'
 
@@ -81,16 +82,16 @@ const OrderTableItem = ({ order, type, index }: OrderTableItemProps) => {
   const confirmed = order.status === 'anbardar_sifarişi_qəbul_etdi'
   const userSelectDate = formatDateTime(new Date().toISOString())
 
-  const handleConfirm = async () => {
+  const handleConfirmBarnUser = async () => {
     try {
       setSpinner(true)
 
       // дополнительное поля для проверки клиента
       const { message, error_message }: IMessageAndErrorMessage =
         await confirmBarnUserFx({
-          orderId: id,
           barnId,
           barnUserId,
+          orderId: +id,
           barnUsername,
           userSelectDate,
           barnUserMessage,
@@ -108,7 +109,7 @@ const OrderTableItem = ({ order, type, index }: OrderTableItemProps) => {
     }
   }
 
-  const handleCancel = () => {}
+  const handleCancelBarnUser = () => {}
 
   const handleDeleteClient = async () => {
     try {
@@ -130,23 +131,78 @@ const OrderTableItem = ({ order, type, index }: OrderTableItemProps) => {
     }
   }
 
+  const clientType = Boolean(type === 'clientUser')
+  const barnUserType = Boolean(type === 'barnUser')
+
+  const deleteBtnClient: boolean = Boolean(
+    status === 'yeni_sifariş' ||
+      status === 'müştəri_sifarişi_ləğv_etdi' ||
+      status === 'sifariş_anbardar_tərəfindən_ləğv_edildi'
+  )
+
+  const confirmedBtnBarnUser: boolean = Boolean(status === 'yeni_sifariş')
+
+  const cancelBtnBarnUser: boolean = Boolean(status === 'yeni_sifariş')
+
+  const sendBtnBarnUser: boolean = Boolean(
+    status === 'anbardar_sifarişi_qəbul_etdi'
+  )
+
+  const TypeBtns = () => {
+    if (clientType) {
+      return (
+        <div>
+          {deleteBtnClient && (
+            <button
+              onClick={handleDeleteClient}
+              className={styles.deleteButton}
+            >
+              {spinner ? <Spinner /> : 'Sil'}
+            </button>
+          )}
+        </div>
+      )
+    } else if (barnUserType) {
+      return (
+        <div>
+          {confirmedBtnBarnUser && (
+            <button
+              onClick={handleConfirmBarnUser}
+              className={styles.confirmButton}
+            >
+              {spinner ? <Spinner /> : 'Təsdiq edin'}
+            </button>
+          )}
+
+          {cancelBtnBarnUser && (
+            <button
+              onClick={handleCancelBarnUser}
+              className={styles.cancelButton}
+            >
+              {spinner ? <Spinner /> : 'Ləğv edin'}
+            </button>
+          )}
+
+          {sendBtnBarnUser && (
+            <button onClick={handleSendBarnUser} className={styles.sendButton}>
+              {spinner ? <Spinner /> : 'Göndər'}
+            </button>
+          )}
+        </div>
+      )
+    }
+  }
+
   return (
     <tr className={confirmed ? styles.confirmedRow : styles.orderRow}>
       <td>
-        {type === 'clientUser' ? (
-          <button onClick={handleDeleteClient} className={styles.deleteButton}>
-            Sil
-          </button>
-        ) : confirmed ? (
+        {<TypeBtns />}
+        {confirmed ? (
           <button className={styles.sendButton}>Göndər</button>
         ) : (
           <>
             <button onClick={handleConfirm} className={styles.confirmButton}>
               {spinner ? 'load' : 'Təsdiq edin'}
-            </button>
-
-            <button onClick={handleCancel} className={styles.cancelButton}>
-              Ləğv et
             </button>
           </>
         )}

@@ -2,7 +2,7 @@ import { useEffect, useState, ReactNode } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
-import { getWorkingServer } from '@/app/api/auth'
+import { getWorkingServerFx } from '@/app/api/auth'
 import styles from '@/styles/auth/header__auth.module.scss'
 
 const ServerStatusComponent = ({ children = '' }: { children?: ReactNode }) => {
@@ -18,7 +18,7 @@ const ServerStatusComponent = ({ children = '' }: { children?: ReactNode }) => {
       setServerStatus('loading')
 
       try {
-        const response: boolean = await getWorkingServer()
+        const response: boolean = await getWorkingServerFx()
 
         setTimeout(() => {
           if (response) {
