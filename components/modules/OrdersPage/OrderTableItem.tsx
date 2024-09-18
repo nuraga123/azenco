@@ -1,24 +1,12 @@
-import React, { useState } from 'react'
-import { toast } from 'react-toastify'
+import React from 'react'
 
-import { confirmBarnUserFx, deleteOrderFromClientFx } from '@/app/api/order'
-import {
-  IMessageAndErrorMessage,
-  IOrderItem,
-  StatusOrderType,
-} from '@/types/order'
+import { IOrderTableItemProps, TStatusOrderType } from '@/types/order'
 import { formatDateTime } from '@/utils/formatDateTime'
-import Spinner from '../Spinner/Spinner'
+import OrderTypeBtns from './OrderTypeBtns'
 
 import styles from '@/styles/order/my/index.module.scss'
 
-interface OrderTableItemProps {
-  order: IOrderItem
-  type: 'clientUser' | 'barnUser'
-  index: number
-}
-
-const statusColorCurrent = (status: StatusOrderType) => {
+const statusColorCurrent = (status: TStatusOrderType) => {
   if (status === 'yeni_sifariş') return 'gray'
 
   if (status === 'müştəri_sifarişi_ləğv_etdi') return 'maroon'
@@ -44,7 +32,7 @@ const statusColorCurrent = (status: StatusOrderType) => {
   return ''
 }
 
-const OrderTableItem = ({ order, type, index }: OrderTableItemProps) => {
+const OrderTableItem = ({ order, type, index }: IOrderTableItemProps) => {
   const {
     id,
     // взять с сервера
@@ -54,158 +42,31 @@ const OrderTableItem = ({ order, type, index }: OrderTableItemProps) => {
     barnUsername,
     barnLocation,
     barnUserMessage,
-    barnId,
-    barnUserId,
-
     createdAt,
     updatedAt,
     newStock,
     productName,
     totalStock,
     usedStock,
-    productId,
     azencoCode,
     brokenStock,
     unit,
     price,
     totalPrice,
-    clientId,
     clientUserName,
     clientLocation,
     clientMessage,
   } = order
 
-  const [spinner, setSpinner] = useState(false)
   const formatStock = (stock: number) => (stock === 0 ? '🚫' : +stock)
   const isStringLength = (str: string) => (str.length === 0 ? '➖' : str)
 
   const confirmed = order.status === 'anbardar_sifarişi_qəbul_etdi'
-  const userSelectDate = formatDateTime(new Date().toISOString())
-
-  const handleConfirmBarnUser = async () => {
-    try {
-      setSpinner(true)
-
-      // дополнительное поля для проверки клиента
-      const { message, error_message }: IMessageAndErrorMessage =
-        await confirmBarnUserFx({
-          barnId,
-          barnUserId,
-          orderId: +id,
-          barnUsername,
-          userSelectDate,
-          barnUserMessage,
-        })
-
-      console.log(message)
-
-      if (error_message) toast.warning(error_message)
-
-      if (message) toast.success(message)
-    } catch (error) {
-      toast.error((error as Error).message)
-    } finally {
-      setSpinner(false)
-    }
-  }
-
-  const handleCancelBarnUser = () => {}
-
-  const handleDeleteClient = async () => {
-    try {
-      setSpinner(true)
-      const { message } = await deleteOrderFromClientFx({
-        orderId: id,
-        clientId,
-        productId,
-        azencoCode,
-        productName,
-        clientUserName,
-      })
-
-      if (message) toast.success(message)
-    } catch (error) {
-      toast.error((error as Error).message)
-    } finally {
-      setSpinner(false)
-    }
-  }
-
-  const clientType = Boolean(type === 'clientUser')
-  const barnUserType = Boolean(type === 'barnUser')
-
-  const deleteBtnClient: boolean = Boolean(
-    status === 'yeni_sifariş' ||
-      status === 'müştəri_sifarişi_ləğv_etdi' ||
-      status === 'sifariş_anbardar_tərəfindən_ləğv_edildi'
-  )
-
-  const confirmedBtnBarnUser: boolean = Boolean(status === 'yeni_sifariş')
-
-  const cancelBtnBarnUser: boolean = Boolean(status === 'yeni_sifariş')
-
-  const sendBtnBarnUser: boolean = Boolean(
-    status === 'anbardar_sifarişi_qəbul_etdi'
-  )
-
-  const TypeBtns = () => {
-    if (clientType) {
-      return (
-        <div>
-          {deleteBtnClient && (
-            <button
-              onClick={handleDeleteClient}
-              className={styles.deleteButton}
-            >
-              {spinner ? <Spinner /> : 'Sil'}
-            </button>
-          )}
-        </div>
-      )
-    } else if (barnUserType) {
-      return (
-        <div>
-          {confirmedBtnBarnUser && (
-            <button
-              onClick={handleConfirmBarnUser}
-              className={styles.confirmButton}
-            >
-              {spinner ? <Spinner /> : 'Təsdiq edin'}
-            </button>
-          )}
-
-          {cancelBtnBarnUser && (
-            <button
-              onClick={handleCancelBarnUser}
-              className={styles.cancelButton}
-            >
-              {spinner ? <Spinner /> : 'Ləğv edin'}
-            </button>
-          )}
-
-          {sendBtnBarnUser && (
-            <button onClick={handleSendBarnUser} className={styles.sendButton}>
-              {spinner ? <Spinner /> : 'Göndər'}
-            </button>
-          )}
-        </div>
-      )
-    }
-  }
 
   return (
     <tr className={confirmed ? styles.confirmedRow : styles.orderRow}>
       <td>
-        {<TypeBtns />}
-        {confirmed ? (
-          <button className={styles.sendButton}>Göndər</button>
-        ) : (
-          <>
-            <button onClick={handleConfirm} className={styles.confirmButton}>
-              {spinner ? 'load' : 'Təsdiq edin'}
-            </button>
-          </>
-        )}
+        <OrderTypeBtns type={type} order={order} />
       </td>
       <td>{` ${+index + 1}) `}</td>
 

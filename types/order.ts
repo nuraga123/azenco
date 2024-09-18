@@ -1,5 +1,16 @@
 import { IBarnItem } from './barn'
 
+export interface ITypeOrderBtns {
+  type: 'clientUser' | 'barnUser'
+  userSelectDate?: string
+  barnUserMessage?: string
+  order: IOrderItem
+}
+
+export interface IOrderTableItemProps extends ITypeOrderBtns {
+  index: number
+}
+
 // Интерфейсы для запросов
 export interface IOrderQuery {
   limit?: number
@@ -57,7 +68,7 @@ export interface IOtherOrder {
   barnUserId: number
 }
 
-export type StatusOrderType =
+export type TStatusOrderType =
   // новый заказ
   | 'yeni_sifariş'
 
@@ -93,7 +104,7 @@ export type StatusOrderType =
 
 export interface IOrderItem {
   id: number
-  status: StatusOrderType
+  status: TStatusOrderType
 
   clientId: number
   clientUserName: string

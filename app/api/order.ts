@@ -80,6 +80,8 @@ export const getCountAndRowsOrders = createEffect(
   }
 )
 
+/* клиентские функции */
+
 // Создание нового заказа
 export const createNewOrder = createEffect(async (newOrderDto: NewOrderDto) => {
   try {
@@ -91,8 +93,40 @@ export const createNewOrder = createEffect(async (newOrderDto: NewOrderDto) => {
   }
 })
 
+export const postCanceledOrderClientFx = createEffect(
+  async (canceledOrderClientDto: IDeleteOrderFromClientDto) => {
+    try {
+      const { data } = await api.post(
+        'order/cancel-client',
+        canceledOrderClientDto
+      )
+
+      console.log(data)
+      return data as IMessageAndErrorMessage
+    } catch (error) {
+      console.error(error)
+      return { error_message: (error as AxiosError).message }
+    }
+  }
+)
+export const deleteOrderFromClientFx = createEffect(
+  async (deleteOrderFromClientDto: IDeleteOrderFromClientDto) => {
+    try {
+      const { data } = await api.post('order/delete', deleteOrderFromClientDto)
+
+      console.log(data)
+      return data as IMessageAndErrorMessage
+    } catch (error) {
+      console.error(error)
+      return { error_message: (error as AxiosError).message }
+    }
+  }
+)
+
+/* функции складчика */
+
 // Подтверждение пользователя склада
-export const confirmBarnUserFx = createEffect(
+export const confirmOrderBarnUserFx = createEffect(
   async (confirmBarnUserDto: ConfirmBarnUserDto) => {
     try {
       const { data } = await api.post(
@@ -108,15 +142,13 @@ export const confirmBarnUserFx = createEffect(
   }
 )
 
-// Подтверждение пользователя склада
-export const deleteOrderFromClientFx = createEffect(
-  async (deleteOrderFromClientDto: IDeleteOrderFromClientDto) => {
+export const canceledOrderBarnUserFx = createEffect(
+  async (confirmBarnUserDto: ConfirmBarnUserDto) => {
     try {
       const { data } = await api.post(
-        'order/remove-client',
-        deleteOrderFromClientDto
+        'order/cancel-barn-user',
+        confirmBarnUserDto
       )
-
       console.log(data)
       return data as IMessageAndErrorMessage
     } catch (error) {
