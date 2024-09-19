@@ -7,7 +7,7 @@ import { IBarnItem } from '@/types/barn'
 import OrderModal from '@/components/modules/BarnsPage/Order/OrderModal'
 import BarnTable from '@/components/modules/BarnsPage/Order/BarnTable'
 
-import { createNewOrder } from '@/app/api/order'
+import { createNewOrderFx } from '@/app/api/order'
 import { $user } from '@/context/user'
 import { getLocalStorageUser } from '@/localStorageUser'
 
@@ -121,7 +121,7 @@ const BarnCard = ({ barn }: { barn: IBarnItem }) => {
 
     try {
       setSpinner(true)
-      const res = await createNewOrder({
+      const order = await createNewOrderFx({
         clientId,
         clientLocation,
         clientMessage,
@@ -131,11 +131,10 @@ const BarnCard = ({ barn }: { barn: IBarnItem }) => {
         brokenStock: +brokenStock,
       })
 
-      if (res.message) {
-        toast.success(res.message)
-      }
+      // if (order?.error_message) toast.error(order.error_message)
 
-      console.log(res)
+      // if (order) toast.success(order.message)
+      console.log(order)
     } catch (error) {
       toast.error((error as AxiosError).message)
     } finally {

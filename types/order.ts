@@ -23,7 +23,7 @@ export interface IMessageAndErrorMessage {
 }
 
 export interface IOrderResponce extends IMessageAndErrorMessage {
-  order: IOrderItem
+  order?: IOrderItem
 }
 
 export interface IOrdersResponce extends IMessageAndErrorMessage {

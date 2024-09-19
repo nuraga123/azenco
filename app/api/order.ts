@@ -83,15 +83,17 @@ export const getCountAndRowsOrders = createEffect(
 /* клиентские функции */
 
 // Создание нового заказа
-export const createNewOrder = createEffect(async (newOrderDto: NewOrderDto) => {
-  try {
-    const { data } = await api.post('order/create', newOrderDto)
-    return data as IOrderResponce
-  } catch (error) {
-    console.error(error)
-    return { error_message: (error as AxiosError).message }
+export const createNewOrderFx = createEffect(
+  async (newOrderDto: NewOrderDto): Promise<IOrderResponce> => {
+    try {
+      const { data } = await api.post('order/create', newOrderDto)
+      return data as IOrderResponce
+    } catch (error) {
+      console.error(error)
+      return { error_message: (error as AxiosError).message }
+    }
   }
-})
+)
 
 export const postCanceledOrderClientFx = createEffect(
   async (canceledOrderClientDto: IDeleteOrderFromClientDto) => {
@@ -109,6 +111,7 @@ export const postCanceledOrderClientFx = createEffect(
     }
   }
 )
+
 export const deleteOrderFromClientFx = createEffect(
   async (deleteOrderFromClientDto: IDeleteOrderFromClientDto) => {
     try {

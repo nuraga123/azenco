@@ -4,7 +4,7 @@ import { useStore } from 'effector-react'
 import { AxiosError } from 'axios'
 
 import { getBarnByUserId } from '@/app/api/barn'
-import { createNewOrder } from '@/app/api/order'
+import { createNewOrderFx } from '@/app/api/order'
 import { IBarnItem, IBarnResponse } from '@/types/barn'
 import BarnTable from '@/components/modules/BarnsPage/Order/BarnTable'
 import OrderModal from '@/components/modules/BarnsPage/Order/OrderModal'
@@ -149,7 +149,7 @@ const BarnPageOrder = ({ userId }: { userId: number }) => {
 
     try {
       setSpinner(true)
-      const res = await createNewOrder({
+      const { message, error_message, order } = await createNewOrderFx({
         clientId,
         clientLocation,
         clientMessage,
@@ -159,11 +159,11 @@ const BarnPageOrder = ({ userId }: { userId: number }) => {
         brokenStock: +brokenStock,
       })
 
-      if (res.message) {
-        toast.success(res.message)
-      }
+      if (error_message) toast.error(error_message)
 
-      console.log(res)
+      if (message) toast.success(message)
+
+      console.log(order)
     } catch (error) {
       toast.error((error as AxiosError).message)
     } finally {
