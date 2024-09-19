@@ -131,9 +131,9 @@ const BarnCard = ({ barn }: { barn: IBarnItem }) => {
         brokenStock: +brokenStock,
       })
 
-      // if (order?.error_message) toast.error(order.error_message)
+      if (order?.error_message) toast.error(order.error_message)
 
-      // if (order) toast.success(order.message)
+      if (order?.message) toast.success(order.message)
       console.log(order)
     } catch (error) {
       toast.error((error as AxiosError).message)
