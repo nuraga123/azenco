@@ -11,10 +11,11 @@ const Error404Page = () => {
 
       if (workingStatus) router.push('/my')
       else router.push('/404')
+      return null
     }
 
     loadState()
-  }, [router])
+  }, [])
 
   return (
     <div className="flex-container">
