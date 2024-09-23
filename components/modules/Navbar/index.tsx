@@ -33,14 +33,14 @@ const Navbar: React.FC = () => {
   const showNavbar: boolean = (isOpen === 'open' ? true : false) || isNavVisible
 
   const navStyle: React.CSSProperties = {
-    width: showNavbar ? '250px' : '100px',
+    width: showNavbar ? '250px' : '70px',
   }
 
   return (
     <nav className={styles.nav} style={navStyle}>
       <div className={styles.logo}>
         <div className={styles.logo__content}>
-          <span>Menyu</span>
+          <span className={styles.navbar__title}>Menyu</span>
         </div>
         <div className={styles.logo__content}>
           <input

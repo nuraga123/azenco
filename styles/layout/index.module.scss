@@ -22,6 +22,10 @@
   }
 }
 
+.navbar__title {
+  font-size: 12px;
+}
+
 .main {
   background-color: #cccccc66;
   margin: 10px;
@@ -165,7 +169,7 @@
 
 .logo__content {
   margin-top: 10px;
-  width: 100px;
+  width: 50px;
   transition: transform 0.3s ease; /* Плавное переключение */
 }
 

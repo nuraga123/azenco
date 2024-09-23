@@ -10,13 +10,16 @@ import { IMessageAndErrorMessage, ITypeOrderBtns } from '@/types/order'
 import { toast } from 'react-toastify'
 import Spinner from '../Spinner/Spinner'
 import { formatDateTime } from '@/utils/formatDateTime'
+import { useRouter } from 'next/router'
+import SendModal from './Modal/SendModal'
 
-const OrderTypeBtns = ({
-  type,
-  order,
-  userSelectDate,
-  barnUserMessage,
-}: ITypeOrderBtns) => {
+const OrderTypeBtns = ({ type, order }: ITypeOrderBtns) => {
+  const [spinner, setSpinner] = useState(false)
+  const [openModal, setOpenModal] = useState(false)
+
+  const router = useRouter()
+  const refresh = () => router.reload()
+
   const {
     id,
     status,
@@ -36,84 +39,7 @@ const OrderTypeBtns = ({
     productName,
   } = order
 
-  const [spinner, setSpinner] = useState(false)
-
-  // функции складчика
-  const handleConfirmBarnUser = async () => {
-    try {
-      setSpinner(true)
-
-      // дополнительное поля для проверки клиента
-      const { message, error_message }: IMessageAndErrorMessage =
-        await confirmOrderBarnUserFx({
-          barnId,
-          barnUserId,
-          barnUsername,
-          orderId: +id,
-          userSelectDate: userSelectDate
-            ? userSelectDate
-            : formatDateTime(new Date().toISOString()),
-          barnUserMessage: barnUserMessage || '',
-        })
-
-      console.log(message)
-
-      if (error_message) toast.warning(error_message)
-
-      if (message) toast.success(message)
-    } catch (error) {
-      toast.error((error as Error).message)
-    } finally {
-      setSpinner(false)
-    }
-  }
-
-  const handleCancelBarnUser = async () => {
-    try {
-    } catch (error) {}
-  }
-  const handleSendBarnUser = () => {}
-
-  // функции клиента
-  const handleCancelClient = async () => {
-    try {
-      setSpinner(true)
-      const { message } = await postCanceledOrderClientFx({
-        orderId: id,
-        clientId,
-        productId,
-        azencoCode,
-        productName,
-        clientUserName,
-      })
-
-      if (message) toast.success(message)
-    } catch (error) {
-      toast.error((error as Error).message)
-    } finally {
-      setSpinner(false)
-    }
-  }
-  const handleDeleteClient = async () => {
-    try {
-      setSpinner(true)
-      const { message } = await deleteOrderFromClientFx({
-        orderId: id,
-        clientId,
-        productId,
-        azencoCode,
-        productName,
-        clientUserName,
-      })
-
-      if (message) toast.success(message)
-    } catch (error) {
-      toast.error((error as Error).message)
-    } finally {
-      setSpinner(false)
-    }
-  }
-
+  // состояния
   const canceledBtnClient: boolean = Boolean(status === 'yeni_sifariş')
 
   const deletedBtnClient: boolean = Boolean(
@@ -132,6 +58,114 @@ const OrderTypeBtns = ({
   const clientType = Boolean(type === 'clientUser')
   const barnUserType = Boolean(type === 'barnUser')
 
+  // функции складчика
+  const handleConfirmBarnUser = async () => {
+    try {
+      setSpinner(true)
+
+      // дополнительное поля для проверки клиента
+      const { message, error_message }: IMessageAndErrorMessage =
+        await confirmOrderBarnUserFx({
+          barnId,
+          barnUserId,
+          barnUsername,
+          orderId: +id,
+          userSelectDate: formatDateTime(new Date().toISOString()),
+          barnUserMessage: '',
+        })
+
+      console.log(message)
+
+      if (error_message) toast.warning(error_message)
+
+      if (message) {
+        toast.success(message)
+        refresh()
+      }
+    } catch (error) {
+      toast.error((error as Error).message)
+    } finally {
+      setSpinner(false)
+    }
+  }
+
+  const handleCancelBarnUser = async () => {
+    try {
+    } catch (error) {}
+  }
+
+  const handleOpenModal = () => setOpenModal(!openModal)
+
+  /*
+  const handleSendBarnUser = async () => {
+    const { message, error_message } = await sendBarnUserFx({
+      orderId: id,
+      barnUserId,
+      barnUsername,
+      barnLocationProduct: barnLocationProduct
+        ? barnLocationProduct
+        : order.barnLocation,
+      barnId,
+      driverName,
+      carNumber,
+      userSelectedDate,
+      newStockSend,
+      usedStockSend,
+      brokenStockSend,
+      updatePrice,
+    })
+
+    if (error_message) toast.warning(error_message)
+    if (message) toast.success(message)
+  }
+*/
+  // функции клиента
+  const handleCancelClient = async () => {
+    try {
+      setSpinner(true)
+      const { message } = await postCanceledOrderClientFx({
+        orderId: id,
+        clientId,
+        productId,
+        azencoCode,
+        productName,
+        clientUserName,
+      })
+
+      if (message) {
+        toast.success(message)
+        refresh()
+      }
+    } catch (error) {
+      toast.error((error as Error).message)
+    } finally {
+      setSpinner(false)
+    }
+  }
+
+  const handleDeleteClient = async () => {
+    try {
+      setSpinner(true)
+      const { message } = await deleteOrderFromClientFx({
+        orderId: id,
+        clientId,
+        productId,
+        azencoCode,
+        productName,
+        clientUserName,
+      })
+
+      if (message) {
+        toast.success(message)
+        refresh()
+      }
+    } catch (error) {
+      toast.error((error as Error).message)
+    } finally {
+      setSpinner(false)
+    }
+  }
+
   if (clientType) {
     return (
       <div>
@@ -146,6 +180,8 @@ const OrderTypeBtns = ({
             {spinner ? <Spinner /> : 'Sil'}
           </button>
         )}
+
+        {sendBtnBarnUser && <p>Anbardarın göndərməsini gözləyin</p>}
       </div>
     )
   } else if (barnUserType) {
@@ -170,10 +206,13 @@ const OrderTypeBtns = ({
         )}
 
         {sendBtnBarnUser && (
-          <button onClick={handleSendBarnUser} className={styles.sendButton}>
+          <button onClick={handleOpenModal} className={styles.sendButton}>
             {spinner ? <Spinner /> : 'Göndər'}
           </button>
         )}
+
+        {openModal && <SendModal order={order} onClose={handleOpenModal} />}
+        {openModal && 'Göndər'}
       </div>
     )
   }

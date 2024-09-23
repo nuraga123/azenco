@@ -1,0 +1,326 @@
+/* Общие стили для модального окна */
+.modal__overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6); /* Прозрачный черный фон */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  transition:
+    opacity 0.5s ease,
+    visibility 0.5s ease;
+}
+
+.modal__flex {
+  display: flex;
+  align-items: flex-start;
+
+}
+
+.modal__content {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 40px;
+  max-width: 600px;
+  width: 100%;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  position: relative;
+  transform: translateY(50px);
+  opacity: 0;
+  transition:
+    transform 0.4s ease,
+    opacity 0.4s ease;
+
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Тени и текст */
+.modal__title {
+  font-size: 2rem;
+  color: #222;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 20px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+.modal__field {
+  margin-bottom: 25px;
+  position: relative;
+}
+
+/* Анимация для полей ввода */
+.modal__input {
+  width: 100%;
+  padding: 12px 20px;
+  font-size: 1.1rem;
+  color: #333;
+  background-color: #f7f7f7;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  outline: none;
+
+  &:focus {
+    border-color: #007bff;
+    background-color: #fff;
+    box-shadow: 0 5px 15px rgba(0, 123, 255, 0.15);
+  }
+
+  &::placeholder {
+    color: #bbb;
+    transition: color 0.3s ease;
+  }
+
+  &:focus::placeholder {
+    color: transparent;
+  }
+}
+
+/* Лейблы с плавной анимацией */
+.modal__label {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 8px;
+  display: block;
+  transition: color 0.3s ease;
+  position: relative;
+  padding-left: 10px;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    width: 0;
+    background-color: #007bff;
+    transition: width 0.4s ease;
+  }
+}
+
+.modal__input:focus + .modal__label::before {
+  width: 100%;
+}
+
+.modal__label:focus {
+  color: #007bff;
+}
+
+/* Стили для кнопок */
+.modal__button {
+  display: inline-block;
+  padding: 12px 20px;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.1);
+    z-index: -1;
+    transition: all 0.3s ease;
+  }
+
+  &:hover::before {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px rgba(0, 123, 255, 0.3);
+  }
+
+  &__send {
+    background-color: #28a745;
+    color: #fff;
+
+    &:hover {
+      background-color: #218838;
+    }
+  }
+
+  &__partial {
+    background-color: #ffc107;
+    color: #fff;
+
+    &:hover {
+      background-color: #e0a800;
+    }
+  }
+
+  &__cancel {
+    background-color: #dc3545;
+    color: #fff;
+
+    &:hover {
+      background-color: #c82333;
+    }
+  }
+
+  &:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}
+
+/* Анимации для модального окна */
+@keyframes slideIn {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .modal__content {
+    padding: 20px;
+  }
+
+  .modal__title {
+    font-size: 1.5rem;
+  }
+
+  .modal__input {
+    font-size: 1rem;
+  }
+
+  .modal__button {
+    font-size: 0.9rem;
+  }
+}
+
+/* Вспомогательные стили для эффектов */
+.modal__content::after {
+  content: '';
+  position: absolute;
+  border-radius: 12px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 0, 150, 0.1),
+    rgba(0, 123, 255, 0.1)
+  );
+  z-index: -1;
+}
+
+.modal__input:focus {
+  background-color: #eef2f3;
+}
+
+/* Стили для инпутов с ошибками */
+.modal__input__error {
+  border-color: #dc3545;
+}
+
+.modal__error__message {
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: 5px;
+  display: block;
+}
+
+/* Дополнительные стили для спиннера */
+.spinner {
+  border: 4px solid rgba(0, 123, 255, 0.2);
+  border-left-color: #007bff;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: spin 1s linear infinite;
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+}
+
+/* Стили для анимации кнопок */
+.modal__button::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 300%;
+  height: 300%;
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.3s ease;
+}
+
+.modal__button:hover::after {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.modal__button:active {
+  transform: translateY(1px);
+}
+
+/* Дополнительные переходы для полей */
+.modal__input {
+  transition:
+    border 0.3s ease,
+    box-shadow 0.3s ease,
+    background-color 0.3s ease;
+}
+
+/* Максимум визуального пространства */
+.modal__content {
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+/* Уменьшение отступов на мобильных устройствах */
+@media (max-width: 480px) {
+  .modal__title {
+    font-size: 1.25rem;
+  }
+
+  .modal__button {
+    font-size: 0.85rem;
+    padding: 10px 15px;
+  }
+
+  .modal__input {
+    padding: 10px 15px;
+  }
+}

@@ -6,6 +6,7 @@ import api from '../axiosClient'
 import { HTTPStatus } from '@/constans'
 import { IForgotPassword } from '@/pages/forgot-password'
 import { setUser } from '@/context/user'
+import { showAuthError } from '@/utils/errors'
 
 export const singUpFx = createEffect(
   async ({ url, username, password, email }: ISingUpFx) => {
@@ -95,6 +96,7 @@ export const getTokenFx = createEffect(async (token: string) => {
   }
 })
 
+// methodName: `server bağlantısı`,
 export const getWorkingServerFx = createEffect(async () => {
   try {
     const { data } = await api.get('/users/work')
@@ -102,7 +104,7 @@ export const getWorkingServerFx = createEffect(async () => {
     console.log(data)
     return data
   } catch (error) {
-    toast.error((error as Error).message)
+    showAuthError(error)
   }
 })
 
@@ -112,8 +114,7 @@ export const getUsersNamesServer = createEffect(async () => {
     console.log(data)
     return data
   } catch (error) {
-    console.log(error)
-    toast.error((error as Error).message)
+    showAuthError(error)
   }
 })
 
@@ -149,6 +150,6 @@ export const getDoneSecret = createEffect(async (secret: string) => {
     console.log(data)
     return data
   } catch (error) {
-    console.log(error)
+    showAuthError(error)
   }
 })

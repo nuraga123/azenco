@@ -17,6 +17,7 @@
 .text {
   text-align: center;
   text-transform: uppercase;
+  margin: 10;
 }
 
 .spinner {
@@ -30,11 +31,6 @@
   border-top-color: #fff;
   animation: spin 1s ease-in-out infinite;
   -webkit-animation: spin 1s ease-in-out infinite;
-
-  &.dark__mode {
-    border: 5px solid rgba(124, 119, 119, 0.3);
-    border-top-color: black;
-  }
 }
 
 @keyframes spin {

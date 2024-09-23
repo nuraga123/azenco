@@ -4,9 +4,9 @@ import {
   AiOutlineFileText,
   AiOutlineHistory,
   AiOutlinePhone,
-  AiOutlineFieldString,
   AiOutlineShoppingCart,
 } from 'react-icons/ai'
+import { SiMicrosoftexcel } from 'react-icons/si'
 
 interface INavbarElement {
   href: string
@@ -47,7 +47,7 @@ export const navbarArray: INavbarElement[] = [
   },
   {
     href: '/install-products-excel',
-    title: 'install-products-excel',
-    icon: <AiOutlineFieldString />,
+    title: 'Excel',
+    icon: <SiMicrosoftexcel />,
   },
 ]

@@ -4,7 +4,13 @@ export interface ITypeOrderBtns {
   type: 'clientUser' | 'barnUser'
   userSelectDate?: string
   barnUserMessage?: string
+  barnLocationProduct?: string
   order: IOrderItem
+}
+
+export interface ISendModal {
+  order: IOrderItem
+  onClose: () => void
 }
 
 export interface IOrderTableItemProps extends ITypeOrderBtns {
@@ -59,8 +65,19 @@ export interface IDeleteOrderFromClientDto {
 }
 
 export interface SendBarnUserDto {
+  barnUserMessage?: string
   orderId: number
+  barnUsername: string
+  barnLocationProduct: string
   barnUserId: number
+  barnId: number
+  driverName: string
+  carNumber: string
+  userSelectedDate: string
+  newStockSend: number
+  usedStockSend: number
+  brokenStockSend: number
+  updatePrice: number
 }
 
 export interface IOtherOrder {
