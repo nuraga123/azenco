@@ -7,24 +7,28 @@ const Spinner: ({
   widthPX,
   heightPX,
   loadingText,
+  margins,
 }: {
   top?: number | undefined
   left?: number | undefined
   widthPX?: number | undefined
   heightPX?: number | undefined
   loadingText?: string
+  margins?: string | '0 auto'
 }) => React.JSX.Element = ({
   top,
   left,
   widthPX = 30,
   heightPX = 30,
   loadingText = '',
+  margins = '0 auto',
 }: {
   top?: number
   left?: number
   widthPX?: number | undefined
   heightPX?: number | undefined
   loadingText?: string
+  margins?: string | '0 auto'
 }) => {
   if (top || left || widthPX) {
     return (
@@ -36,6 +40,7 @@ const Spinner: ({
             left: `${left}%`,
             width: `${widthPX}px`,
             height: `${heightPX}px`,
+            margin: `${margins}`,
           }}
         />
         <h1 className={styles.text}>{loadingText}</h1>
