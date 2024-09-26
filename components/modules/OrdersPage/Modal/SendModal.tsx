@@ -220,6 +220,7 @@ const SendModal: React.FC<ISendModal> = ({ order, onClose }) => {
                 />
               </div>
             )}
+
             <br />
 
             {isPartial && (
