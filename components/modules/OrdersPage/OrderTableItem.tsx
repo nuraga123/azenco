@@ -32,7 +32,12 @@ const statusColorCurrent = (status: TStatusOrderType) => {
   return ''
 }
 
-const OrderTableItem = ({ order, type, index }: IOrderTableItemProps) => {
+const OrderTableItem = ({
+  order,
+  type,
+  index,
+  onRefresh,
+}: IOrderTableItemProps) => {
   const {
     id,
     // взять с сервера
@@ -66,7 +71,7 @@ const OrderTableItem = ({ order, type, index }: IOrderTableItemProps) => {
   return (
     <tr className={confirmed ? styles.confirmedRow : styles.orderRow}>
       <td>
-        <OrderTypeBtns type={type} order={order} />
+        <OrderTypeBtns type={type} order={order} onRefresh={onRefresh} />
       </td>
       <td>{` ${+index + 1}) `}</td>
 

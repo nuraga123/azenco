@@ -8,7 +8,7 @@ const BarnTableHead = () => {
     <thead>
       <tr>
         <th className={styles.title__main} colSpan={3} rowSpan={2}>
-          Əməliyyatlar
+          Hərəkət
         </th>
 
         <th className={styles.title__main} colSpan={5}>

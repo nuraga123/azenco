@@ -10,9 +10,11 @@ import { useStore } from 'effector-react'
 const OrderTableList = ({
   orders,
   type,
+  onRefresh,
 }: {
   orders: IOrderItem[]
   type: 'clientUser' | 'barnUser'
+  onRefresh: () => void
 }) => {
   const navbarIsOpen = useStore($navbarIsOpen)
   console.log(orders)
@@ -25,7 +27,7 @@ const OrderTableList = ({
           : styles.tableContainer_close
       }
     >
-      {orders.length > 0 ? (
+      {orders ? (
         <table className={styles.orderTable}>
           <OrderTableHeader type={type} />
           <tbody>
@@ -35,6 +37,7 @@ const OrderTableList = ({
                 key={+order.id}
                 order={order}
                 index={index}
+                onRefresh={onRefresh}
               />
             ))}
           </tbody>

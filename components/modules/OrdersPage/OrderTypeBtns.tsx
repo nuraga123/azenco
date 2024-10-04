@@ -10,15 +10,11 @@ import { IMessageAndErrorMessage, ITypeOrderBtns } from '@/types/order'
 import { toast } from 'react-toastify'
 import Spinner from '../Spinner/Spinner'
 import { formatDateTime } from '@/utils/formatDateTime'
-import { useRouter } from 'next/router'
 import SendModal from './Modal/SendModal'
 
-const OrderTypeBtns = ({ type, order }: ITypeOrderBtns) => {
+const OrderTypeBtns = ({ type, order, onRefresh }: ITypeOrderBtns) => {
   const [spinner, setSpinner] = useState(false)
   const [openModal, setOpenModal] = useState(false)
-
-  const router = useRouter()
-  const refresh = () => router.reload()
 
   const {
     id,
@@ -80,7 +76,7 @@ const OrderTypeBtns = ({ type, order }: ITypeOrderBtns) => {
 
       if (message) {
         toast.success(message)
-        refresh()
+        onRefresh()
       }
     } catch (error) {
       toast.error((error as Error).message)
@@ -134,7 +130,7 @@ const OrderTypeBtns = ({ type, order }: ITypeOrderBtns) => {
 
       if (message) {
         toast.success(message)
-        refresh()
+        onRefresh()
       }
     } catch (error) {
       toast.error((error as Error).message)
@@ -157,7 +153,7 @@ const OrderTypeBtns = ({ type, order }: ITypeOrderBtns) => {
 
       if (message) {
         toast.success(message)
-        refresh()
+        onRefresh()
       }
     } catch (error) {
       toast.error((error as Error).message)

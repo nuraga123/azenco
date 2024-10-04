@@ -6,6 +6,7 @@ export interface ITypeOrderBtns {
   barnUserMessage?: string
   barnLocationProduct?: string
   order: IOrderItem
+  onRefresh: () => void
 }
 
 export interface ISendModal {
@@ -15,6 +16,7 @@ export interface ISendModal {
 
 export interface IOrderTableItemProps extends ITypeOrderBtns {
   index: number
+  onRefresh: () => void
 }
 
 // Интерфейсы для запросов
